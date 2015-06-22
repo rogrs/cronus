@@ -65,7 +65,6 @@ public class UsuariosRestlet implements UsuarioRest {
                 entity.setDtcreate(new Date());
                 entity.setSalt(Hash.userNameKey);
                 entity.setPwd(Hash.encrypt(entity.getSalt(),form.getActualPassword()));
-
                 service.persist(entity);
 
                 location = new URI("../users-list.html");

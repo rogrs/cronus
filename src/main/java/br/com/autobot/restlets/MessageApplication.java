@@ -7,6 +7,8 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import br.com.autobot.restlets.impl.AuthenticationRestlet;
+import br.com.autobot.restlets.impl.PlanosRestlet;
+import br.com.autobot.restlets.impl.ProjetosRestlet;
 import br.com.autobot.restlets.impl.PropriedadesRestlet;
 import br.com.autobot.restlets.impl.UsuariosRestlet;
 
@@ -23,6 +25,8 @@ public class MessageApplication extends Application {
         singletons.add(new AuthenticationRestlet());
         singletons.add(new PropriedadesRestlet());
         singletons.add(new UsuariosRestlet());  
+        singletons.add(new PlanosRestlet());  
+        singletons.add(new ProjetosRestlet()); 
     }
     
 

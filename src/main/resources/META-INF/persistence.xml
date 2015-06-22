@@ -5,6 +5,12 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>		
     <class>br.com.api.persistence.generic.vo.Usuarios</class>
     <class>br.com.api.persistence.generic.vo.Propriedades</class>
+    <class>br.com.autobot.vo.Plugins</class>
+    <class>br.com.autobot.vo.Logcommands</class>
+    <class>br.com.autobot.vo.Scripts</class>
+    <class>br.com.autobot.vo.Planos</class>
+    <class>br.com.autobot.vo.Projetos</class>
+    <class>br.com.autobot.vo.Atividades</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/autobotDB"/>

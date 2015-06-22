@@ -9,26 +9,28 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import br.com.api.persistence.generic.impl.PropriedadeServiceImpl;
-import br.com.api.persistence.generic.vo.Propriedades;
-import br.com.autobot.restlets.PropriedadeRest;
+import br.com.autobot.jpa.service.impl.PluginsServiceImpl;
+import br.com.autobot.restlets.PluginsRest;
+import br.com.autobot.vo.Plugins;
 
 
-public class PropriedadesRestlet implements PropriedadeRest {
+public class PluginsRestlet implements PluginsRest {
 
-    private static final Logger logger = Logger.getLogger(PropriedadesRestlet.class);
+    private static final Logger logger = Logger.getLogger(PluginsRestlet.class);
 
-    private PropriedadeServiceImpl service = null;
+    private  PluginsServiceImpl service = null;
 
-    public PropriedadesRestlet() {
+    public PluginsRestlet() {
 
-        service = new PropriedadeServiceImpl();
+        service = new PluginsServiceImpl();
     }
 
     public Response listar() {
 
-        List<Propriedades> entity = null;
+        List<Plugins> entity = null;
+
         try {
+
             entity = service.findAll();
         } catch (Exception e) {
             logger.error("erro", e);
@@ -40,19 +42,16 @@ public class PropriedadesRestlet implements PropriedadeRest {
 
     }
 
-    public Response create(@FormParam("chave") String chave, @FormParam("valor") String valor) {
+    public Response create(@FormParam("plugin") String plugin, @FormParam("command") String command) {
 
         String result = null;
-       
-        Propriedades entity = null;
+        Plugins entity = null;
 
         try {
-  
 
-            entity = new Propriedades();
-            entity.setChave(chave);
-            entity.setValor(valor);
-            entity.setEnabled(1);
+            entity = new Plugins();
+            entity.setPlugin(plugin);
+            entity.setEnable(1);
             entity.setDtcreate(new Date());
             service.persist(entity);
 
