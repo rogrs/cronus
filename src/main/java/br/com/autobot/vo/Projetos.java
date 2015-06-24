@@ -55,11 +55,10 @@ public class Projetos implements Serializable {
         this.id = id;
     }
 
-    public Projetos(Long id, Date dtcreate, String projeto, int enable) {
-        this.id = id;
-        this.dtcreate = dtcreate;
+    public Projetos(String projeto) {
         this.projeto = projeto;
-        this.enable = enable;
+        this.dtcreate = new Date();
+        this.enable = 1;
     }
 
     @Override

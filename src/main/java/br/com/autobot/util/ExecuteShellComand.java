@@ -9,7 +9,7 @@ public class ExecuteShellComand {
 
     private static final Logger LOGGER = Logger.getLogger(ExecuteShellComand.class);
 
-    public String executeCommand(String command) {
+    public static String executeCommand(String command) {
 
         StringBuffer output = new StringBuffer();
 
@@ -25,7 +25,9 @@ public class ExecuteShellComand {
             }
 
         } catch (Exception e) {
+            output.append("Erro ao executar o "+command+" - " + e.getMessage());
             LOGGER.error("Erro ao executar o comando executeCommand " + output, e);
+
         }
 
         return output.toString();

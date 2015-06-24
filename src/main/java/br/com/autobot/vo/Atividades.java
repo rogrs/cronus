@@ -68,14 +68,14 @@ public class Atividades implements Serializable {
         this.id = id;
     }
 
-    public Atividades(Long id, Long idplano, Long idscript, Long idusuario, String atividade, Date dtcreate, int enable) {
-        this.id = id;
+    public Atividades(Long idplano, Long idscript, Long idusuario, String atividade) {
+       
         this.idplano = idplano;
         this.idscript = idscript;
         this.idusuario = idusuario;
         this.atividade = atividade;
-        this.dtcreate = dtcreate;
-        this.enable = enable;
+        this.dtcreate = new Date();
+        this.enable = 1;
     }
 
     @Override
