@@ -35,7 +35,7 @@
     <location>/error.html</location>
   </error-page>
   <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>sigin.html</welcome-file>
   </welcome-file-list>
   <security-constraint>
     <web-resource-collection>
