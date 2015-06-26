@@ -16,6 +16,9 @@ public class ExecuteShellComand {
         Process p;
         try {
             p = Runtime.getRuntime().exec(command);
+            p.getInputStream().close();
+            p.getOutputStream().close();
+            p.getErrorStream().close();
             p.waitFor();
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
@@ -25,13 +28,29 @@ public class ExecuteShellComand {
             }
 
         } catch (Exception e) {
-            output.append("Erro ao executar o "+command+" - " + e.getMessage());
+            output.append("Erro ao executar o " + command + " - " + e.getMessage());
             LOGGER.error("Erro ao executar o comando executeCommand " + output, e);
 
         }
 
         return output.toString();
 
+    }
+
+    public static int execCMD(String cmd) {
+
+        try {
+
+            Process p = Runtime.getRuntime().exec(cmd);
+            p.getInputStream().close();
+            p.getOutputStream().close();
+            p.getErrorStream().close();
+            p.waitFor();
+            return p.exitValue();
+        } catch (Exception e) {
+            LOGGER.error("Erro ao executar o comando " + cmd, e);
+            return -1;
+        }
     }
 
 }
