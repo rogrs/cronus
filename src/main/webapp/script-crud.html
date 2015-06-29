@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+     <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Cadastro de Script</title>
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+
+  <div class="jumbotron">
+  <div class="container">
+  <div>
+  <div>
+
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Cadastro de Script</h2>
+  </div>
+  <div class="panel-body">
+
+    <form action="rs/v1/scripts" method="post">
+     
+      <div class="form-group">    
+      <label for="script">Script Nome </label>
+      <input type="text"  required="required" name="script" id="script" autofocus > 
+      </div>
+      
+      <div class="form-group">   
+      <label for="path">Path script </label>
+      <input type="text"  required="required" name="path" id="path" >
+      </div>
+      
+       <div class="form-group">   
+       <label class="control-label col-sm-2" for="role">plugin</label>
+        <div ng-controller="PostsCtrl">
+          <select name="idplugin" id="idplugin" required="required">
+			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.plugin}}</option>
+			
+		  </select>
+		</div>
+	  <div>
+         <input type="submit" value='Enviar Dados'>
+         <input type='reset' name='reset' value='Limpar Dados'>
+      </div>
+    </form>
+    
+  </div>
+  </div>
+
+</body>
+</html>

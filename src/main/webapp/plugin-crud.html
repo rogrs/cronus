@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+     <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Cadastro de Plugin</title>
+    <meta name="viewport" content="width=device-width">
+</head>
+<body>
+
+  <div class="jumbotron">
+  <div class="container">
+  <div>
+  <div>
+
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h2 class="panel-title">Cadastro de Plugin</h2>
+  </div>
+  <div class="panel-body">
+
+    <form action="rs/v1/plugins" method="post">
+      
+      <label for="plugin">Plugin</label>
+      <p>  <input type="text"  required="required" name="plugin" id="plugin" autofocus > </p>
+      
+      <label for="command">Comando</label>
+      <p>  <input type="text"  required="required" name="command" id="command" > </p>
+      
+	  <div>
+         <input type="submit" value='Enviar Dados'>
+         <input type='reset' name='reset' value='Limpar Dados'>
+      </div>
+    </form>
+    
+  </div>
+  </div>
+
+</body>
+</html>
