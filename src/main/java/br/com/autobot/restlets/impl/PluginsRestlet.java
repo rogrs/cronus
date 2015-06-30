@@ -51,6 +51,7 @@ public class PluginsRestlet implements PluginsRest {
 
             entity = new Plugins();
             entity.setPlugin(plugin);
+            entity.setCommand(command);
             entity.setEnable(1);
             entity.setDtcreate(new Date());
             service.persist(entity);
