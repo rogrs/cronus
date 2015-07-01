@@ -47,4 +47,13 @@
       <http-method>PUT</http-method>
     </web-resource-collection>
   </security-constraint>
+  
+  <filter>
+    <filter-name>AuthenticationFilter</filter-name>
+    <filter-class>br.com.api.authentication.filters.AuthenticationFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthenticationFilter</filter-name>
+    <url-pattern>/rs/*</url-pattern>
+  </filter-mapping>
 </web-app>
