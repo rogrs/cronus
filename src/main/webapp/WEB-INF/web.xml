@@ -35,7 +35,7 @@
     <location>/error.html</location>
   </error-page>
   <welcome-file-list>
-    <welcome-file>sigin.html</welcome-file>
+    <welcome-file>home.html</welcome-file>
   </welcome-file-list>
   <security-constraint>
     <web-resource-collection>
@@ -47,7 +47,7 @@
       <http-method>PUT</http-method>
     </web-resource-collection>
   </security-constraint>
-  
+ <!--  
   <filter>
     <filter-name>AuthenticationFilter</filter-name>
     <filter-class>br.com.api.authentication.filters.AuthenticationFilter</filter-class>
@@ -55,5 +55,5 @@
   <filter-mapping>
     <filter-name>AuthenticationFilter</filter-name>
     <url-pattern>/rs/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping> -->
 </web-app>

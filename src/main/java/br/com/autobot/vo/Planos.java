@@ -59,6 +59,13 @@ public class Planos implements Serializable {
     public Planos(Long id) {
         this.id = id;
     }
+    
+    public Planos(String plano) {
+        this.idprojeto = 1L;
+        this.plano = plano;
+        this.dtcreate = new Date();
+        this.enable = 1;
+    }
 
     public Planos(Long idprojeto, String plano) {
         this.idprojeto = idprojeto;
