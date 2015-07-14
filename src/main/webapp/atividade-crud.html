@@ -24,7 +24,7 @@
 <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script src="./js/ie-emulation-modes-warning.js"></script>
- <script src="./js/plugins.js"></script>
+ <script src="./js/planos.js"></script>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -48,8 +48,8 @@
 					<li><a href="home.html">Home</a></li>
 					<li><a href="projeto-crud.html">Projetos</a></li>
 					<li><a href="plano-crud.html">Planos de Teste</a></li>
-					<li><a href="atividade-crud.html">Atividades de Teste</a></li>
-					<li class="active"><a href="script-crud.html">Scripts</a></li>
+					<li class="active"><a href="atividade-crud.html">Atividades de Teste</a></li>
+					<li><a href="script-crud.html">Scripts</a></li>
 					<li><a href="plugin-crud.html">Plugins</a></li>
 					<li><a href="users-crud.html">Usuários</a></li>
 				</ul>
@@ -58,33 +58,41 @@
 
 		<!-- Jumbotron -->
 		<div class="jumbotron">
-			   <form action="rs/v1/scripts" method="post">
-     
-      <div class="form-group">    
-      <label for="script">Script </label>
-      <input type="text"  required="required" name="script" id="script" autofocus > 
-      </div>
-      
-      <div class="form-group">   
-      <label for="path">Path script </label>
-      <input type="text"  required="required" name="path" id="path" >
-      </div>
-      
-       <div class="form-group">   
-       <label  for="plugin">Selecione o Plugin</label>
-        <div ng-controller="PostsCtrl">
-          <select name="idplugin" id="idplugin" required="required">
-			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.plugin}}</option>
-			</div>
+		  <form action="rs/v1/atividades" method="post">
+		  
+		   
+      <div class="form-group"> 
+      <label for="idplano">Plano de Teste</label>
+       <div ng-controller="PostsCtrl">
+          <select name="idplano" id="idplano" required="required">
+			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.plano}}</option>
+			
 		  </select>
 		</div>
+      </div>
+      
+      <div class="form-group"> 
+      <label for="atividade">Atividade</label>
+      <input type="text"  required="required" name="atividade" id="atividade" autofocus > 
+      </div>
+     
+       
+      <div class="form-group"> 
+      <label for="idscript">Script</label>
+       <div ng-controller="PostsCtrl">
+          <select name="idscript" id="idscript" required="required">
+			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.script}}</option>
+			
+		  </select>
 		</div>
-	  <div class="form-group">   
-	              <div class="col-sm-offset-2 col-sm-10">
-        
+      </div>
+      
+     
+	  <div class="form-group"> 
+          <div class="col-sm-offset-2 col-sm-10">
          <input type='reset' name='reset' value='Cancelar'>
-          <input class="btn btn-primary" type="submit" value='Gravar'>
-           </div>
+         <input class="btn btn-primary" type="submit" value='Gravar'>
+         </div>
       </div>
     </form>
 		</div>
