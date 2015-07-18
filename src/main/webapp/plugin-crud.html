@@ -59,21 +59,24 @@
 
 		<!-- Jumbotron -->
 		<div class="jumbotron">
-			<form action="rs/v1/plugins" method="post">
+			<form class="form-horizontal" action="rs/v1/plugins" method="post">
 
 				<div class="form-group">
-					<label for="plugin">Plugin</label> <input type="text"
-						required="required" name="plugin" id="plugin" autofocus>
+					<label class="control-label col-sm-2" for="plugin">Plugin</label> 
+					 <div class="col-sm-10">
+					<input class="form-control" type="text" required="required" name="plugin" id="plugin" autofocus>
+				</div>
 				</div>
 
 				<div class="form-group">
-					<label for="command">Comando</label> <input type="text"
-						required="required" name="command" id="command">
+					<label class="control-label col-sm-2" for="command">Comando</label> 
+					<div class="col-sm-10">
+					<input class="form-control" type="text"	required="required" name="command" id="command">
+				</div>
 				</div>
 
 				<div class="form-group">
-
-					<input type='reset' name='reset' value='Cancelar'> 
+					<input class="btn btn-lg btn-link" type='reset' name='reset' value='Cancelar'> 
 					<input class="btn btn-primary" type="submit" value='Gravar'>
 				</div>
 			</form>

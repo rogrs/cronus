@@ -57,18 +57,20 @@
 
 		<!-- Jumbotron -->
 		<div class="jumbotron">
-			<form action="rs/v1/projetos" method="post">
+			<form class="form-horizontal" action="rs/v1/projetos" method="post">
 
 				<div class="form-group">
-					<label for="projeto">Projeto</label> 
-					<input type="text" required="required" name="projeto" id="projeto" autofocus>
+					<label class="control-label col-sm-2" for="projeto">Projeto</label> 
+					<div class="col-sm-10">
+					<input class="form-control"  type="text" required="required" name="projeto" id="projeto" autofocus>
+					</div>
 				</div>
 
 
 				 <div class="form-group">   
 	              <div class="col-sm-offset-2 col-sm-10">
-					<input type='reset' name='reset' value='Cancelar'>
-					<input type="submit" value='Gravar'> 
+					<input class="btn btn-lg btn-link" type='reset' name='reset' value='Cancelar'>
+					 <button class="btn btn-lg btn-primary" type="submit" >Gravar</button>
 				</div>
 				</div>
 			</form>

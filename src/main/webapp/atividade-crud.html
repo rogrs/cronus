@@ -25,7 +25,7 @@
 <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 <script src="./js/ie-emulation-modes-warning.js"></script>
  <script src="./js/planos.js"></script>
-
+ 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -37,7 +37,7 @@
 	src="chrome-extension://homgcnaoacgigpkkljjjekpignblkeae/detector.js"></script>
 </head>
 
-<body ng-app="MyApp">
+<body>
 
 	<div class="container">
 
@@ -58,40 +58,44 @@
 
 		<!-- Jumbotron -->
 		<div class="jumbotron">
-		  <form action="rs/v1/atividades" method="post">
-		  
+		  <form class="form-horizontal" action="rs/v1/atividades" method="post">		  
 		   
       <div class="form-group"> 
-      <label for="idplano">Plano de Teste</label>
-       <div ng-controller="PostsCtrl">
-          <select name="idplano" id="idplano" required="required">
-			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.plano}}</option>
-			
+      <label  class="control-label col-sm-2" for="idplano">Plano de Teste</label>
+      <div class="col-sm-10">
+       <div ng-app="MyApp" ng-controller="PostsCtrl">
+          <select  class="form-control"name="idplano" id="idplano" required="required" autofocus>
+			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.plano}}</option>			
 		  </select>
 		</div>
       </div>
+       </div>
       
       <div class="form-group"> 
-      <label for="atividade">Atividade</label>
-      <input type="text"  required="required" name="atividade" id="atividade" autofocus > 
+      <label  class="control-label col-sm-2" for="atividade">Atividade</label>
+      <div class="col-sm-10">
+      <input class="form-control" type="text"  required="required" name="atividade" id="atividade"  > 
+      </div>
       </div>
      
        
       <div class="form-group"> 
-      <label for="idscript">Script</label>
-       <div ng-controller="PostsCtrl">
-          <select name="idscript" id="idscript" required="required">
-			 <option  ng-repeat="post in posts | filter:s as results" value="{{post.id}}">{{post.script}}</option>
+      <label  class="control-label col-sm-2" for="idscript">Script</label>
+      <div class="col-sm-10">
+       <div  ng-app="MyApp" ng-controller="ScriptsCtrl">
+          <select  class="form-control" name="idscript" id="idscript" required="required">
+			 <option  ng-repeat="post2 in posts2 | filter:s as results" value="{{post2.id}}">{{post2.script}}</option>
 			
 		  </select>
 		</div>
+			</div>
       </div>
       
      
 	  <div class="form-group"> 
           <div class="col-sm-offset-2 col-sm-10">
-         <input type='reset' name='reset' value='Cancelar'>
-         <input class="btn btn-primary" type="submit" value='Gravar'>
+         <input  class="btn btn-lg btn-link" type='reset' name='reset' value='Cancelar'>
+         <button class="btn btn-default" type="submit" >Gravar</button>
          </div>
       </div>
     </form>
