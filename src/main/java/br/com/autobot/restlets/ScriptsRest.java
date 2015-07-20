@@ -28,7 +28,7 @@ public interface ScriptsRest {
     @POST
     @Path("/")
     @Consumes("application/x-www-form-urlencoded")
-    Response create(@FormParam("script") String script, @FormParam("path") String path);
+    Response create(@FormParam("script") String script, @FormParam("path") String path, @FormParam("idplugin") Long idplugin);
     
     @DELETE
     @Path("/{id}")

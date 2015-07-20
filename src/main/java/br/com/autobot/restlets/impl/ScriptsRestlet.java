@@ -42,7 +42,7 @@ public class ScriptsRestlet implements ScriptsRest {
 
     }
 
-    public Response create(@FormParam("script") String script,@FormParam("path") String path) {
+    public Response create(@FormParam("script") String script,@FormParam("path") String path, @FormParam("idplugin") Long idplugin) {
 
         String result = null;
         Scripts entity = null;
@@ -54,6 +54,7 @@ public class ScriptsRestlet implements ScriptsRest {
             entity.setPath(path);
             entity.setEnable(1);
             entity.setDtcreate(new Date());
+            entity.setIdplugin(idplugin);
             service.persist(entity);
 
             result = "sucesso";
