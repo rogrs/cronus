@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "planos")
+@Table(name = "plans")
 @Getter
 @Setter
 public class Plan extends EntityID {

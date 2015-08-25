@@ -9,19 +9,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "teste_case")
+@Table(name = "test_cases")
 @Getter
 @Setter
-public class TestCase extends EntityID {
-	
-	@Basic(optional = false)
+public class TestCases extends EntityID {
+
+    @Basic(optional = false)
     @Column(name = "descricao")
     private String descricao;
-	
+
     @Column(name = "comments")
     private String comments;
-	
-	
-	
 
 }

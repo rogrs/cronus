@@ -10,7 +10,7 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 
     function findAllTasks() {
         //get all tasks and display initially
-        $http.get(urlBase + '/projetos/').
+        $http.get(urlBase + '/project/').
             success(function (data) {
                 if (data._embedded != undefined) {
                     $scope.tasks = data._embedded.tasks;
@@ -33,10 +33,10 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
 			alert("Insufficient Data! Please provide values for task name, description, priortiy and status");
 		}
 		else{
-		 $http.post(urlBase + '/projetos', {
+		 $http.post(urlBase + '/project', {
              projetoName: $scope.projetoName,
-             projetoDescription: $scope.projetoDesc,
-           
+             projetoDescription: $scope.projetoDesc
+            
          }).
 		  success(function(data, status, headers) {
 			

@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "atividades")
+@Table(name = "activities")
 @Getter
 @Setter
 public class Activity extends EntityID {

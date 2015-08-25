@@ -16,14 +16,14 @@ import lombok.Setter;
 @Setter
 public class Steps extends EntityID {
 
-	@Column(name = "notes")
-	private String notes;
+    @Column(name = "notes")
+    private String notes;
 
-	@Column(name = "stop_failure")
-	private boolean stopFailure;
+    @Column(name = "stop_failure")
+    private boolean stopFailure;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = true)
-	@JoinColumn(name = "idscript")
-	private Scripts scripts;
+    @ManyToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "idscript")
+    private Scripts scripts;
 
 }
