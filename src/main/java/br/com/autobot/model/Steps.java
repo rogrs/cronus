@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "steps")
 @Getter
 @Setter
-public class Steps extends ID {
+public class Steps extends EntityID {
 
 	@Column(name = "notes")
 	private String notes;

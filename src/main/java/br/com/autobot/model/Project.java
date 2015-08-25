@@ -1,7 +1,5 @@
 package br.com.autobot.model;
 
-import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +12,8 @@ import lombok.Setter;
 @Table(name = "projetos")
 @Getter
 @Setter
-public class Project  extends ID{
+public class Project extends EntityID {
 
-   
     @Basic(optional = false)
     @Column(name = "projeto_name")
     private String projetoName;
@@ -25,13 +22,11 @@ public class Project  extends ID{
     private String projetoDescription;
 
     public Project() {
-		this.setDtcreate(new Date());
-		this.setEnabled(true);
+
     }
 
     public Project(String project) {
         this.projetoName = project;
-		this.setDtcreate(new Date());
-		this.setEnabled(true);
+
     }
 }

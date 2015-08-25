@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "teste_case")
 @Getter
 @Setter
-public class TestCase extends ID {
+public class TestCase extends EntityID {
 	
 	@Basic(optional = false)
     @Column(name = "descricao")
