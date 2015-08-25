@@ -1,11 +1,10 @@
 package br.com.autobot.model;
 
+import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -15,13 +14,9 @@ import lombok.Setter;
 @Table(name = "projetos")
 @Getter
 @Setter
-public class Projetos {
+public class Project  extends ID{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+   
     @Basic(optional = false)
     @Column(name = "projeto_name")
     private String projetoName;
@@ -29,11 +24,14 @@ public class Projetos {
     @Column(name = "projeto_description")
     private String projetoDescription;
 
-    public Projetos() {
-
+    public Project() {
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
     }
 
-    public Projetos(String projeto) {
-        this.projetoName = projeto;
+    public Project(String project) {
+        this.projetoName = project;
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
     }
 }

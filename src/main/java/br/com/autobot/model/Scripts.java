@@ -5,9 +5,6 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,13 +16,8 @@ import lombok.Setter;
 @Table(name = "scripts")
 @Getter
 @Setter
-public class Scripts  {
-   
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Long id;
+public class Scripts extends ID {
+
     @Basic(optional = false)
     @Column(name = "idplugin")
     private Long idplugin;
@@ -47,16 +39,18 @@ public class Scripts  {
     }
 
     public Scripts(Long id) {
-        this.id = id;
+    	this.setId(id);
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
     }
 
-    public Scripts(Long id, long idplugin, String script, String path, Date dtcreate, int enable) {
-        this.id = id;
+    public Scripts(Long id, long idplugin, String script, String path) {
+    	this.setId(id);
         this.idplugin = idplugin;
         this.script = script;
         this.path = path;
-        this.dtcreate = dtcreate;
-        this.enable = enable;
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
     }
 
 }

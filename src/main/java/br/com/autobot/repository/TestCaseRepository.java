@@ -1,12 +1,12 @@
 package br.com.autobot.repository;
 
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import br.com.autobot.model.TestCase;
 
-public interface TestCaseRepository extends JpaRepository<TestCase, Long> {
+@RepositoryRestResource(collectionResourceRel = "testcaseRel", path = "testcase")
+public interface TestCaseRepository extends PagingAndSortingRepository<TestCase, Long> {
 
-	Optional<TestCase> findByTestCase(String username);
+	
 }

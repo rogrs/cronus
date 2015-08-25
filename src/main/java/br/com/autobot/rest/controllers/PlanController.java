@@ -4,11 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class PlanosController {
+public class PlanController {
 
-    @RequestMapping("/plano")
+    @RequestMapping("/plan")
     public String home() {
-        return "plano";
+        return "plan";
     }
 
 }

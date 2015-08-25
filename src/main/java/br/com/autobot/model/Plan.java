@@ -13,17 +13,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "plugins")
+@Table(name = "planos")
 @Getter
 @Setter
-public class Plugins extends ID {
+public class Plan extends ID {
 
 	@Basic(optional = false)
-	@Column(name = "plugin")
-	private String plugin;
+	@Column(name = "idprojeto")
+	private Long idprojeto;
 	@Basic(optional = false)
-	@Column(name = "command")
-	private String command;
+	@Column(name = "plano")
+	private String plano;
 	@Basic(optional = false)
 	@Column(name = "dtcreate")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -32,19 +32,27 @@ public class Plugins extends ID {
 	@Column(name = "enable")
 	private int enable;
 
-	public Plugins() {
+	public Plan() {
 	}
 
-	public Plugins(Long id) {
+	public Plan(Long id) {
 		this.setId(id);
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
 	}
 
-	public Plugins(Long id, String plugin, String command, Date dtcreate, int enable) {
-		this.setId(id);
-		this.plugin = plugin;
-		this.command = command;
-		this.dtcreate = dtcreate;
-		this.enable = enable;
+	public Plan(String plano) {
+		this.idprojeto = 1L;
+		this.plano = plano;
+		this.setDtcreate(new Date());
+		this.setEnabled(true);
+	}
+
+	public Plan(Long idprojeto, String plano) {
+		this.idprojeto = idprojeto;
+		this.plano = plano;
+		this.dtcreate = new Date();
+		this.enable = 1;
 	}
 
 }
