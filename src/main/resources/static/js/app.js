@@ -43,7 +43,9 @@ taskManagerModule.controller('taskManagerController', function ($scope,$http) {
              taskName: $scope.taskName,
              taskDescription: $scope.taskDesc,
              taskPriority: $scope.taskPriority,
-             taskStatus: $scope.taskStatus
+             taskStatus: $scope.taskStatus,
+             enabled: 1
+     
          }).
 		  success(function(data, status, headers) {
 			 alert("Task added");

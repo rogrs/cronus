@@ -1,6 +1,5 @@
 package br.com.autobot.model;
 
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -14,19 +13,23 @@ import lombok.Setter;
 @Setter
 public class Project extends EntityID {
 
-    @Basic(optional = false)
-    @Column(name = "projeto_name")
-    private String projetoName;
+    @Column(name = "task_name")
+    private String taskName;
 
-    @Column(name = "projeto_description")
-    private String projetoDescription;
+    @Column(name = "task_description")
+    private String taskDescription;
+
+    @Column(name = "task_priority")
+    private String taskPriority;
+
+    @Column(name = "task_status")
+    private String taskStatus;
+
+    @Column(name = "task_archived")
+    private int taskArchived = 0;
 
     public Project() {
 
     }
 
-    public Project(String project) {
-        this.projetoName = project;
-
-    }
 }
