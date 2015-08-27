@@ -1,0 +1,62 @@
+
+<div>
+    <h2><span translate="jhipsterApp.atividade.detail.title">Atividade</span> {{atividade.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="jhipsterApp.atividade.descricao">Descricao</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{atividade.descricao}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="jhipsterApp.atividade.detalhe">Detalhe</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{atividade.detalhe}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="jhipsterApp.atividade.falha_para">Falha_para</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{atividade.falha_para}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="jhipsterApp.atividade.plano">plano</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="plano.detail({id:atividade.plano.id})">{{atividade.plano.id}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="jhipsterApp.atividade.script">script</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="script.detail({id:atividade.script.id})">{{atividade.script.id}}</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

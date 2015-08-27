@@ -1,0 +1,20 @@
+{
+    "jhipsterApp": {
+        "projeto" : {
+            "home": {
+                "title": "Projetos",
+                "createLabel": "Créer un nouveau Projeto",
+                "createOrEditLabel": "Créer ou éditer un Projeto"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Projeto {{ id }} ?"
+            },
+            "detail": {
+                "title": "Projeto"
+            },
+            "descricao": "Descricao",
+            "detalhes": "Detalhes"
+        }
+    }
+}
+

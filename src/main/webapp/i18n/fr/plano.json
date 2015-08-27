@@ -1,0 +1,21 @@
+{
+    "jhipsterApp": {
+        "plano" : {
+            "home": {
+                "title": "Planos",
+                "createLabel": "Créer un nouveau Plano",
+                "createOrEditLabel": "Créer ou éditer un Plano"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Plano {{ id }} ?"
+            },
+            "detail": {
+                "title": "Plano"
+            },
+            "descricao": "Descricao",
+            "detalhe": "Detalhe",
+            "projeto": "Projeto"
+        }
+    }
+}
+

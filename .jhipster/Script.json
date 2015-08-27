@@ -1,0 +1,27 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "plugin",
+            "otherEntityName": "plugin",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "descricao",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "detalhe",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20150827140643",
+    "dto": "no",
+    "pagination": "pagination"
+}

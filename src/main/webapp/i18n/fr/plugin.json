@@ -1,0 +1,20 @@
+{
+    "jhipsterApp": {
+        "plugin" : {
+            "home": {
+                "title": "Plugins",
+                "createLabel": "Créer un nouveau Plugin",
+                "createOrEditLabel": "Créer ou éditer un Plugin"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Plugin {{ id }} ?"
+            },
+            "detail": {
+                "title": "Plugin"
+            },
+            "descricao": "Descricao",
+            "comando": "Comando"
+        }
+    }
+}
+

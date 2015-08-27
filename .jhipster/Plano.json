@@ -1,0 +1,27 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "projeto",
+            "otherEntityName": "projeto",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "descricao",
+            "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "detalhe",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20150827141038",
+    "dto": "no",
+    "pagination": "pagination"
+}
