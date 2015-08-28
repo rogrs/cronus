@@ -29,6 +29,7 @@
 *~.nib
 local.properties
 .classpath
+.settings
 .settings/**
 .loadpath
 /src/main/resources/rebel.xml
