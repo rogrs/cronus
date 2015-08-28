@@ -8,7 +8,7 @@ angular.module('jhipsterApp')
                 var language = $translate.storage().get('NG_TRANSLATE_LANG_KEY');
 
                 if (angular.isUndefined(language)) {
-                    language = 'en';
+                    language = 'pt-br';
                 }
 
                 deferred.resolve(language);
@@ -27,8 +27,7 @@ angular.module('jhipsterApp')
  They are written in English to avoid character encoding issues (not a perfect solution)
  */
     .constant('LANGUAGES', [
-        'en', 'fr'
-        ,'pt-br'
+       'pt-br',  'en'
         //JHipster will add new languages here
     ]
 );
