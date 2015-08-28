@@ -1,8 +1,11 @@
 package com.mycompany.myapp.security;
 
-import com.mycompany.myapp.domain.Authority;
-import com.mycompany.myapp.domain.User;
-import com.mycompany.myapp.repository.UserRepository;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,13 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.Collections;
-import java.util.List;
+import com.mycompany.myapp.domain.User;
+import com.mycompany.myapp.repository.UserRepository;
 
 /**
  * Authenticate a user from the database.

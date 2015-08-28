@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -23,7 +24,11 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Atividade implements Serializable {
 
-    @Id
+    @Transient
+	private static final long serialVersionUID = -6652049824755998384L;
+
+
+	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     

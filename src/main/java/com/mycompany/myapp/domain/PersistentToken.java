@@ -1,7 +1,16 @@
 package com.mycompany.myapp.domain;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -9,10 +18,8 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Persistent tokens are used by Spring Security to automatically log in users.
@@ -24,6 +31,9 @@ import java.io.Serializable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentToken implements Serializable {
 
+	@Transient
+	private static final long serialVersionUID = 1L;
+	
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("d MMMM yyyy");
 
     private static final int MAX_USER_AGENT_LEN = 255;

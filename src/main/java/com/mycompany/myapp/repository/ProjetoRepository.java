@@ -1,9 +1,8 @@
 package com.mycompany.myapp.repository;
 
-import com.mycompany.myapp.domain.Projeto;
-import org.springframework.data.jpa.repository.*;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import com.mycompany.myapp.domain.Projeto;
 
 /**
  * Spring Data JPA repository for the Projeto entity.

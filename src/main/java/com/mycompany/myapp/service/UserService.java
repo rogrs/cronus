@@ -1,13 +1,12 @@
 package com.mycompany.myapp.service;
 
-import com.mycompany.myapp.domain.Authority;
-import com.mycompany.myapp.domain.PersistentToken;
-import com.mycompany.myapp.domain.User;
-import com.mycompany.myapp.repository.AuthorityRepository;
-import com.mycompany.myapp.repository.PersistentTokenRepository;
-import com.mycompany.myapp.repository.UserRepository;
-import com.mycompany.myapp.security.SecurityUtils;
-import com.mycompany.myapp.service.util.RandomUtil;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -17,11 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import com.mycompany.myapp.domain.Authority;
+import com.mycompany.myapp.domain.User;
+import com.mycompany.myapp.repository.AuthorityRepository;
+import com.mycompany.myapp.repository.PersistentTokenRepository;
+import com.mycompany.myapp.repository.UserRepository;
+import com.mycompany.myapp.security.SecurityUtils;
+import com.mycompany.myapp.service.util.RandomUtil;
 
 /**
  * Service class for managing users.

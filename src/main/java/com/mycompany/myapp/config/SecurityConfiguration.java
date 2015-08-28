@@ -1,31 +1,29 @@
 package com.mycompany.myapp.config;
 
-import com.mycompany.myapp.security.*;
-import com.mycompany.myapp.web.filter.CsrfCookieGeneratorFilter;
+import javax.inject.Inject;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
-import org.springframework.data.repository.query.spi.EvaluationContextExtension;
-import org.springframework.data.repository.query.spi.EvaluationContextExtensionSupport;
-import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
-
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
 
-import javax.inject.Inject;
+import com.mycompany.myapp.security.AjaxAuthenticationFailureHandler;
+import com.mycompany.myapp.security.AjaxAuthenticationSuccessHandler;
+import com.mycompany.myapp.security.AjaxLogoutSuccessHandler;
+import com.mycompany.myapp.security.AuthoritiesConstants;
+import com.mycompany.myapp.security.Http401UnauthorizedEntryPoint;
+import com.mycompany.myapp.web.filter.CsrfCookieGeneratorFilter;
 
 @Configuration
 @EnableWebSecurity
