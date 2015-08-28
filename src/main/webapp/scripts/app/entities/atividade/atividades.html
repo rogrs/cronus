@@ -42,9 +42,8 @@
             <thead>
                 <tr>
                     <th translate="global.field.id">ID</th>
-                    <th translate="jhipsterApp.atividade.descricao">Descricao</th>
+                    <th translate="jhipsterApp.atividade.descricao">Descrição</th>
                     <th translate="jhipsterApp.atividade.detalhe">Detalhe</th>
-                    <th translate="jhipsterApp.atividade.falha_para">Falha_para</th>
                     <th translate="jhipsterApp.atividade.plano">plano</th>
                     <th translate="jhipsterApp.atividade.script">script</th>
                     <th></th>
@@ -55,12 +54,11 @@
                     <td><a ui-sref="atividade.detail({id:atividade.id})">{{atividade.id}}</a></td>
                     <td>{{atividade.descricao}}</td>
                     <td>{{atividade.detalhe}}</td>
-                    <td>{{atividade.falha_para}}</td>
                     <td>
-                        <a ui-sref="plano.detail({id:atividade.plano.id})">{{atividade.plano.id}}</a>
+                        <a ui-sref="plano.detail({id:atividade.plano.id})">{{atividade.plano.descricao}}</a>
                     </td>
                     <td>
-                        <a ui-sref="script.detail({id:atividade.script.id})">{{atividade.script.id}}</a>
+                        <a ui-sref="script.detail({id:atividade.script.id})">{{atividade.script.descricao}}</a>
                     </td>
                     <td>
                         <button type="submit"
