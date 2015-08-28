@@ -1,20 +1,17 @@
 {
     "global": {
-        "title": "jhipster",
+        "title": "Autobot",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
             "entities": {
                 "main": "Entities",
-                "bankAccount": "BankAccount",
-                "label": "Label",
-                "operation": "Operation",
                 "projeto": "Projeto",
                 "plugin": "Plugin",
                 "script": "Script",
                 "plano": "Plano",
                 "atividade": "Atividade",
-                "additionalEntity": "JHipster will add additional entities here (do not translate!)"
+                "additionalEntity": "Autobot will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Account",
@@ -115,5 +112,5 @@
         "serverNotReachable" : "Server not reachable",
         "NotNull" : "Field {{fieldName}} cannot be empty!"
     },
-    "footer": "This is your footer"
+    "footer": "Autobot 2015"
 }

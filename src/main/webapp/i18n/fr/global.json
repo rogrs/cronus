@@ -5,16 +5,13 @@
         "menu": {
             "home": "Accueil",
             "entities": {
-                "main": "Entités",
-                "bankAccount": "BankAccount",
-                "label": "Label",
-                "operation": "Operation",
+                "main": "Entités", 
                 "projeto": "Projeto",
                 "plugin": "Plugin",
                 "script": "Script",
                 "plano": "Plano",
                 "atividade": "Atividade",
-                "additionalEntity": "JHipster will add additional entities here (do not translate!)"
+                "additionalEntity": "Autobot will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Compte",
@@ -111,5 +108,5 @@
             "datetimelocal": "Ce champs doit être une date et une heure."
         }
     },
-    "footer": "Ceci est votre pied de page"
+    "footer": "Autobot 2015"
 }
