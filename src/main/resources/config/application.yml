@@ -21,7 +21,7 @@ mail:
     protocol: smtp
     tls: false
     auth: false
-    from: jhipster@localhost
+    from: autobot@localhost
 
 
 swagger:
