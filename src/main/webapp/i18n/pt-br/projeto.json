@@ -3,8 +3,8 @@
         "projeto" : {
             "home": {
                 "title": "Projetos",
-                "createLabel": "Create a new Projeto",
-                "createOrEditLabel": "Create or edit a Projeto"
+                "createLabel": "Criar novo Projeto",
+                "createOrEditLabel": "Criar ou Alterar um Projeto"
             },
             "created": "A new Projeto is created with identifier {{ param }}",
             "updated": "A Projeto is updated with identifier {{ param }}",
@@ -15,7 +15,7 @@
             "detail": {
                 "title": "Projeto"
             },
-            "descricao": "Descricao",
+            "descricao": "Descrição",
             "detalhes": "Detalhes"
         }
     }
