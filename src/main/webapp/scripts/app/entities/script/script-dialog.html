@@ -8,12 +8,7 @@
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
-        <div class="form-group">
-            <label for="id" translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="script.id" readonly>
-        </div>
-
+      
         <div class="form-group">
             <label translate="jhipsterApp.script.descricao" for="field_descricao">Descricao</label>
             <input type="text" class="form-control" name="descricao" id="field_descricao"
@@ -31,7 +26,7 @@
         <div class="form-group">
             <label translate="jhipsterApp.script.plugin" for="field_plugin">plugin</label>
             
-            <select class="form-control" id="field_plugin" name="plugin" ng-model="script.plugin" ng-options="plugin as plugin.id for plugin in plugins track by plugin.id">
+            <select class="form-control" id="field_plugin" name="plugin" ng-model="script.plugin" ng-options="plugin as plugin.descricao for plugin in plugins track by plugin.descricao">
                 <option value=""></option>
             </select>
             

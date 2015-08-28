@@ -50,11 +50,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="script in scripts">
-                    <td><a ui-sref="script.detail({id:script.id})">{{script.id}}</a></td>
+                    <td><a ui-sref="script.detail({id:script.id})">{{script.descricao}}</a></td>
                     <td>{{script.descricao}}</td>
                     <td>{{script.detalhe}}</td>
                     <td>
-                        <a ui-sref="plugin.detail({id:script.plugin.id})">{{script.plugin.id}}</a>
+                        <a ui-sref="plugin.detail({id:script.plugin.id})">{{script.plugin.descricao}}</a>
                     </td>
                     <td>
                         <button type="submit"
