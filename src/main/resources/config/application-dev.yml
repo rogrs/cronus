@@ -8,16 +8,16 @@ spring:
     profiles:
         active: dev
     datasource:
-        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:jhipster;MODE=MYSQL
+        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+        url: jdbc:mysql://localhost:3306/autobotDB?useUnicode=true&characterEncoding=utf8
         databaseName: 
         serverName: 
-        username: 
-        password: 
+        username: jhipster
+        password: jhipster
 
     jpa:
         database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
-        database: H2
+        database: MYSQL
         openInView: false
         show_sql: true
         generate-ddl: false

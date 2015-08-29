@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" ui-sref="script.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="jhipsterApp.script.home.createLabel">Create a new Script</span>
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="jhipsterApp.script.home.createLabel">Criar um novo Script</span>
                 </button>
             </div>
         </div>
@@ -26,10 +26,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancelar</span>
                         </button>
                         <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Excluir</span>
                         </button>
                     </div>
                 </form>
@@ -41,7 +41,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th translate="global.field.id">ID</th>
                     <th translate="jhipsterApp.script.descricao">Descrição</th>
                     <th translate="jhipsterApp.script.detalhe">Detalhe</th>
                     <th translate="jhipsterApp.script.plugin">plugin</th>
@@ -51,17 +50,11 @@
             <tbody>
                 <tr ng-repeat="script in scripts">
                     <td><a ui-sref="script.detail({id:script.id})">{{script.descricao}}</a></td>
-                    <td>{{script.descricao}}</td>
                     <td>{{script.detalhe}}</td>
                     <td>
                         <a ui-sref="plugin.detail({id:script.plugin.id})">{{script.plugin.descricao}}</a>
                     </td>
                     <td>
-                        <button type="submit"
-                                ui-sref="script.detail({id:script.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
                         <button type="submit"
                                 ui-sref="script.edit({id:script.id})"
                                 class="btn btn-primary btn-sm">

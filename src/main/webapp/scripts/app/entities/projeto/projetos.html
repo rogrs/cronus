@@ -41,7 +41,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th translate="global.field.id">ID</th>
                     <th translate="jhipsterApp.projeto.descricao">Descrição</th>
                     <th translate="jhipsterApp.projeto.detalhes">Detalhes</th>
                     <th></th>
@@ -49,15 +48,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="projeto in projetos">
-                    <td><a ui-sref="projeto.detail({id:projeto.id})">{{projeto.id}}</a></td>
-                    <td>{{projeto.descricao}}</td>
+                    <td><a ui-sref="projeto.detail({id:projeto.id})">{{projeto.descricao}}</a></td>
                     <td>{{projeto.detalhes}}</td>
                     <td>
-                        <button type="submit"
-                                ui-sref="projeto.detail({id:projeto.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
                         <button type="submit"
                                 ui-sref="projeto.edit({id:projeto.id})"
                                 class="btn btn-primary btn-sm">

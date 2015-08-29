@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-4">
                 <button class="btn btn-primary" ui-sref="atividade.new">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="jhipsterApp.atividade.home.createLabel">Create a new Atividade</span>
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="jhipsterApp.atividade.home.createLabel">Criar uma nova Atividade</span>
                 </button>
             </div>
         </div>
@@ -26,10 +26,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
-                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancelar</span>
                         </button>
                         <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
-                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Excluir</span>
                         </button>
                     </div>
                 </form>
@@ -41,7 +41,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th translate="global.field.id">ID</th>
                     <th translate="jhipsterApp.atividade.descricao">Descrição</th>
                     <th translate="jhipsterApp.atividade.detalhe">Detalhe</th>
                     <th translate="jhipsterApp.atividade.plano">plano</th>
@@ -51,8 +50,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="atividade in atividades">
-                    <td><a ui-sref="atividade.detail({id:atividade.id})">{{atividade.id}}</a></td>
-                    <td>{{atividade.descricao}}</td>
+                    <td><a ui-sref="atividade.detail({id:atividade.id})">{{atividade.descricao}}</a></td>
                     <td>{{atividade.detalhe}}</td>
                     <td>
                         <a ui-sref="plano.detail({id:atividade.plano.id})">{{atividade.plano.descricao}}</a>
@@ -61,11 +59,6 @@
                         <a ui-sref="script.detail({id:atividade.script.id})">{{atividade.script.descricao}}</a>
                     </td>
                     <td>
-                        <button type="submit"
-                                ui-sref="atividade.detail({id:atividade.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
                         <button type="submit"
                                 ui-sref="atividade.edit({id:atividade.id})"
                                 class="btn btn-primary btn-sm">
