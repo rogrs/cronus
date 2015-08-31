@@ -2,9 +2,14 @@ package com.mycompany.myapp.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Atividade;
+import com.mycompany.myapp.domain.Plugin;
+import com.mycompany.myapp.domain.Script;
 import com.mycompany.myapp.repository.AtividadeRepository;
+import com.mycompany.myapp.repository.ScriptRepository;
+import com.mycompany.myapp.util.ExecuteShellCommand;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -15,8 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +38,9 @@ public class AtividadeResource {
 
     @Inject
     private AtividadeRepository atividadeRepository;
+    
+    @Inject
+    private ScriptRepository scriptRepository;
 
     /**
      * POST  /atividades -> Create a new atividade.
@@ -111,4 +121,54 @@ public class AtividadeResource {
         atividadeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
     }
+    
+    
+    @RequestMapping(value = "/atividades/plano/{idplano}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> executarPlano(@PathVariable("idplano") final Long idplano) {
+ 
+        ExecuteShellCommand esc = null;
+        List<Atividade> atividades = null;
+        esc = new ExecuteShellCommand();
+        log.info("Iniciando a execução de scripts do plano " + idplano);
+        atividades = new ArrayList<Atividade>();
+        atividades = atividadeRepository.findAtividadesByPlano(idplano);
+        log.info("Total de atividade para execução " + atividades.size());
+        for (Atividade atividade : atividades) {
+                log.info("Iniciando o atividade " + atividade.getDescricao());
+                Script script = atividade.getScript();
+            log.info("Executando o script " + script.getDescricao());
+            Plugin plugin = script.getPlugin();
+            
+            String command = plugin.getComando() + " " + script.getDescricao();
+            log.info(esc.executeCommand(command));
+        }
+        log.info("Finalizado a execução de atividades do plano " + idplano);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Plano", idplano.toString())).build();
+    }
+    
+    
+    @RequestMapping(value = "/atividades/script/{idscript}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> executarScript(@PathVariable("idscript") final Long idscript) {
+
+        ExecuteShellCommand esc = null;
+        Script script = null;
+        try {
+            esc = new ExecuteShellCommand();
+            script = scriptRepository.findOne(idscript);
+            log.info("Iniciando a execução do script " + script);
+            Plugin plugin = script.getPlugin();
+            String command = plugin.getComando() + " " + script.getDescricao();
+            log.info(esc.executeCommand(command));
+        } catch (Exception ex) {
+            log.info("Erro na execução do script " + idscript, ex);
+        } finally {
+            log.info("Finalizado a execução script " + idscript);
+        }
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Script", idscript.toString())).build();
+    }
+
 }
