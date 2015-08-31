@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 /**
  * A Plano.
  */
@@ -24,17 +23,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Plano implements Serializable {
 
-	@Transient
-	private static final long serialVersionUID = 1L;
-	
+    @Transient
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    
+
     @Column(name = "descricao")
     private String descricao;
-    
+
     @Column(name = "detalhe")
     private String detalhe;
 
@@ -84,7 +82,8 @@ public class Plano implements Serializable {
 
         Plano plano = (Plano) o;
 
-        if ( ! Objects.equals(id, plano.id)) return false;
+        if (!Objects.equals(id, plano.id))
+            return false;
 
         return true;
     }
@@ -96,10 +95,6 @@ public class Plano implements Serializable {
 
     @Override
     public String toString() {
-        return "Plano{" +
-                "id=" + id +
-                ", descricao='" + descricao + "'" +
-                ", detalhe='" + detalhe + "'" +
-                '}';
+        return "Plano{" + "id=" + id + ", descricao='" + descricao + "'" + ", detalhe='" + detalhe + "'" + '}';
     }
 }

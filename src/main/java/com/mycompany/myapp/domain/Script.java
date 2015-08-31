@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 /**
  * A Script.
  */
@@ -24,17 +23,16 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Script implements Serializable {
 
-	@Transient
-	private static final long serialVersionUID = 1L;
-	
+    @Transient
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    
+
     @Column(name = "descricao")
     private String descricao;
-    
+
     @Column(name = "detalhe")
     private String detalhe;
 
@@ -84,7 +82,8 @@ public class Script implements Serializable {
 
         Script script = (Script) o;
 
-        if ( ! Objects.equals(id, script.id)) return false;
+        if (!Objects.equals(id, script.id))
+            return false;
 
         return true;
     }
@@ -96,10 +95,6 @@ public class Script implements Serializable {
 
     @Override
     public String toString() {
-        return "Script{" +
-                "id=" + id +
-                ", descricao='" + descricao + "'" +
-                ", detalhe='" + detalhe + "'" +
-                '}';
+        return "Script{" + "id=" + id + ", descricao='" + descricao + "'" + ", detalhe='" + detalhe + "'" + '}';
     }
 }

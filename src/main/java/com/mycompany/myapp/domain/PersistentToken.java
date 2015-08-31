@@ -31,9 +31,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class PersistentToken implements Serializable {
 
-	@Transient
-	private static final long serialVersionUID = 1L;
-	
+    @Transient
+    private static final long serialVersionUID = 1L;
+
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormat.forPattern("d MMMM yyyy");
 
     private static final int MAX_USER_AGENT_LEN = 255;
@@ -51,7 +51,7 @@ public class PersistentToken implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalDate")
     private LocalDate tokenDate;
 
-    //an IPV6 address max length is 39 characters
+    // an IPV6 address max length is 39 characters
     @Size(min = 0, max = 39)
     @Column(name = "ip_address", length = 39)
     private String ipAddress;
@@ -145,12 +145,7 @@ public class PersistentToken implements Serializable {
 
     @Override
     public String toString() {
-        return "PersistentToken{" +
-                "series='" + series + '\'' +
-                ", tokenValue='" + tokenValue + '\'' +
-                ", tokenDate=" + tokenDate +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", userAgent='" + userAgent + '\'' +
-                "}";
+        return "PersistentToken{" + "series='" + series + '\'' + ", tokenValue='" + tokenValue + '\'' + ", tokenDate=" + tokenDate
+                + ", ipAddress='" + ipAddress + '\'' + ", userAgent='" + userAgent + '\'' + "}";
     }
 }

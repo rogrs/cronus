@@ -19,10 +19,10 @@ import java.io.Serializable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Authority implements Serializable {
 
-	@Transient
-	private static final long serialVersionUID = 1L;
-	
-	@NotNull
+    @Transient
+    private static final long serialVersionUID = 1L;
+
+    @NotNull
     @Size(min = 0, max = 50)
     @Id
     @Column(length = 50)
@@ -61,8 +61,6 @@ public class Authority implements Serializable {
 
     @Override
     public String toString() {
-        return "Authority{" +
-                "name='" + name + '\'' +
-                "}";
+        return "Authority{" + "name='" + name + '\'' + "}";
     }
 }

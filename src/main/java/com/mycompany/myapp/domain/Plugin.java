@@ -1,12 +1,18 @@
 package com.mycompany.myapp.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * A Plugin.
@@ -16,17 +22,16 @@ import java.util.Objects;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Plugin implements Serializable {
 
-	@Transient
-	private static final long serialVersionUID = 1L;
-	
+    @Transient
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    
+
     @Column(name = "descricao")
     private String descricao;
-    
+
     @Column(name = "comando")
     private String comando;
 
@@ -65,7 +70,8 @@ public class Plugin implements Serializable {
 
         Plugin plugin = (Plugin) o;
 
-        if ( ! Objects.equals(id, plugin.id)) return false;
+        if (!Objects.equals(id, plugin.id))
+            return false;
 
         return true;
     }
@@ -77,10 +83,6 @@ public class Plugin implements Serializable {
 
     @Override
     public String toString() {
-        return "Plugin{" +
-                "id=" + id +
-                ", descricao='" + descricao + "'" +
-                ", comando='" + comando + "'" +
-                '}';
+        return "Plugin{" + "id=" + id + ", descricao='" + descricao + "'" + ", comando='" + comando + "'" + '}';
     }
 }

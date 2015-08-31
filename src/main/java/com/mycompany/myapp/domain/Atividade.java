@@ -15,7 +15,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-
 /**
  * A Atividade.
  */
@@ -25,20 +24,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Atividade implements Serializable {
 
     @Transient
-	private static final long serialVersionUID = -6652049824755998384L;
+    private static final long serialVersionUID = -6652049824755998384L;
 
-
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    
+
     @Column(name = "descricao")
     private String descricao;
-    
+
     @Column(name = "detalhe")
     private String detalhe;
-    
+
     @Column(name = "falha_para")
     private Integer falha_para;
 
@@ -107,7 +104,8 @@ public class Atividade implements Serializable {
 
         Atividade atividade = (Atividade) o;
 
-        if ( ! Objects.equals(id, atividade.id)) return false;
+        if (!Objects.equals(id, atividade.id))
+            return false;
 
         return true;
     }
@@ -119,11 +117,7 @@ public class Atividade implements Serializable {
 
     @Override
     public String toString() {
-        return "Atividade{" +
-                "id=" + id +
-                ", descricao='" + descricao + "'" +
-                ", detalhe='" + detalhe + "'" +
-                ", falha_para='" + falha_para + "'" +
-                '}';
+        return "Atividade{" + "id=" + id + ", descricao='" + descricao + "'" + ", detalhe='" + detalhe + "'" + ", falha_para='"
+                + falha_para + "'" + '}';
     }
 }
