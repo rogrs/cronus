@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
+import com.mycompany.myapp.domain.Atividade;
 import com.mycompany.myapp.domain.Plugin;
 import com.mycompany.myapp.domain.Script;
+import com.mycompany.myapp.repository.AtividadeRepository;
 import com.mycompany.myapp.repository.ScriptRepository;
 import com.mycompany.myapp.util.ExecuteShellCommand;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
@@ -26,6 +28,9 @@ public class TestResource {
 
     private final Logger log = LoggerFactory.getLogger(TestResource.class);
 
+    @Autowired
+    private AtividadeRepository atividadeRepository;
+    
     @Autowired
     private ScriptRepository scriptRepository;
 
@@ -41,19 +46,22 @@ public class TestResource {
         }
 
         ExecuteShellCommand esc = null;
-        Collection<Script> sripts = null;
+        Collection<Atividade> atividades = null;
         esc = new ExecuteShellCommand();
         log.info("Iniciando a execução de scripts do plano " + idPlano);
-        sripts = new ArrayList<Script>();
-       // sripts = scriptRepository.findByPlano(idPlano);
-        log.info("Total de scripts para execução " + sripts.size());
-        for (Script script : sripts) {
+        atividades = new ArrayList<Atividade>();
+        //atividades = atividadeRepository.findAtividadesByPlano(idPlano);
+        log.info("Total de atividade para execução " + atividades.size());
+        for (Atividade atividade : atividades) {
+        	log.info("Iniciando o atividade " + atividade.getDescricao());
+        	Script script = atividade.getScript();
             log.info("Executando o script " + script.getDescricao());
             Plugin plugin = script.getPlugin();
+            
             String command = plugin.getComando() + " " + script.getDescricao();
             log.info(esc.executeCommand(command));
         }
-        log.info("Finalizado a execução de scripts do plano " + idPlano);
+        log.info("Finalizado a execução de atividades do plano " + idPlano);
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Plano", planoID.toString())).build();
     }
