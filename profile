@@ -1,6 +1,8 @@
 export JAVA_HOME=/usr/lib/jvm/java-8-oracle
 export JRE_HOME=$JAVA_HOME/jre
 
+export SIKULIX_HOME=~/sikuli
+
 export M2_HOME=~/dev/apache-maven-3.3.3
 export M2=$M2_HOME/bin
 
