@@ -1,4 +1,3 @@
-<include file="classpath:config/liquibase/changelog/20150831220732_added_entity_LogExecute.xml" relativeToChangelogFile="false"/>
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
@@ -11,5 +10,6 @@
     <include file="classpath:config/liquibase/changelog/20150827140643_added_entity_Script.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150827141038_added_entity_Plano.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150827141445_added_entity_Atividade.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20150831220732_added_entity_LogExecute.xml" relativeToChangelogFile="false"/>
    
 </databaseChangeLog>

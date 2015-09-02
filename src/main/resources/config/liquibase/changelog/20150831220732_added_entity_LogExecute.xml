@@ -27,8 +27,22 @@
             <column name="hostname" type="varchar(255)"/>
             <column name="login" type="varchar(255)"/>
             <column name="status" type="varchar(255)"/>
+            <column name="plano_id" type="bigint"/>
+            <column name="script_id" type="bigint"/>
         </createTable>
         <dropDefaultValue tableName="LOGEXECUTE" columnName="created" columnDataType="datetime"/>
+
+    <addForeignKeyConstraint baseColumnNames="plano_id"
+                                 baseTableName="ATIVIDADE"
+                                 constraintName="fk_ativ_log_plano_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="PLANO"/>
+
+        <addForeignKeyConstraint baseColumnNames="script_id"
+                                 baseTableName="ATIVIDADE"
+                                 constraintName="fk_ativ_log_script_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="SCRIPT"/>
 
         
     </changeSet>

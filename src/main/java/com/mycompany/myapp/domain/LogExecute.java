@@ -4,12 +4,14 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mycompany.myapp.domain.util.CustomDateTimeDeserializer;
 import com.mycompany.myapp.domain.util.CustomDateTimeSerializer;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,6 +23,10 @@ import java.util.Objects;
 @Table(name = "LOGEXECUTE")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class LogExecute implements Serializable {
+
+    @Transient
+    private static final long serialVersionUID = 3026358663665379018L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,6 +50,13 @@ public class LogExecute implements Serializable {
     
     @Column(name = "status")
     private String status;
+    
+    @ManyToOne
+    private Plano plano;
+
+    @ManyToOne
+    private Script script;
+
 
     public Long getId() {
         return id;
@@ -92,6 +105,22 @@ public class LogExecute implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    public Plano getPlano() {
+        return plano;
+    }
+
+    public void setPlano(Plano plano) {
+        this.plano = plano;
+    }
+
+    public Script getScript() {
+        return script;
+    }
+
+    public void setScript(Script script) {
+        this.script = script;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -125,4 +154,5 @@ public class LogExecute implements Serializable {
                 ", status='" + status + "'" +
                 '}';
     }
+
 }
