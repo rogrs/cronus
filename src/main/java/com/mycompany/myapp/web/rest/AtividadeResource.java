@@ -43,16 +43,15 @@ public class AtividadeResource {
 
     @Inject
     private AtividadeRepository atividadeRepository;
-    
+
     @Inject
     private ScriptRepository scriptRepository;
 
+
     /**
-     * POST  /atividades -> Create a new atividade.
+     * POST /atividades -> Create a new atividade.
      */
-    @RequestMapping(value = "/atividades",
-            method = RequestMethod.POST,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Atividade> create(@RequestBody Atividade atividade) throws URISyntaxException {
         log.debug("REST request to save Atividade : {}", atividade);
@@ -61,16 +60,13 @@ public class AtividadeResource {
         }
         Atividade result = atividadeRepository.save(atividade);
         return ResponseEntity.created(new URI("/api/atividades/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert("atividade", result.getId().toString()))
-                .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert("atividade", result.getId().toString())).body(result);
     }
 
     /**
-     * PUT  /atividades -> Updates an existing atividade.
+     * PUT /atividades -> Updates an existing atividade.
      */
-    @RequestMapping(value = "/atividades",
-        method = RequestMethod.PUT,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Atividade> update(@RequestBody Atividade atividade) throws URISyntaxException {
         log.debug("REST request to update Atividade : {}", atividade);
@@ -78,82 +74,72 @@ public class AtividadeResource {
             return create(atividade);
         }
         Atividade result = atividadeRepository.save(atividade);
-        return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert("atividade", atividade.getId().toString()))
-                .body(result);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("atividade", atividade.getId().toString())).body(result);
     }
 
     /**
-     * GET  /atividades -> get all the atividades.
+     * GET /atividades -> get all the atividades.
      */
-    @RequestMapping(value = "/atividades",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Atividade>> getAll(@RequestParam(value = "page" , required = false) Integer offset,
-                                  @RequestParam(value = "per_page", required = false) Integer limit)
-        throws URISyntaxException {
+    public ResponseEntity<List<Atividade>> getAll(@RequestParam(value = "page", required = false) Integer offset,
+            @RequestParam(value = "per_page", required = false) Integer limit) throws URISyntaxException {
         Page<Atividade> page = atividadeRepository.findAll(PaginationUtil.generatePageRequest(offset, limit));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/atividades", offset, limit);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /atividades/:id -> get the "id" atividade.
+     * GET /atividades/:id -> get the "id" atividade.
      */
-    @RequestMapping(value = "/atividades/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Atividade> get(@PathVariable Long id) {
         log.debug("REST request to get Atividade : {}", id);
-        return Optional.ofNullable(atividadeRepository.findOne(id))
-            .map(atividade -> new ResponseEntity<>(
-                atividade,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return Optional.ofNullable(atividadeRepository.findOne(id)).map(atividade -> new ResponseEntity<>(atividade, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
-     * DELETE  /atividades/:id -> delete the "id" atividade.
+     * DELETE /atividades/:id -> delete the "id" atividade.
      */
-    @RequestMapping(value = "/atividades/{id}",
-            method = RequestMethod.DELETE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Atividade : {}", id);
         atividadeRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
     }
-    
-    
+
     @RequestMapping(value = "/atividades/plano/{idplano}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> executarPlano(@PathVariable("idplano") final Long idplano) {
- 
-        ExecuteShellCommand esc = null;
-        List<Atividade> atividades = null;
-        esc = new ExecuteShellCommand();
-        log.info("Iniciando a execução de scripts do plano " + idplano);
-        atividades = new ArrayList<Atividade>();
-        atividades = atividadeRepository.findAtividadesByPlano(idplano);
-        log.info("Total de atividade para execução " + atividades.size());
-        for (Atividade atividade : atividades) {
+
+        try {
+            ExecuteShellCommand esc = new ExecuteShellCommand();
+            log.info("Iniciando a execução de scripts do plano " + idplano);
+            List<Atividade> atividades = new ArrayList<Atividade>();
+            atividades = atividadeRepository.findAtividadesByPlano(idplano);
+            log.info("Total de atividade para execução " + atividades.size());
+            for (Atividade atividade : atividades) {
                 log.info("Iniciando o atividade " + atividade.getDescricao());
                 Script script = atividade.getScript();
-            log.info("Executando o script " + script.getDescricao());
-            Plugin plugin = script.getPlugin();
-            
-            String command = plugin.getComando() + " " + script.getDescricao();
-            log.info(esc.executeCommand(command));
+                log.info("Executando o script " + script.getDescricao());
+                Plugin plugin = script.getPlugin();
+
+                String command = plugin.getComando() + " " + script.getDescricao();
+                log.info(esc.executeCommand(command));
+            }
+
+        } catch (Exception e) {
+            log.error("Erro " + e.getMessage(), e);
+        } finally {
+            log.info("Finalizado a execução de atividades do plano " + idplano);
         }
-        log.info("Finalizado a execução de atividades do plano " + idplano);
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Plano", idplano.toString())).build();
     }
-    
-    
+
     @RequestMapping(value = "/atividades/script/{idscript}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<Void> executarScript(@PathVariable("idscript") final Long idscript) {

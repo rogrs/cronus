@@ -1,4 +1,3 @@
-"logExecute": "LogExecute",
 {
     "global": {
         "title": "Autobot",
@@ -12,6 +11,7 @@
                 "script": "Script",
                 "plano": "Plano",
                 "atividade": "Atividade",
+                "logExecute": "LogExecute",
                 "additionalEntity": "Autobot will add additional entities here (do not translate!)"
             },
             "account": {
