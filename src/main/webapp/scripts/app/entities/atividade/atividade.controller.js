@@ -31,6 +31,17 @@ angular.module('jhipsterApp')
                     $scope.clear();
                 });
         };
+        
+        $scope.scriptExecute = function (idscript) {
+        	alert('script is = '+idscript);
+            Atividade.scriptExecute({idscript: idscript});
+        };
+        
+        $scope.planoExecute = function (idplano) {
+        	alert('plano is = '+idplano);
+            
+         
+        };
 
         $scope.refresh = function () {
             $scope.loadAll();

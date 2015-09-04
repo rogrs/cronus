@@ -92,28 +92,5 @@ angular.module('jhipsterApp')
                         $state.go('^');
                     })
                 }]
-            })
-            .state('atividade.execute', {
-                parent: 'atividade',
-                url: '/{id}',
-                data: {
-                    roles: ['ROLE_USER'],
-                },
-                onEnter: ['$stateParams', '$state', '$modal', function($stateParams, $state, $modal) {
-                    $modal.open({
-                        templateUrl: 'scripts/app/entities/atividade/atividade-dialog.html',
-                        controller: 'AtividadeDialogController',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['Atividade', function(Atividade) {
-                                return Atividade.get({id : $stateParams.id});
-                            }]
-                        }
-                    }).result.then(function(result) {
-                        $state.go('atividade', null, { reload: true });
-                    }, function() {
-                        $state.go('^');
-                    })
-                }]
             });
     });

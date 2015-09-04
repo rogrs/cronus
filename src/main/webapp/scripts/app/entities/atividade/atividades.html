@@ -8,6 +8,7 @@
                 <button class="btn btn-primary" ui-sref="atividade.new">
                     <span class="glyphicon glyphicon-flash"></span> <span translate="jhipsterApp.atividade.home.createLabel">Criar uma nova Atividade</span>
                 </button>
+
             </div>
         </div>
     </div>
@@ -69,12 +70,11 @@
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>
-                                             
-                       <button type="submit"
-                                ng-click="atividade.execute({id:atividade.script.id })"
+                        <button type="submit"
+                                ng-click="planoExecute(atividade.plano.id)"
                                 class="btn btn-sm btn-success">
-                            <span class="glyphicon glyphicon-play"></span>&nbsp;Execute</span>
-                        </button>
+                            <span class="glyphicon glyphicon-play"></span>&nbsp;Executar</span>
+                       </button>
                     </td>
                 </tr>
             </tbody>
