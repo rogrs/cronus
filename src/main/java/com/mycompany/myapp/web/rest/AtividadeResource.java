@@ -3,13 +3,11 @@ package com.mycompany.myapp.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -26,13 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Atividade;
-import com.mycompany.myapp.domain.LogExecute;
-import com.mycompany.myapp.domain.Plugin;
-import com.mycompany.myapp.domain.Script;
 import com.mycompany.myapp.repository.AtividadeRepository;
-import com.mycompany.myapp.repository.LogExecuteRepository;
-import com.mycompany.myapp.repository.ScriptRepository;
-import com.mycompany.myapp.util.ExecuteShellCommand;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
 
@@ -47,13 +39,6 @@ public class AtividadeResource {
 
     @Inject
     private AtividadeRepository atividadeRepository;
-
-    @Inject
-    private ScriptRepository scriptRepository;
-    
-    @Inject
-    private LogExecuteRepository logExecuteRepository;
-
 
     /**
      * POST /atividades -> Create a new atividade.
@@ -124,30 +109,12 @@ public class AtividadeResource {
 
         
         try {
-            ExecuteShellCommand esc = new ExecuteShellCommand();
+           
             log.info("Iniciando a execução de scripts do plano " + idplano);
             List<Atividade> atividades = new ArrayList<Atividade>();
             atividades = atividadeRepository.findAtividadesByPlano(idplano);
             log.info("Total de atividade para execução " + atividades.size());
-            for (Atividade atividade : atividades) {
-                LogExecute logExecute = new  LogExecute();
-                logExecute.setCreated(new DateTime());
-                logExecute.setHostname("ServerTes");
-                logExecute.setLogin("Admin Plano");
-                logExecute.setPlano(atividade.getPlano());
-                logExecute.setScript(atividade.getScript());
-                log.info("Iniciando o atividade " + atividade.getDescricao());
-                Script script = atividade.getScript();
-                log.info("Executando o script " + script.getDescricao());
-                Plugin plugin = script.getPlugin();
-
-                String command = plugin.getComando() + " " + script.getDescricao();
-                String message = esc.executeCommand(command);
-                log.info(message);
-                logExecute.setMessage(message);
-                logExecute.setStatus("SUCCESS");
-               // logExecuteRepository.save(logExecute);
-            }
+          
 
             
           
@@ -158,28 +125,6 @@ public class AtividadeResource {
         }
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Plano", idplano.toString())).build();
-    }
-
-    @RequestMapping(value = "/atividades/script/{idscript}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<Void> scriptExecute( @PathVariable("idscript") Long idscript) {
-
-        ExecuteShellCommand esc = null;
-        Script script = null;
-        try {
-            esc = new ExecuteShellCommand();
-            script = scriptRepository.findOne(idscript);
-            log.info("Iniciando a execução do script " + script);
-            Plugin plugin = script.getPlugin();
-            String command = plugin.getComando() + " " + script.getDescricao();
-            log.info(esc.executeCommand(command));
-        } catch (Exception ex) {
-            log.info("Erro na execução do script " + idscript, ex);
-        } finally {
-            log.info("Finalizado a execução script " + idscript);
-        }
-
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Script", idscript.toString())).build();
     }
 
 }
