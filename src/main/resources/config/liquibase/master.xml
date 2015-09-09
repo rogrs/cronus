@@ -10,5 +10,5 @@
     <include file="classpath:config/liquibase/changelog/20150827140643_added_entity_Script.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150827141038_added_entity_Plano.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20150827141445_added_entity_Atividade.xml" relativeToChangelogFile="false"/>
-   
+    <include file="classpath:config/liquibase/changelog/20150909210327_added_entity_ExecutarPlano.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

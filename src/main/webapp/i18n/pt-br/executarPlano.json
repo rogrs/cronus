@@ -1,0 +1,21 @@
+{
+    "jhipsterApp": {
+        "executarPlano" : {
+            "home": {
+                "title": "ExecutarPlanos",
+                "createLabel": "Create a new ExecutarPlano",
+                "createOrEditLabel": "Create or edit a ExecutarPlano"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete ExecutarPlano {{ id }}?"
+            },
+            "detail": {
+                "title": "ExecutarPlano"
+            },
+            "criado": "Criado",
+            "inicio": "Inicio",
+            "finalizado": "Finalizado",
+            "atividade": "Atividade"
+        }
+    }
+}

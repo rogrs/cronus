@@ -11,6 +11,7 @@
                 "script": "Script",
                 "plano": "Plano",
                 "atividade": "Atividade",
+                "executarPlano": "ExecutarPlano",
                 "additionalEntity": "Autobot will add additional entities here (do not translate!)"
             },
             "account": {

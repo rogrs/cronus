@@ -2,15 +2,12 @@ package com.mycompany.myapp.web.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
->>>>>>> 118f77030d3fb80b8006875d4978a97fb53b28b2
 import java.util.List;
 import java.util.Optional;
 
 import javax.inject.Inject;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,7 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 import com.mycompany.myapp.domain.Atividade;
+import com.mycompany.myapp.domain.ExecutarPlano;
 import com.mycompany.myapp.repository.AtividadeRepository;
+import com.mycompany.myapp.repository.ExecutarPlanoRepository;
 import com.mycompany.myapp.web.rest.util.HeaderUtil;
 import com.mycompany.myapp.web.rest.util.PaginationUtil;
 
@@ -43,12 +42,9 @@ public class AtividadeResource {
     @Inject
     private AtividadeRepository atividadeRepository;
 
-<<<<<<< HEAD
-=======
-  
+    @Inject
+    private ExecutarPlanoRepository executarPlanoRepository;
 
-
->>>>>>> 118f77030d3fb80b8006875d4978a97fb53b28b2
     /**
      * POST /atividades -> Create a new atividade.
      */
@@ -117,33 +113,21 @@ public class AtividadeResource {
     public ResponseEntity<Void> planoExecute(@PathVariable("idplano") Long idplano) {
 
         try {
-<<<<<<< HEAD
-           
-            log.info("Iniciando a execução de scripts do plano " + idplano);
-            List<Atividade> atividades = new ArrayList<Atividade>();
-            atividades = atividadeRepository.findAtividadesByPlano(idplano);
-            log.info("Total de atividade para execução " + atividades.size());
-          
 
-=======
-    
             log.info("Iniciando a execução de scripts do plano " + idplano);
- 
-         /*   
-            //Verificar se plano existe
-            Plano plano = new Plano();
-            plano.setId(idplano);
-            
-            LogExecute logExecute = new  LogExecute();
-            logExecute.setCreated(new DateTime());
-            logExecute.setHostname("localhost");
-            logExecute.setLogin("Admin Server");
-            logExecute.setPlano(plano);
-            logExecute.setStatus("AGENDADO");
-            logExecuteRepository.save(logExecute);*/
->>>>>>> 118f77030d3fb80b8006875d4978a97fb53b28b2
-            
-          
+
+            List<Atividade> atividades = atividadeRepository.findAtividadesByPlano(idplano);
+
+            for (Atividade atividade : atividades) {
+                ExecutarPlano executarPlano = new ExecutarPlano();
+                executarPlano.setCriado(new DateTime());
+                executarPlano.setLogin("Server");
+                executarPlano.setAtividade(atividade);
+                executarPlano.setStatus("AGENDADO");
+
+                executarPlanoRepository.save(executarPlano);
+            }
+
         } catch (Exception e) {
             log.error("Erro " + e.getMessage(), e);
         } finally {

@@ -1,0 +1,24 @@
+{
+    "jhipsterApp": {
+        "executarPlano" : {
+            "home": {
+                "title": "ExecutarPlanos",
+                "createLabel": "Create a new ExecutarPlano",
+                "createOrEditLabel": "Create or edit a ExecutarPlano"
+            },
+            "created": "A new ExecutarPlano is created with identifier {{ param }}",
+            "updated": "A ExecutarPlano is updated with identifier {{ param }}",
+            "deleted": "A ExecutarPlano is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete ExecutarPlano {{ id }}?"
+            },
+            "detail": {
+                "title": "ExecutarPlano"
+            },
+            "criado": "Criado",
+            "inicio": "Inicio",
+            "finalizado": "Finalizado",
+            "atividade": "Atividade"
+        }
+    }
+}
