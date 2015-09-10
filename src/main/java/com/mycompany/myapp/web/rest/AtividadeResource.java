@@ -108,17 +108,17 @@ public class AtividadeResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
     }
 
-    @RequestMapping(value = "/atividades/plano/{idplano}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/atividades/execute/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> planoExecute(@PathVariable("idplano") Long idplano) {
+    public ResponseEntity<Void> execute(@PathVariable Long id) {
+        log.debug("REST request to execute Atividade : {}", id);
+        Atividade atividade = null;
 
         try {
+            atividade = atividadeRepository.findOne(id);
 
-            log.info("Iniciando a execução de scripts do plano " + idplano);
+            if (atividade != null) {
 
-            List<Atividade> atividades = atividadeRepository.findAtividadesByPlano(idplano);
-
-            for (Atividade atividade : atividades) {
                 ExecutarPlano executarPlano = new ExecutarPlano();
                 executarPlano.setCriado(new DateTime());
                 executarPlano.setLogin("Server");
@@ -131,10 +131,9 @@ public class AtividadeResource {
         } catch (Exception e) {
             log.error("Erro " + e.getMessage(), e);
         } finally {
-            log.info("Finalizado a execução de atividades do plano " + idplano);
+            log.info("Finalizado a execução da atividade " + id);
         }
 
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert("Plano", idplano.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
     }
-
 }

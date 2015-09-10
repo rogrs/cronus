@@ -32,14 +32,12 @@ angular.module('jhipsterApp')
                 });
         };
         
-        $scope.scriptExecute = function (idscript) {
-        	alert('script is = '+idscript);
-            Atividade.scriptExecute({idscript: idscript});
-        };
         
-        $scope.planoExecute = function (idplano) {
-        	alert('plano is = '+idplano);
-            
+        $scope.execute = function (id) {
+        	alert('atividade is = '+id);
+        	
+        	Atividade.execute({id: id});
+        	alert('executado is = '+id);  
          
         };
 
