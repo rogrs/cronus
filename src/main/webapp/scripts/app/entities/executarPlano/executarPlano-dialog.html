@@ -8,11 +8,7 @@
     </div>
     <div class="modal-body">
         <jh-alert-error></jh-alert-error>
-        <div class="form-group">
-            <label for="id" translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="executarPlano.id" readonly>
-        </div>
+        
 
         <div class="form-group">
             <label translate="jhipsterApp.executarPlano.criado" for="field_criado">Criado</label>
@@ -48,7 +44,7 @@
         <div class="form-group">
             <label translate="jhipsterApp.executarPlano.atividade" for="field_atividade">atividade</label>
             
-            <select class="form-control" id="field_atividade" name="atividade" ng-model="executarPlano.atividade" ng-options="atividade as atividade.id for atividade in atividades track by atividade.id">
+            <select class="form-control" id="field_atividade" name="atividade" ng-model="executarPlano.atividade" ng-options="atividade as atividade.descricao for atividade in atividades track by atividade.descricao">
                 <option value=""></option>
             </select>
             

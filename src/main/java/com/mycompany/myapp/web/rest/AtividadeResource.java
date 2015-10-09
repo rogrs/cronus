@@ -108,32 +108,4 @@ public class AtividadeResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
     }
 
-    @RequestMapping(value = "/atividades/execute/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @Timed
-    public ResponseEntity<Void> execute(@PathVariable Long id) {
-        log.debug("REST request to execute Atividade : {}", id);
-        Atividade atividade = null;
-
-        try {
-            atividade = atividadeRepository.findOne(id);
-
-            if (atividade != null) {
-
-                ExecutarPlano executarPlano = new ExecutarPlano();
-                executarPlano.setCriado(new DateTime());
-                executarPlano.setLogin("Server");
-                executarPlano.setAtividade(atividade);
-                executarPlano.setStatus("AGENDADO");
-
-                executarPlanoRepository.save(executarPlano);
-            }
-
-        } catch (Exception e) {
-            log.error("Erro " + e.getMessage(), e);
-        } finally {
-            log.info("Finalizado a execução da atividade " + id);
-        }
-
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
-    }
 }

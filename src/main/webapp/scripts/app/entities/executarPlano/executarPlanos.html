@@ -41,7 +41,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th translate="global.field.id">ID</th>
                     <th translate="jhipsterApp.executarPlano.criado">Criado</th>
                     <th translate="jhipsterApp.executarPlano.inicio">Inicio</th>
                     <th translate="jhipsterApp.executarPlano.finalizado">Finalizado</th>
@@ -51,19 +50,13 @@
             </thead>
             <tbody>
                 <tr ng-repeat="executarPlano in executarPlanos">
-                    <td><a ui-sref="executarPlano.detail({id:executarPlano.id})">{{executarPlano.id}}</a></td>
-                    <td>{{executarPlano.criado}}</td>
+                    <td><a ui-sref="executarPlano.detail({id:executarPlano.id})">{{executarPlano.criado}}</a></td>
                     <td>{{executarPlano.inicio}}</td>
                     <td>{{executarPlano.finalizado}}</td>
                     <td>
-                        <a ui-sref="atividade.detail({id:executarPlano.atividade.id})">{{executarPlano.atividade.id}}</a>
+                        <a ui-sref="atividade.detail({id:executarPlano.atividade.id})">{{executarPlano.atividade.descricao}}</a>
                     </td>
                     <td>
-                        <button type="submit"
-                                ui-sref="executarPlano.detail({id:executarPlano.id})"
-                                class="btn btn-info btn-sm">
-                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
-                        </button>
                         <button type="submit"
                                 ui-sref="executarPlano.edit({id:executarPlano.id})"
                                 class="btn btn-primary btn-sm">
