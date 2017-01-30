@@ -1,22 +1,25 @@
 {
-    "jhipsterApp": {
+    "autobotApp": {
         "script" : {
             "home": {
                 "title": "Scripts",
-                "createLabel": "Create a new Script",
-                "createOrEditLabel": "Create or edit a Script"
+                "createLabel": "Criar novo Script",
+                "createOrEditLabel": "Criar ou editar Script",
+                "search": "Pesquisar por Script"
             },
-            "created": "A new Script is created with identifier {{ param }}",
-            "updated": "A Script is updated with identifier {{ param }}",
-            "deleted": "A Script is deleted with identifier {{ param }}",
+            "created": "Um novo Script é criado com o identificador {{ param }}",
+            "updated": "Um Script é atualizado com o identificador {{ param }}",
+            "deleted": "Um Script é deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Script {{ id }}?"
+                "question": "Tem certeza de que deseja excluir Script {{ id }}?"
             },
             "detail": {
                 "title": "Script"
             },
             "descricao": "Descricao",
-            "detalhe": "Detalhe",
+            "path": "Path",
+            "atividade": "Atividade",
+            "executarPlano": "Executar Plano",
             "plugin": "Plugin"
         }
     }

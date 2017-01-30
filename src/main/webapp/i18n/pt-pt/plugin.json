@@ -1,0 +1,24 @@
+{
+    "autobotApp": {
+        "plugin" : {
+            "home": {
+                "title": "Plugins",
+                "createLabel": "Criar um(a) novo(a) Plugin",
+                "createOrEditLabel": "Criar ou editar um(a) Plugin",
+                "search": "Search for Plugin"
+            },
+            "created": "A new Plugin is created with identifier {{ param }}",
+            "updated": "A Plugin is updated with identifier {{ param }}",
+            "deleted": "A Plugin is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Plugin {{ id }}?"
+            },
+            "detail": {
+                "title": "Plugin"
+            },
+            "nome": "Nome",
+            "comando": "Comando",
+            "script": "Script"
+        }
+    }
+}

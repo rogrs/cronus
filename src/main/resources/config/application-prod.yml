@@ -1,60 +1,104 @@
-server:
-    port: 8080
+# ===================================================================
+# Spring Boot configuration for the "prod" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
 
-liquibase:
-    context: prod
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 
 spring:
-    profiles:
-        active: prod
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
     datasource:
-        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/autobotDB?useUnicode=true&characterEncoding=utf8
-        databaseName: 
-        serverName: 
-        username: jhipster
-        password: jhipster
-        cachePrepStmts: true
-        prepStmtCacheSize: 250
-        prepStmtCacheSqlLimit: 2048
-        useServerPrepStmts: true
-
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://localhost:3306/autobot?useUnicode=true&characterEncoding=utf8&useSSL=false
+        name:
+        username: root
+        password:
+        hikari:
+            data-source-properties:
+                cachePrepStmts: true
+                prepStmtCacheSize: 250
+                prepStmtCacheSqlLimit: 2048
+                useServerPrepStmts: true
     jpa:
-        database-platform: org.hibernate.dialect.MySQLInnoDBDialect
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL
-        openInView: false
-        show_sql: false
-        generate-ddl: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        show-sql: false
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-            
+            hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+            hibernate.javax.cache.uri: ${spring.cache.jcache.config}
+            hibernate.cache.region.factory_class: br.com.rogrs.autobot.config.jcache.SpringCacheRegionFactory
+    cache:
+        jcache:
+            config: ehcache.xml
+    data:
+        elasticsearch:
+            cluster-name:
+            cluster-nodes: localhost:9300
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
     thymeleaf:
-        mode: XHTML
         cache: true
 
-metrics:
-    jmx.enabled: true
-    spark:
-        enabled: false
-        host: localhost
-        port: 9999
-    graphite:
-        enabled: false
-        host: localhost
-        port: 2003
-        prefix: jhipster
+liquibase:
+    contexts: prod
 
-http:
-    cache:
-        timeToLiveInDays: 31
+server:
+    port: 8080
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+        min-response-size: 1024
 
-cache:
-    timeToLiveSeconds: 3600
-    ehcache:
-        maxBytesLocalHeap: 256M
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
+
+jhipster:
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 1461
+    cache: # Hibernate 2nd level cache, used by CacheConfiguration
+        ehcache:
+            maxBytesLocalHeap: 256M
+    security:
+        rememberMe:
+            # security key (this key should be unique for your application, and kept secret)
+            key: f98479809a3e7cddc661f28ba67fe2a0d0a0fa2b
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: autobot@localhost
+        baseUrl: http://my-server-url-to-change # Modify according to your server's URL
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: autobot
+        prometheus:
+            enabled: false
+            endpoint: /prometheusMetrics
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512

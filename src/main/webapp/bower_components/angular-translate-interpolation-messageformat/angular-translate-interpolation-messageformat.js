@@ -1,24 +1,25 @@
 /*!
- * angular-translate - v2.7.0 - 2015-05-02
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.11.1 - 2016-07-17
+ * 
+ * Copyright (c) 2016 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module unless amdModuleId is set
-    define([], function () {
-      return (factory());
+    define(["messageformat"], function (a0) {
+      return (factory(a0));
     });
   } else if (typeof exports === 'object') {
     // Node. Does not work with strict CommonJS, but
     // only CommonJS-like environments that support module.exports,
     // like Node.
-    module.exports = factory();
+    module.exports = factory(require("messageformat"));
   } else {
-    factory();
+    factory(MessageFormat);
   }
-}(this, function () {
+}(this, function (MessageFormat) {
 
+$translateMessageFormatInterpolation.$inject = ['$translateSanitization', '$cacheFactory', 'TRANSLATE_MF_INTERPOLATION_CACHE'];
 angular.module('pascalprecht.translate')
 
 /**
@@ -113,7 +114,7 @@ function $translateMessageFormatInterpolation($translateSanitization, $cacheFact
    * @methodOf pascalprecht.translate.$translateMessageFormatInterpolation
    *
    * @description
-   * Interpolates given string agains given interpolate params using MessageFormat.js.
+   * Interpolates given string against given interpolate params using MessageFormat.js.
    *
    * @returns {string} interpolated string.
    */
@@ -121,10 +122,10 @@ function $translateMessageFormatInterpolation($translateSanitization, $cacheFact
     interpolationParams = interpolationParams || {};
     interpolationParams = $translateSanitization.sanitize(interpolationParams, 'params');
 
-    var interpolatedText = $cache.get(string + angular.toJson(interpolationParams));
+    var compiledFunction = $cache.get('mf:' + string);
 
-    // if given string wasn't interpolated yet, we do so now and never have to do it again
-    if (!interpolatedText) {
+    // if given string wasn't compiled yet, we do so now and never have to do it again
+    if (!compiledFunction) {
 
       // Ensure explicit type if possible
       // MessageFormat checks the actual type (i.e. for amount based conditions)
@@ -138,18 +139,16 @@ function $translateMessageFormatInterpolation($translateSanitization, $cacheFact
         }
       }
 
-      interpolatedText = $mf.compile(string)(interpolationParams);
-      interpolatedText = $translateSanitization.sanitize(interpolatedText, 'text');
-
-      $cache.put(string + angular.toJson(interpolationParams), interpolatedText);
+      compiledFunction = $mf.compile(string);
+      $cache.put('mf:' + string, compiledFunction);
     }
 
-    return interpolatedText;
+    var interpolatedText = compiledFunction(interpolationParams);
+    return $translateSanitization.sanitize(interpolatedText, 'text');
   };
 
   return $translateInterpolator;
 }
-$translateMessageFormatInterpolation.$inject = ['$translateSanitization', '$cacheFactory', 'TRANSLATE_MF_INTERPOLATION_CACHE'];
 
 $translateMessageFormatInterpolation.displayName = '$translateMessageFormatInterpolation';
 return 'pascalprecht.translate';

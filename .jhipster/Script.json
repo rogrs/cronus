@@ -1,27 +1,48 @@
 {
+    "fluentMethods": true,
     "relationships": [
         {
-            "relationshipId": 1,
+            "relationshipType": "one-to-many",
+            "relationshipName": "atividade",
+            "otherEntityName": "atividade",
+            "otherEntityRelationshipName": "scripts"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "executarPlano",
+            "otherEntityName": "executarPlano",
+            "otherEntityRelationshipName": "scripts"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "plugin",
             "otherEntityName": "plugin",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "otherEntityField": "nome"
         }
     ],
     "fields": [
         {
-            "fieldId": 1,
             "fieldName": "descricao",
             "fieldType": "String",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
         },
         {
-            "fieldId": 2,
-            "fieldName": "detalhe",
-            "fieldType": "String"
+            "fieldName": "path",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 500
         }
     ],
-    "changelogDate": "20150827140643",
+    "changelogDate": "20170130002945",
+    "entityTableName": "script",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

@@ -1,23 +1,26 @@
 {
-    "jhipsterApp": {
+    "autobotApp": {
         "plano" : {
             "home": {
                 "title": "Planos",
-                "createLabel": "Create a new Plano",
-                "createOrEditLabel": "Create or edit a Plano"
+                "createLabel": "Criar novo Plano",
+                "createOrEditLabel": "Criar ou editar Plano",
+                "search": "Pesquisar por Plano"
             },
-            "created": "A new Plano is created with identifier {{ param }}",
-            "updated": "A Plano is updated with identifier {{ param }}",
-            "deleted": "A Plano is deleted with identifier {{ param }}",
+            "created": "Um novo Plano é criado com o identificador {{ param }}",
+            "updated": "Um Plano é atualizado com o identificador {{ param }}",
+            "deleted": "Um Plano é deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Plano {{ id }}?"
+                "question": "Tem certeza de que deseja excluir Plano {{ id }}?"
             },
             "detail": {
                 "title": "Plano"
             },
             "descricao": "Descricao",
-            "detalhe": "Detalhe",
-            "projeto": "Projeto"
+            "detalhes": "Detalhes",
+            "atividade": "Atividade",
+            "executarPlano": "Executar Plano",
+            "projetos": "Projetos"
         }
     }
 }

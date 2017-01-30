@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="autobotApp.executarPlano.detail.title">Executar Plano</span> {{vm.executarPlano.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="autobotApp.executarPlano.descricao">Descricao</span></dt>
+        <dd>
+            <span>{{vm.executarPlano.descricao}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.detalhes">Detalhes</span></dt>
+        <dd>
+            <span>{{vm.executarPlano.detalhes}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.mensagem">Mensagem</span></dt>
+        <dd>
+            <span>{{vm.executarPlano.mensagem}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.pararNaFalha">Parar Na Falha</span></dt>
+        <dd>
+            <span>{{vm.executarPlano.pararNaFalha}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.status">Status</span></dt>
+        <dd>
+            <span data-translate="{{'autobotApp.Status.' + vm.executarPlano.status}}">{{vm.executarPlano.status}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.scripts">Scripts</span></dt>
+        <dd>
+            <a ui-sref="script-detail({id:vm.executarPlano.scripts.id})">{{vm.executarPlano.scripts.descricao}}</a>
+        </dd>
+        <dt><span data-translate="autobotApp.executarPlano.plano">Plano</span></dt>
+        <dd>
+            <a ui-sref="plano-detail({id:vm.executarPlano.plano.id})">{{vm.executarPlano.plano.descricao}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="executar-plano-detail.edit({id:vm.executarPlano.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

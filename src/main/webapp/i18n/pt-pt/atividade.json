@@ -1,0 +1,26 @@
+{
+    "autobotApp": {
+        "atividade" : {
+            "home": {
+                "title": "Atividades",
+                "createLabel": "Criar um(a) novo(a) Atividade",
+                "createOrEditLabel": "Criar ou editar um(a) Atividade",
+                "search": "Search for Atividade"
+            },
+            "created": "A new Atividade is created with identifier {{ param }}",
+            "updated": "A Atividade is updated with identifier {{ param }}",
+            "deleted": "A Atividade is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Atividade {{ id }}?"
+            },
+            "detail": {
+                "title": "Atividade"
+            },
+            "nome": "Nome",
+            "comando": "Comando",
+            "pararNaFalha": "Parar Na Falha",
+            "plano": "Plano",
+            "scripts": "Scripts"
+        }
+    }
+}

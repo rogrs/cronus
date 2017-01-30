@@ -1,20 +1,36 @@
 {
-    "relationships": [],
-    "fields": [
+    "fluentMethods": true,
+    "relationships": [
         {
-            "fieldId": 1,
-            "fieldName": "descricao",
-            "fieldType": "String",
-            "fieldValidateRules": []
-        },
-        {
-            "fieldId": 2,
-            "fieldName": "comando",
-            "fieldType": "String",
-            "fieldValidateRules": []
+            "relationshipType": "one-to-many",
+            "relationshipName": "script",
+            "otherEntityName": "script",
+            "otherEntityRelationshipName": "plugin"
         }
     ],
-    "changelogDate": "20150827140420",
+    "fields": [
+        {
+            "fieldName": "nome",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
+        },
+        {
+            "fieldName": "comando",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
+        }
+    ],
+    "changelogDate": "20170130002942",
+    "entityTableName": "plugin",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

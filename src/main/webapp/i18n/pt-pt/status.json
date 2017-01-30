@@ -1,0 +1,10 @@
+{
+    "autobotApp": {
+        "Status" : {
+            "null": "",
+            "SUCESSO": "SUCESSO",
+            "FALHA": "FALHA",
+            "FALHA_TEMPORARIA": "FALHA_TEMPORARIA"
+        }
+    }
+}

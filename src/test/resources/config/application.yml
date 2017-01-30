@@ -1,61 +1,91 @@
-server:
-    port: 10344
-    address: localhost
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration is used for unit/integration tests.
+# ===================================================================
 
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
 
-# security configuration (this key should be unique for your application, and kept secret)
-jhipster.security.rememberme.key: 5c37379956bd1242f5636c8cb322c2966ad81277
-
-async:
-    corePoolSize: 2
-    maxPoolSize: 50
-    queueCapacity: 10000
-
-liquibase:
-    context: test
 
 spring:
+    application:
+        name: autobot
+    jackson:
+        serialization.write_dates_as_timestamps: false
     datasource:
-        dataSourceClassName: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:jhipster;DB_CLOSE_DELAY=-1
-        databaseName:
-        serverName:
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:h2:mem:autobot;DB_CLOSE_DELAY=-1
+        name:
         username:
         password:
-
     jpa:
-        database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
+        database-platform: br.com.rogrs.autobot.domain.util.FixedH2Dialect
         database: H2
-        openInView: false
-        show_sql: true
-        generate-ddl: false
+        open-in-view: false
+        show-sql: true
         hibernate:
             ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+            naming:
+                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
         properties:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
             hibernate.hbm2ddl.auto: validate
+    data:
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
+    mail:
+        host: localhost
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
 
-mail:
-    host: localhost
-    port: 25
-    username:
-    password:
-    protocol: smtp
-    tls: false
-    auth: false
+liquibase:
+    contexts: test
 
-metrics:
-    jmx.enabled: false
+security:
+    basic:
+        enabled: false
 
-swagger:
-    apiDocsLocation: http://localhost:8080
-    title: jhipster API
-    version: 0.0.1
-    description: jhipster applications and beyond!
-    termsOfServiceUrl: http://jhipster.github.io/
-    contact:
-    license: Apache 2.0
-    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+server:
+    port: 10344
+    address: localhost
+
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
+
+jhipster:
+    async:
+        corePoolSize: 2
+        maxPoolSize: 50
+        queueCapacity: 10000
+    security:
+        rememberMe:
+            # security key (this key should be unique for your application, and kept secret)
+            key: f98479809a3e7cddc661f28ba67fe2a0d0a0fa2b
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+    swagger:
+        title: autobot API
+        description: autobot API documentation
+        version: 0.0.1
+        termsOfServiceUrl:
+        contactName:
+        contactUrl:
+        contactEmail:
+        license:
+        licenseUrl:

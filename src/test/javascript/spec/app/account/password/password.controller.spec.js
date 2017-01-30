@@ -1,54 +1,83 @@
 'use strict';
 
-describe('Controllers Tests ', function () {
+describe('Controller Tests', function() {
+    beforeEach(mockApiAccountCall);
+    beforeEach(mockI18nCalls);
 
-    beforeEach(module('jhipsterApp'));
+    describe('PasswordController', function() {
 
-    var $scope, $httpBackend, q, Auth;
+        var $scope, $httpBackend, $q;
+        var MockAuth;
+        var createController;
 
-    // define the mock Auth service
-    beforeEach(function() {
-        Auth = {
-            changePassword: function() {}
-        };
-    });
+        beforeEach(inject(function($injector) {
+            $scope = $injector.get('$rootScope').$new();
+            $q = $injector.get('$q');
+            $httpBackend = $injector.get('$httpBackend');
 
-    beforeEach(inject(function ($rootScope, $controller, $q, $injector) {
-        $scope = $rootScope.$new();
-        q = $q;
-        $httpBackend = $injector.get('$httpBackend');
-        $controller('PasswordController', {$scope: $scope, Auth: Auth});
-    }));
+            MockAuth = jasmine.createSpyObj('MockAuth', ['changePassword']);
+            var locals = {
+                '$scope': $scope,
+                'Auth': MockAuth
+            };
+            createController = function() {
+                $injector.get('$controller')('PasswordController as vm', locals);
+            }
+        }));
 
-    describe('PasswordController', function () {
-        it('should show error if passwords do not match', function () {
+        it('should show error if passwords do not match', function() {
             //GIVEN
-            $scope.password = 'password1';
-            $scope.confirmPassword = 'password2';
+            createController();
+            $scope.vm.password = 'password1';
+            $scope.vm.confirmPassword = 'password2';
             //WHEN
-            $scope.changePassword();
+            $scope.vm.changePassword();
             //THEN
-            expect($scope.doNotMatch).toBe('ERROR');
+            expect($scope.vm.doNotMatch).toBe('ERROR');
+            expect($scope.vm.error).toBeNull();
+            expect($scope.vm.success).toBeNull();
         });
-        it('should call Service and set OK on Success', function () {
+        it('should call Auth.changePassword when passwords match', function() {
             //GIVEN
-            var pass = 'myPassword';
-            $scope.password = pass;
-            $scope.confirmPassword = pass;
-
-            spyOn(Auth, 'changePassword').and.returnValue(new function(){
-                var deferred = q.defer();
-                $scope.error = null;
-                $scope.success = 'OK';
-                return deferred.promise;
-            });
+            MockAuth.changePassword.and.returnValue($q.resolve());
+            createController();
+            $scope.vm.password = $scope.vm.confirmPassword = 'myPassword';
 
             //WHEN
-            $scope.changePassword();
+            $scope.$apply($scope.vm.changePassword);
 
             //THEN
-            expect($scope.error).toBeNull();
-            expect($scope.success).toBe('OK');
+            expect(MockAuth.changePassword).toHaveBeenCalledWith('myPassword');
+        });
+
+        it('should set success to OK upon success', function() {
+            //GIVEN
+            MockAuth.changePassword.and.returnValue($q.resolve());
+            createController();
+            $scope.vm.password = $scope.vm.confirmPassword = 'myPassword';
+
+            //WHEN
+            $scope.$apply($scope.vm.changePassword);
+
+            //THEN
+            expect($scope.vm.doNotMatch).toBeNull();
+            expect($scope.vm.error).toBeNull();
+            expect($scope.vm.success).toBe('OK');
+        });
+
+        it('should notify of error if change password fails', function() {
+            //GIVEN
+            MockAuth.changePassword.and.returnValue($q.reject());
+            createController();
+            $scope.vm.password = $scope.vm.confirmPassword = 'myPassword';
+
+            //WHEN
+            $scope.$apply($scope.vm.changePassword);
+
+            //THEN
+            expect($scope.vm.doNotMatch).toBeNull();
+            expect($scope.vm.success).toBeNull();
+            expect($scope.vm.error).toBe('ERROR');
         });
     });
 });

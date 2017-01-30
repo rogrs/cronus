@@ -1,34 +1,83 @@
-# Disable the spring security default configuration from spring-boot-actuator
-management.security.enabled: true
-security.basic.enabled: false
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overriden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
 
-# Disable Jolokia - An http/json bridge for remote JMX access
-endpoints.jolokia.enabled: false
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
 
-# security configuration (this key should be unique for your application, and kept secret)
-jhipster.security.rememberme.key: 5c37379956bd1242f5636c8cb322c2966ad81277
+management:
+    context-path: /management
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+spring:
+    application:
+        name: autobot
+    profiles:
+        # The commented value for `active` can be replaced with valid Spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: #spring.profiles.active#
+    jackson:
+        serialization.write_dates_as_timestamps: false
+    jpa:
+        open-in-view: false
+        hibernate:
+            ddl-auto: none
+            naming:
+                physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+                implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    messages:
+        basename: i18n/messages
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
 
-async:
-    corePoolSize: 2
-    maxPoolSize: 50
-    queueCapacity: 10000
+security:
+    basic:
+        enabled: false
 
-mail:
-    host: localhost
-    port: 25
-    username:
-    password:
-    protocol: smtp
-    tls: false
-    auth: false
-    from: autobot@localhost
+server:
+    session:
+        cookie:
+            http-only: true
 
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
 
-swagger:
-    title: jhipster API
-    description: jhipster applications and beyond!
-    version: 0.0.1
-    termsOfServiceUrl: http://jhipster.github.io/
-    contact:
-    license: Apache 2.0
-    licenseUrl: http://www.apache.org/licenses/LICENSE-2.0.html
+jhipster:
+    async:
+        corePoolSize: 2
+        maxPoolSize: 50
+        queueCapacity: 10000
+    #cors: #By default CORS are not enabled. Uncomment to enable.
+        #allowed-origins: "*"
+        #allowed-methods: GET, PUT, POST, DELETE, OPTIONS
+        #allowed-headers: "*"
+        #exposed-headers:
+        #allow-credentials: true
+        #max-age: 1800
+    mail:
+        from: autobot@localhost
+    swagger:
+        title: autobot API
+        description: autobot API documentation
+        version: 0.0.1
+        termsOfServiceUrl:
+        contactName:
+        contactUrl:
+        contactEmail:
+        license:
+        licenseUrl:
+    ribbon:
+        # comma separated list of profiles to show a ribbon on the GUI
+        displayOnActiveProfiles: dev

@@ -1,0 +1,92 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myExecutarPlanoLabel" data-translate="autobotApp.executarPlano.home.createOrEditLabel">Create or edit a Executar Plano</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.executarPlano.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.executarPlano.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.executarPlano.descricao" for="field_descricao">Descricao</label>
+            <input type="text" class="form-control" name="descricao" id="field_descricao"
+                    ng-model="vm.executarPlano.descricao"
+                    required ng-maxlength="80" />
+            <div ng-show="editForm.descricao.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.descricao.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.descricao.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.executarPlano.detalhes" for="field_detalhes">Detalhes</label>
+            <input type="text" class="form-control" name="detalhes" id="field_detalhes"
+                    ng-model="vm.executarPlano.detalhes"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.detalhes.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.detalhes.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.executarPlano.mensagem" for="field_mensagem">Mensagem</label>
+            <input type="text" class="form-control" name="mensagem" id="field_mensagem"
+                    ng-model="vm.executarPlano.mensagem"
+                    ng-maxlength="200" />
+            <div ng-show="editForm.mensagem.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.mensagem.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                    This field cannot be longer than 200 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.executarPlano.pararNaFalha" for="field_pararNaFalha">Parar Na Falha</label>
+            <input type="checkbox" class="form-control" name="pararNaFalha" id="field_pararNaFalha"
+                    ng-model="vm.executarPlano.pararNaFalha"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.executarPlano.status" for="field_status">Status</label>
+            <select class="form-control" name="status" ng-model="vm.executarPlano.status" id="field_status">
+                <option value="SUCESSO" data-translate="autobotApp.Status.SUCESSO">SUCESSO</option>
+                <option value="FALHA" data-translate="autobotApp.Status.FALHA">FALHA</option>
+                <option value="FALHA_TEMPORARIA" data-translate="autobotApp.Status.FALHA_TEMPORARIA">FALHA_TEMPORARIA</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="autobotApp.executarPlano.scripts" for="field_scripts">Scripts</label>
+            <select class="form-control" id="field_scripts" name="scripts" ng-model="vm.executarPlano.scripts" ng-options="script as script.descricao for script in vm.scripts track by script.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="autobotApp.executarPlano.plano" for="field_plano">Plano</label>
+            <select class="form-control" id="field_plano" name="plano" ng-model="vm.executarPlano.plano" ng-options="plano as plano.descricao for plano in vm.planos track by plano.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

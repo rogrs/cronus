@@ -1,21 +1,28 @@
 {
-    "jhipsterApp": {
+    "autobotApp": {
         "executarPlano" : {
             "home": {
-                "title": "ExecutarPlanos",
-                "createLabel": "Create a new ExecutarPlano",
-                "createOrEditLabel": "Create or edit a ExecutarPlano"
+                "title": "Executar Planos",
+                "createLabel": "Criar novo Executar Plano",
+                "createOrEditLabel": "Criar ou editar Executar Plano",
+                "search": "Pesquisar por Executar Plano"
             },
+            "created": "Um novo Executar Plano é criado com o identificador {{ param }}",
+            "updated": "Um Executar Plano é atualizado com o identificador {{ param }}",
+            "deleted": "Um Executar Plano é deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete ExecutarPlano {{ id }}?"
+                "question": "Tem certeza de que deseja excluir Executar Plano {{ id }}?"
             },
             "detail": {
-                "title": "ExecutarPlano"
+                "title": "Executar Plano"
             },
-            "criado": "Criado",
-            "inicio": "Inicio",
-            "finalizado": "Finalizado",
-            "atividade": "Atividade"
+            "descricao": "Descricao",
+            "detalhes": "Detalhes",
+            "mensagem": "Mensagem",
+            "pararNaFalha": "Parar Na Falha",
+            "status": "Status",
+            "scripts": "Scripts",
+            "plano": "Plano"
         }
     }
 }

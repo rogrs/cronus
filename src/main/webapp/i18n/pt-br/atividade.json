@@ -1,25 +1,26 @@
 {
-    "jhipsterApp": {
+    "autobotApp": {
         "atividade" : {
             "home": {
                 "title": "Atividades",
-                "createLabel": "Create a new Atividade",
-                "createOrEditLabel": "Create or edit a Atividade"
+                "createLabel": "Criar novo Atividade",
+                "createOrEditLabel": "Criar ou editar Atividade",
+                "search": "Pesquisar por Atividade"
             },
-            "created": "A new Atividade is created with identifier {{ param }}",
-            "updated": "A Atividade is updated with identifier {{ param }}",
-            "deleted": "A Atividade is deleted with identifier {{ param }}",
+            "created": "Um novo Atividade é criado com o identificador {{ param }}",
+            "updated": "Um Atividade é atualizado com o identificador {{ param }}",
+            "deleted": "Um Atividade é deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Atividade {{ id }}?"
+                "question": "Tem certeza de que deseja excluir Atividade {{ id }}?"
             },
             "detail": {
                 "title": "Atividade"
             },
-            "descricao": "Descricao",
-            "detalhe": "Detalhe",
-            "falha_para": "Falha_para",
+            "nome": "Nome",
+            "comando": "Comando",
+            "pararNaFalha": "Parar Na Falha",
             "plano": "Plano",
-            "script": "Script"
+            "scripts": "Scripts"
         }
     }
 }

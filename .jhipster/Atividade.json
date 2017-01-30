@@ -1,39 +1,46 @@
 {
+    "fluentMethods": true,
     "relationships": [
         {
-            "relationshipId": 1,
+            "relationshipType": "many-to-one",
             "relationshipName": "plano",
             "otherEntityName": "plano",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "otherEntityField": "descricao"
         },
         {
-            "relationshipId": 2,
-            "relationshipName": "script",
-            "otherEntityName": "script",
             "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "relationshipName": "scripts",
+            "otherEntityName": "script",
+            "otherEntityField": "descricao"
         }
     ],
     "fields": [
         {
-            "fieldId": 1,
-            "fieldName": "descricao",
+            "fieldName": "nome",
             "fieldType": "String",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
         },
         {
-            "fieldId": 2,
-            "fieldName": "detalhe",
-            "fieldType": "String"
+            "fieldName": "comando",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 100
         },
         {
-            "fieldId": 3,
-            "fieldName": "falha_para",
-            "fieldType": "Integer"
+            "fieldName": "pararNaFalha",
+            "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20150827141445",
+    "changelogDate": "20170130002941",
+    "entityTableName": "atividade",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

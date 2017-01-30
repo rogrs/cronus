@@ -1,22 +1,24 @@
 {
-    "jhipsterApp": {
+    "autobotApp": {
         "plugin" : {
             "home": {
                 "title": "Plugins",
-                "createLabel": "Create a new Plugin",
-                "createOrEditLabel": "Create or edit a Plugin"
+                "createLabel": "Criar novo Plugin",
+                "createOrEditLabel": "Criar ou editar Plugin",
+                "search": "Pesquisar por Plugin"
             },
-            "created": "A new Plugin is created with identifier {{ param }}",
-            "updated": "A Plugin is updated with identifier {{ param }}",
-            "deleted": "A Plugin is deleted with identifier {{ param }}",
+            "created": "Um novo Plugin é criado com o identificador {{ param }}",
+            "updated": "Um Plugin é atualizado com o identificador {{ param }}",
+            "deleted": "Um Plugin é deletado com o identificador {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Plugin {{ id }}?"
+                "question": "Tem certeza de que deseja excluir Plugin {{ id }}?"
             },
             "detail": {
                 "title": "Plugin"
             },
-            "descricao": "Descricao",
-            "comando": "Comando"
+            "nome": "Nome",
+            "comando": "Comando",
+            "script": "Script"
         }
     }
 }

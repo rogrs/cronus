@@ -1,0 +1,49 @@
+
+
+enum Status {
+    SUCESSO, FALHA, FALHA_TEMPORARIA
+}
+
+entity Atividade {
+       nome String required maxlength(80),
+       comando String required maxlength(100),
+       pararNaFalha Boolean
+}
+
+entity Plugin {
+       nome String required maxlength(80),
+       comando String required maxlength(100)
+}
+
+entity Projeto {
+       descricao String required maxlength(80),
+       detalhes String  maxlength(80)
+}
+
+entity Plano {
+       descricao String required maxlength(80),
+       detalhes String  maxlength(80)
+}
+
+entity Script {
+       descricao String required maxlength(100),
+       path String required maxlength(500)
+}
+
+entity ExecutarPlano {
+       descricao String required maxlength(80),
+       detalhes String  maxlength(80),
+       mensagem String  maxlength(200),
+       pararNaFalha Boolean,
+       status Status
+}
+
+relationship OneToMany {
+    Projeto to Plano{projetos(descricao)},
+    Plano to Atividade{plano(descricao)},
+    Script to Atividade{scripts(descricao)},
+    Plugin to Script{plugin(nome)},
+    Script to ExecutarPlano{scripts(descricao)},
+    Plano to ExecutarPlano{plano(descricao)}
+}
+

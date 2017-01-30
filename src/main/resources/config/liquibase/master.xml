@@ -2,13 +2,19 @@
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150827135829_added_entity_Projeto.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150827140420_added_entity_Plugin.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150827140643_added_entity_Script.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150827141038_added_entity_Plano.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150827141445_added_entity_Atividade.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20150909210327_added_entity_ExecutarPlano.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002941_added_entity_Atividade.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002942_added_entity_Plugin.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002943_added_entity_Projeto.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002944_added_entity_Plano.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002945_added_entity_Script.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002946_added_entity_ExecutarPlano.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20170130002944_added_entity_constraints_Plano.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002945_added_entity_constraints_Script.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002941_added_entity_constraints_Atividade.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170130002946_added_entity_constraints_ExecutarPlano.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

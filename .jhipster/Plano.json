@@ -1,27 +1,47 @@
 {
+    "fluentMethods": true,
     "relationships": [
         {
-            "relationshipId": 1,
-            "relationshipName": "projeto",
-            "otherEntityName": "projeto",
+            "relationshipType": "one-to-many",
+            "relationshipName": "atividade",
+            "otherEntityName": "atividade",
+            "otherEntityRelationshipName": "plano"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "executarPlano",
+            "otherEntityName": "executarPlano",
+            "otherEntityRelationshipName": "plano"
+        },
+        {
             "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "relationshipName": "projetos",
+            "otherEntityName": "projeto",
+            "otherEntityField": "descricao"
         }
     ],
     "fields": [
         {
-            "fieldId": 1,
             "fieldName": "descricao",
             "fieldType": "String",
-            "fieldValidateRules": []
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
         },
         {
-            "fieldId": 2,
-            "fieldName": "detalhe",
-            "fieldType": "String"
+            "fieldName": "detalhes",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
         }
     ],
-    "changelogDate": "20150827141038",
+    "changelogDate": "20170130002944",
+    "entityTableName": "plano",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

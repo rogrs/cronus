@@ -57,7 +57,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
     if ('validatorUrl' in opts.swaggerOptions) {
       // Validator URL specified explicitly
       this.model.validatorUrl = opts.swaggerOptions.validatorUrl;
-    } else if (this.model.url.indexOf('localhost') > 0) {
+    } else if (this.model.url.indexOf('localhost') > 0 || this.model.url.indexOf('127.0.0.1') > 0) {
       // Localhost override
       this.model.validatorUrl = null;
     } else {
@@ -69,28 +69,27 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
         this.model.validatorUrl = 'http://online.swagger.io/validator';
       }
     }
-  },
 
-  render: function(){
-    if (this.model.securityDefinitions) {
-      for (var name in this.model.securityDefinitions) {
-        var auth = this.model.securityDefinitions[name];
-        var button;
-
-        if (auth.type === 'apiKey' && $('#apikey_button').length === 0) {
-          button = new SwaggerUi.Views.ApiKeyButton({model: auth, router:  this.router}).render().el;
-          $('.auth_main_container').append(button);
-        }
-
-        if (auth.type === 'basicAuth' && $('#basic_auth_button').length === 0) {
-          button = new SwaggerUi.Views.BasicAuthButton({model: auth, router: this.router}).render().el;
-          $('.auth_main_container').append(button);
-        }
+    // JSonEditor requires type='object' to be present on defined types, we add it if it's missing
+    // is there any valid case were it should not be added ?
+    var def;
+    for(def in this.model.definitions){
+      if (!this.model.definitions[def].type){
+        this.model.definitions[def].type = 'object';
       }
     }
 
-    // Render the outer container for resources
+  },
+
+  render: function () {
     $(this.el).html(Handlebars.templates.main(this.model));
+    this.info = this.$('.info')[0];
+
+    if (this.info) {
+      this.info.addEventListener('click', this.onLinkClick, true);
+    }
+
+    this.model.securityDefinitions = this.model.securityDefinitions || {};
 
     // Render each resource
 
@@ -119,6 +118,11 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
   addResource: function(resource, auths){
     // Render a resource and add it to resources li
     resource.id = resource.id.replace(/\s/g, '_');
+
+    // Make all definitions available at the root of the resource so that they can
+    // be loaded by the JSonEditor
+    resource.definitions = this.model.definitions;
+
     var resourceView = new SwaggerUi.Views.ResourceView({
       model: resource,
       router: this.router,
@@ -133,5 +137,14 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
 
   clear: function(){
     $(this.el).html('');
+  },
+
+  onLinkClick: function (e) {
+    var el = e.target;
+
+    if (el.tagName === 'A' && el.href && !el.target) {
+        e.preventDefault();
+        window.open(el.href, '_blank');
+    }
   }
 });

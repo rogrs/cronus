@@ -4,15 +4,16 @@
         "browsehappy": "Você está usando um navegador <strong>desatualizado</strong>. Favor <a href=\"http://browsehappy.com/?locale=pt_BR\">atualizar o seu navegador</a> para ter uma experiência melhor.",
         "menu": {
             "home": "Início",
+            "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
-                "projeto": "Projeto",
-                "plugin": "Plugin",
-                "script": "Script",
-                "plano": "Plano",
                 "atividade": "Atividade",
-                "executarPlano": "ExecutarPlano",
-                "additionalEntity": "Autobot will add additional entities here (do not translate!)"
+                "plugin": "Plugin",
+                "projeto": "Projeto",
+                "plano": "Plano",
+                "script": "Script",
+                "executarPlano": "Executar Plano",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
                 "main": "Conta",
@@ -25,6 +26,7 @@
             },
             "admin": {
                 "main": "Administração",
+                "userManagement": "Gerenciamento de usuário",
                 "tracker": "Rastreamento de usuário",
                 "metrics": "Métricas",
                 "health": "Estado do Sistema",
@@ -32,7 +34,8 @@
                 "logs": "Logs",
                 "audits": "Auditorias",
                 "apidocs": "API",
-                "database": "Database"
+                "database": "Banco de dados",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
             },
             "language": "Idioma"
         },
@@ -48,8 +51,8 @@
         },
         "messages": {
             "info": {
-                "authenticated": "Para <a href=\"#/login\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
-                "register": "Não possui uma conta ainda? <a href=\"#/register\">Crie uma nova conta</a>"
+                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
+                "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Crie uma nova conta</a>"
             },
             "error": {
                 "dontmatch" : "A senha e sua confirmação devem ser iguais!"
@@ -76,16 +79,20 @@
         },
         "field": {
             "id" : "Código"
+        },
+        "ribbon": {
+            "dev":"Development"
         }
     },
     "entity": {
         "action": {
-            "addblob": "Add blob",
-            "addimage": "Add image",
+            "addblob": "Adicionar blob",
+            "addimage": "Adicionar imagem",
             "back": "Voltar",
             "cancel": "Cancelar",
             "delete": "Excluir",
             "edit": "Editar",
+            "open": "Open",
             "save": "Salvar",
             "view": "Visualizar"
         },
@@ -109,5 +116,14 @@
             "datetimelocal": "Este campo é do tipo data/hora."
         }
     },
-    "footer": "Autobot 2015"
+    "error": {
+        "server.not.reachable": "Servidor indisponível",
+        "url.not.found": "Not found",
+        "NotNull": "O Campo {{fieldName}} não pode ser vazio!",
+        "Size": "O campo {{fieldName}} não obedece os requisitos de tamanho mínimo ou máximo!",
+        "userexists": "Usuário já existente!",
+        "emailexists": "Este email já está cadastrado!",
+        "idexists": "Novo(a) {{entityName}} não pode ter uma ID"
+    },
+    "footer": "Este é o seu rodapé"
 }

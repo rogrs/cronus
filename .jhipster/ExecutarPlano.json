@@ -1,34 +1,58 @@
 {
+    "fluentMethods": true,
     "relationships": [
         {
-            "relationshipId": 1,
-            "relationshipName": "atividade",
-            "otherEntityName": "atividade",
             "relationshipType": "many-to-one",
-            "otherEntityField": "id"
+            "relationshipName": "scripts",
+            "otherEntityName": "script",
+            "otherEntityField": "descricao"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "plano",
+            "otherEntityName": "plano",
+            "otherEntityField": "descricao"
         }
     ],
     "fields": [
         {
-            "fieldId": 1,
-            "fieldName": "criado",
-            "fieldType": "DateTime",
+            "fieldName": "descricao",
+            "fieldType": "String",
             "fieldValidateRules": [
-                "required"
-            ]
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
         },
         {
-            "fieldId": 2,
-            "fieldName": "inicio",
-            "fieldType": "DateTime"
+            "fieldName": "detalhes",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
         },
         {
-            "fieldId": 3,
-            "fieldName": "finalizado",
-            "fieldType": "DateTime"
+            "fieldName": "mensagem",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 200
+        },
+        {
+            "fieldName": "pararNaFalha",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Status",
+            "fieldValues": "SUCESSO,FALHA,FALHA_TEMPORARIA"
         }
     ],
-    "changelogDate": "20150909210327",
+    "changelogDate": "20170130002946",
+    "entityTableName": "executar_plano",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

@@ -1,53 +1,105 @@
-server:
-    port: 8080
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application.yml file.
+# ===================================================================
 
-liquibase:
-    context: dev
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
 
 spring:
     profiles:
         active: dev
+        include: swagger
+    devtools:
+        restart:
+            enabled: true
+        livereload:
+            enabled: false # we use gulp + BrowserSync for livereload
+    jackson:
+        serialization.indent_output: true
     datasource:
-        dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/autobotDB?useUnicode=true&characterEncoding=utf8
-        databaseName: 
-        serverName: 
-        username: jhipster
-        password: jhipster
-
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:h2:file:./target/h2db/db/autobot;DB_CLOSE_DELAY=-1
+        name:
+        username: autobot
+        password:
+    h2:
+        console:
+            enabled: false
     jpa:
-        database-platform: com.mycompany.myapp.domain.util.FixedH2Dialect
-        database: MYSQL
-        openInView: false
-        show_sql: true
-        generate-ddl: false
-        hibernate:
-            ddl-auto: none
-            naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+        database-platform: br.com.rogrs.autobot.domain.util.FixedH2Dialect
+        database: H2
+        show-sql: true
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+            hibernate.javax.cache.provider: org.ehcache.jsr107.EhcacheCachingProvider
+            hibernate.javax.cache.uri: ${spring.cache.jcache.config}
+            hibernate.cache.region.factory_class: br.com.rogrs.autobot.config.jcache.SpringCacheRegionFactory
+    cache:
+        jcache:
+            config: ehcache.xml
+    data:
+        elasticsearch:
+            cluster-name:
+            cluster-nodes:
+            properties:
+                path:
+                  logs: target/elasticsearch/log
+                  data: target/elasticsearch/data
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
     messages:
         cache-seconds: 1
     thymeleaf:
-        mode: XHTML
         cache: false
 
-metrics:
-    jmx.enabled: true
-    spark:
-        enabled: false
-        host: localhost
-        port: 9999
-    graphite:
-        enabled: false
-        host: localhost
-        port: 2003
-        prefix: jhipster
+liquibase:
+    contexts: dev
 
-cache:
-    timeToLiveSeconds: 3600
-    ehcache:
-        maxBytesLocalHeap: 16M
+server:
+    port: 8080
+
+# ===================================================================
+# JHipster specific properties
+# ===================================================================
+
+jhipster:
+    cache: # Hibernate 2nd level cache, used by CacheConfiguration
+        ehcache:
+            maxBytesLocalHeap: 16M
+    security:
+        rememberMe:
+            # security key (this key should be unique for your application, and kept secret)
+            key: f98479809a3e7cddc661f28ba67fe2a0d0a0fa2b
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: autobot@localhost
+        baseUrl: http://127.0.0.1:8080
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: autobot
+        prometheus:
+            enabled: false
+            endpoint: /prometheusMetrics
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512

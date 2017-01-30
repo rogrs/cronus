@@ -1,19 +1,35 @@
 {
-    "relationships": [],
-    "fields": [
+    "fluentMethods": true,
+    "relationships": [
         {
-            "fieldId": 1,
-            "fieldName": "descricao",
-            "fieldType": "String",
-            "fieldValidateRules": []
-        },
-        {
-            "fieldId": 2,
-            "fieldName": "detalhes",
-            "fieldType": "String"
+            "relationshipType": "one-to-many",
+            "relationshipName": "plano",
+            "otherEntityName": "plano",
+            "otherEntityRelationshipName": "projetos"
         }
     ],
-    "changelogDate": "20150827135829",
+    "fields": [
+        {
+            "fieldName": "descricao",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
+        },
+        {
+            "fieldName": "detalhes",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 80
+        }
+    ],
+    "changelogDate": "20170130002943",
+    "entityTableName": "projeto",
     "dto": "no",
-    "pagination": "pagination"
+    "pagination": "no",
+    "service": "no"
 }

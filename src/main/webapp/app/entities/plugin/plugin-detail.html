@@ -1,0 +1,27 @@
+
+<div>
+    <h2><span data-translate="autobotApp.plugin.detail.title">Plugin</span> {{vm.plugin.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="autobotApp.plugin.nome">Nome</span></dt>
+        <dd>
+            <span>{{vm.plugin.nome}}</span>
+        </dd>
+        <dt><span data-translate="autobotApp.plugin.comando">Comando</span></dt>
+        <dd>
+            <span>{{vm.plugin.comando}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="plugin-detail.edit({id:vm.plugin.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

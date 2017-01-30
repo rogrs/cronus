@@ -1,0 +1,26 @@
+{
+    "autobotApp": {
+        "script" : {
+            "home": {
+                "title": "Scripts",
+                "createLabel": "Criar um(a) novo(a) Script",
+                "createOrEditLabel": "Criar ou editar um(a) Script",
+                "search": "Search for Script"
+            },
+            "created": "A new Script is created with identifier {{ param }}",
+            "updated": "A Script is updated with identifier {{ param }}",
+            "deleted": "A Script is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Script {{ id }}?"
+            },
+            "detail": {
+                "title": "Script"
+            },
+            "descricao": "Descricao",
+            "path": "Path",
+            "atividade": "Atividade",
+            "executarPlano": "Executar Plano",
+            "plugin": "Plugin"
+        }
+    }
+}
