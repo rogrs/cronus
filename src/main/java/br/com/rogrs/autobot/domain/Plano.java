@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+import br.com.rogrs.autobot.domain.enumeration.TipoPlano;
+
 /**
  * A Plano.
  */
@@ -36,6 +38,10 @@ public class Plano implements Serializable {
     @Column(name = "detalhes", length = 80)
     private String detalhes;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo")
+    private TipoPlano tipo;
+
     @OneToMany(mappedBy = "plano")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -48,6 +54,9 @@ public class Plano implements Serializable {
 
     @ManyToOne
     private Projeto projetos;
+
+    @ManyToOne
+    private Script scripts;
 
     public Long getId() {
         return id;
@@ -81,6 +90,19 @@ public class Plano implements Serializable {
 
     public void setDetalhes(String detalhes) {
         this.detalhes = detalhes;
+    }
+
+    public TipoPlano getTipo() {
+        return tipo;
+    }
+
+    public Plano tipo(TipoPlano tipo) {
+        this.tipo = tipo;
+        return this;
+    }
+
+    public void setTipo(TipoPlano tipo) {
+        this.tipo = tipo;
     }
 
     public Set<Atividade> getAtividades() {
@@ -146,6 +168,19 @@ public class Plano implements Serializable {
         this.projetos = projeto;
     }
 
+    public Script getScripts() {
+        return scripts;
+    }
+
+    public Plano scripts(Script script) {
+        this.scripts = script;
+        return this;
+    }
+
+    public void setScripts(Script script) {
+        this.scripts = script;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -172,6 +207,7 @@ public class Plano implements Serializable {
             "id=" + id +
             ", descricao='" + descricao + "'" +
             ", detalhes='" + detalhes + "'" +
+            ", tipo='" + tipo + "'" +
             '}';
     }
 }

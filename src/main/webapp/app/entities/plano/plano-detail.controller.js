@@ -5,9 +5,9 @@
         .module('autobotApp')
         .controller('PlanoDetailController', PlanoDetailController);
 
-    PlanoDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Plano', 'Atividade', 'ExecutarPlano', 'Projeto'];
+    PlanoDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Plano', 'Atividade', 'ExecutarPlano', 'Projeto', 'Script'];
 
-    function PlanoDetailController($scope, $rootScope, $stateParams, previousState, entity, Plano, Atividade, ExecutarPlano, Projeto) {
+    function PlanoDetailController($scope, $rootScope, $stateParams, previousState, entity, Plano, Atividade, ExecutarPlano, Projeto, Script) {
         var vm = this;
 
         vm.plano = entity;

@@ -38,7 +38,9 @@
                     <th><span data-translate="global.field.id">ID</span></th>
                     <th><span data-translate="autobotApp.plano.descricao">Descricao</span></th>
                     <th><span data-translate="autobotApp.plano.detalhes">Detalhes</span></th>
+                    <th><span data-translate="autobotApp.plano.tipo">Tipo</span></th>
                     <th><span data-translate="autobotApp.plano.projetos">Projetos</span></th>
+                    <th><span data-translate="autobotApp.plano.scripts">Scripts</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -47,8 +49,12 @@
                     <td><a ui-sref="plano-detail({id:plano.id})">{{plano.id}}</a></td>
                     <td>{{plano.descricao}}</td>
                     <td>{{plano.detalhes}}</td>
+                    <td data-translate="{{'autobotApp.TipoPlano.' + plano.tipo}}">{{plano.tipo}}</td>
                     <td>
                         <a ui-sref="projeto-detail({id:plano.projetos.id})">{{plano.projetos.descricao}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="script-detail({id:plano.scripts.id})">{{plano.scripts.descricao}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

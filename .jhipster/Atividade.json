@@ -6,12 +6,6 @@
             "relationshipName": "plano",
             "otherEntityName": "plano",
             "otherEntityField": "descricao"
-        },
-        {
-            "relationshipType": "many-to-one",
-            "relationshipName": "scripts",
-            "otherEntityName": "script",
-            "otherEntityField": "descricao"
         }
     ],
     "fields": [

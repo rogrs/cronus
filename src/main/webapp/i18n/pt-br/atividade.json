@@ -19,8 +19,7 @@
             "nome": "Nome",
             "comando": "Comando",
             "pararNaFalha": "Parar Na Falha",
-            "plano": "Plano",
-            "scripts": "Scripts"
+            "plano": "Plano"
         }
     }
 }

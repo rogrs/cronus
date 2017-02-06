@@ -67,7 +67,7 @@ class ExecutarPlanoGatlingTest extends Simulation {
             .exec(http("Create new executarPlano")
             .post("/api/executar-planos")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "descricao":"SAMPLE_TEXT", "detalhes":"SAMPLE_TEXT", "mensagem":"SAMPLE_TEXT", "pararNaFalha":null, "status":null}""")).asJSON
+            .body(StringBody("""{"id":null, "descricao":"SAMPLE_TEXT", "detalhes":"SAMPLE_TEXT", "pararNaFalha":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_executarPlano_url"))).exitHereIfFailed
             .pause(10)

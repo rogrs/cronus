@@ -26,6 +26,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('plano');
+                    $translatePartialLoader.addPart('tipoPlano');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -48,6 +49,7 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('plano');
+                    $translatePartialLoader.addPart('tipoPlano');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Plano', function($stateParams, Plano) {
@@ -106,6 +108,7 @@
                             return {
                                 descricao: null,
                                 detalhes: null,
+                                tipo: null,
                                 id: null
                             };
                         }

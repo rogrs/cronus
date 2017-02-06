@@ -1,0 +1,78 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLogExecutarPlanoLabel" data-translate="autobotApp.logExecutarPlano.home.createOrEditLabel">Create or edit a Log Executar Plano</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.logExecutarPlano.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.logExecutarPlano.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.logExecutarPlano.criado" for="field_criado">Criado</label>
+                <div class="input-group">
+                    <input id="field_criado" type="text" class="form-control" name="criado" uib-datepicker-popup="{{dateformat}}" ng-model="vm.logExecutarPlano.criado" is-open="vm.datePickerOpenStatus.criado"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('criado')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.criado.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.criado.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.logExecutarPlano.finalizado" for="field_finalizado">Finalizado</label>
+                <div class="input-group">
+                    <input id="field_finalizado" type="text" class="form-control" name="finalizado" uib-datepicker-popup="{{dateformat}}" ng-model="vm.logExecutarPlano.finalizado" is-open="vm.datePickerOpenStatus.finalizado"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('finalizado')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.logExecutarPlano.mensagem" for="field_mensagem">Mensagem</label>
+            <input type="text" class="form-control" name="mensagem" id="field_mensagem"
+                    ng-model="vm.logExecutarPlano.mensagem"
+                    ng-maxlength="8000" />
+            <div ng-show="editForm.mensagem.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.mensagem.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="8000">
+                    This field cannot be longer than 8000 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.logExecutarPlano.status" for="field_status">Status</label>
+            <select class="form-control" name="status" ng-model="vm.logExecutarPlano.status" id="field_status">
+                <option value="SUCESSO" data-translate="autobotApp.Status.SUCESSO">SUCESSO</option>
+                <option value="FALHA" data-translate="autobotApp.Status.FALHA">FALHA</option>
+                <option value="FALHA_TEMPORARIA" data-translate="autobotApp.Status.FALHA_TEMPORARIA">FALHA_TEMPORARIA</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="autobotApp.logExecutarPlano.execucao" for="field_execucao">Execucao</label>
+            <select class="form-control" id="field_execucao" name="execucao" ng-model="vm.logExecutarPlano.execucao" ng-options="executarPlano as executarPlano.descricao for executarPlano in vm.executarplanos track by executarPlano.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

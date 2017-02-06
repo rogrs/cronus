@@ -14,11 +14,5 @@
                                  referencedColumnNames="id"
                                  referencedTableName="plano"/>
 
-        <addForeignKeyConstraint baseColumnNames="scripts_id"
-                                 baseTableName="atividade"
-                                 constraintName="fk_atividade_scripts_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="script"/>
-
     </changeSet>
 </databaseChangeLog>

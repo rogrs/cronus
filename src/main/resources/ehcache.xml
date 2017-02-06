@@ -48,5 +48,11 @@
 
     <cache alias="br.com.rogrs.autobot.domain.Script.executarPlanos" uses-template="simple"/>
 
+    <cache alias="br.com.rogrs.autobot.domain.Script.planos" uses-template="simple"/>
+
+    <cache alias="br.com.rogrs.autobot.domain.ExecutarPlano.logExecutarPlanos" uses-template="simple"/>
+
+    <cache alias="br.com.rogrs.autobot.domain.LogExecutarPlano" uses-template="simple"/>
+
     <!-- jhipster-needle-ehcache-add-entry -->
 </config>

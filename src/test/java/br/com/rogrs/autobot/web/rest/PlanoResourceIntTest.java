@@ -29,6 +29,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import br.com.rogrs.autobot.domain.enumeration.TipoPlano;
 /**
  * Test class for the PlanoResource REST controller.
  *
@@ -43,6 +44,9 @@ public class PlanoResourceIntTest {
 
     private static final String DEFAULT_DETALHES = "AAAAAAAAAA";
     private static final String UPDATED_DETALHES = "BBBBBBBBBB";
+
+    private static final TipoPlano DEFAULT_TIPO = TipoPlano.UNITARIO;
+    private static final TipoPlano UPDATED_TIPO = TipoPlano.SEGURANCA;
 
     @Inject
     private PlanoRepository planoRepository;
@@ -83,7 +87,8 @@ public class PlanoResourceIntTest {
     public static Plano createEntity(EntityManager em) {
         Plano plano = new Plano()
                 .descricao(DEFAULT_DESCRICAO)
-                .detalhes(DEFAULT_DETALHES);
+                .detalhes(DEFAULT_DETALHES)
+                .tipo(DEFAULT_TIPO);
         return plano;
     }
 
@@ -111,6 +116,7 @@ public class PlanoResourceIntTest {
         Plano testPlano = planoList.get(planoList.size() - 1);
         assertThat(testPlano.getDescricao()).isEqualTo(DEFAULT_DESCRICAO);
         assertThat(testPlano.getDetalhes()).isEqualTo(DEFAULT_DETALHES);
+        assertThat(testPlano.getTipo()).isEqualTo(DEFAULT_TIPO);
 
         // Validate the Plano in ElasticSearch
         Plano planoEs = planoSearchRepository.findOne(testPlano.getId());
@@ -167,7 +173,8 @@ public class PlanoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(plano.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
-            .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())));
+            .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
+            .andExpect(jsonPath("$.[*].tipo").value(hasItem(DEFAULT_TIPO.toString())));
     }
 
     @Test
@@ -182,7 +189,8 @@ public class PlanoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(plano.getId().intValue()))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO.toString()))
-            .andExpect(jsonPath("$.detalhes").value(DEFAULT_DETALHES.toString()));
+            .andExpect(jsonPath("$.detalhes").value(DEFAULT_DETALHES.toString()))
+            .andExpect(jsonPath("$.tipo").value(DEFAULT_TIPO.toString()));
     }
 
     @Test
@@ -205,7 +213,8 @@ public class PlanoResourceIntTest {
         Plano updatedPlano = planoRepository.findOne(plano.getId());
         updatedPlano
                 .descricao(UPDATED_DESCRICAO)
-                .detalhes(UPDATED_DETALHES);
+                .detalhes(UPDATED_DETALHES)
+                .tipo(UPDATED_TIPO);
 
         restPlanoMockMvc.perform(put("/api/planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -218,6 +227,7 @@ public class PlanoResourceIntTest {
         Plano testPlano = planoList.get(planoList.size() - 1);
         assertThat(testPlano.getDescricao()).isEqualTo(UPDATED_DESCRICAO);
         assertThat(testPlano.getDetalhes()).isEqualTo(UPDATED_DETALHES);
+        assertThat(testPlano.getTipo()).isEqualTo(UPDATED_TIPO);
 
         // Validate the Plano in ElasticSearch
         Plano planoEs = planoSearchRepository.findOne(testPlano.getId());
@@ -277,6 +287,7 @@ public class PlanoResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(plano.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
-            .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())));
+            .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
+            .andExpect(jsonPath("$.[*].tipo").value(hasItem(DEFAULT_TIPO.toString())));
     }
 }

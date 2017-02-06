@@ -5,9 +5,9 @@
         .module('autobotApp')
         .controller('ScriptDetailController', ScriptDetailController);
 
-    ScriptDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Script', 'Atividade', 'ExecutarPlano', 'Plugin'];
+    ScriptDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Script', 'Plano', 'Plugin'];
 
-    function ScriptDetailController($scope, $rootScope, $stateParams, previousState, entity, Script, Atividade, ExecutarPlano, Plugin) {
+    function ScriptDetailController($scope, $rootScope, $stateParams, previousState, entity, Script, Plano, Plugin) {
         var vm = this;
 
         vm.script = entity;

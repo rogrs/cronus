@@ -32,7 +32,15 @@
                 <constraints nullable="true" />
             </column>
             
+            <column name="tipo" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            
             <column name="projetos_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="scripts_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

@@ -18,9 +18,11 @@
             },
             "descricao": "Descricao",
             "detalhes": "Detalhes",
+            "tipo": "Tipo",
             "atividade": "Atividade",
             "executarPlano": "Executar Plano",
-            "projetos": "Projetos"
+            "projetos": "Projetos",
+            "scripts": "Scripts"
         }
     }
 }

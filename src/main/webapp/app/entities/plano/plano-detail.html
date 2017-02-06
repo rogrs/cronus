@@ -12,9 +12,17 @@
         <dd>
             <span>{{vm.plano.detalhes}}</span>
         </dd>
+        <dt><span data-translate="autobotApp.plano.tipo">Tipo</span></dt>
+        <dd>
+            <span data-translate="{{'autobotApp.TipoPlano.' + vm.plano.tipo}}">{{vm.plano.tipo}}</span>
+        </dd>
         <dt><span data-translate="autobotApp.plano.projetos">Projetos</span></dt>
         <dd>
             <a ui-sref="projeto-detail({id:vm.plano.projetos.id})">{{vm.plano.projetos.descricao}}</a>
+        </dd>
+        <dt><span data-translate="autobotApp.plano.scripts">Scripts</span></dt>
+        <dd>
+            <a ui-sref="script-detail({id:vm.plano.scripts.id})">{{vm.plano.scripts.descricao}}</a>
         </dd>
     </dl>
 

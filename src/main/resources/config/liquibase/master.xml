@@ -11,10 +11,12 @@
     <include file="classpath:config/liquibase/changelog/20170130002944_added_entity_Plano.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170130002945_added_entity_Script.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170130002946_added_entity_ExecutarPlano.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170205233313_added_entity_LogExecutarPlano.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170130002944_added_entity_constraints_Plano.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170130002945_added_entity_constraints_Script.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170130002941_added_entity_constraints_Atividade.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170130002946_added_entity_constraints_ExecutarPlano.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170205233313_added_entity_constraints_LogExecutarPlano.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

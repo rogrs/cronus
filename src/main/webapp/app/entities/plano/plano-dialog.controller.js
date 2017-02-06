@@ -5,9 +5,9 @@
         .module('autobotApp')
         .controller('PlanoDialogController', PlanoDialogController);
 
-    PlanoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Plano', 'Atividade', 'ExecutarPlano', 'Projeto'];
+    PlanoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Plano', 'Atividade', 'ExecutarPlano', 'Projeto', 'Script'];
 
-    function PlanoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Plano, Atividade, ExecutarPlano, Projeto) {
+    function PlanoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Plano, Atividade, ExecutarPlano, Projeto, Script) {
         var vm = this;
 
         vm.plano = entity;
@@ -16,6 +16,7 @@
         vm.atividades = Atividade.query();
         vm.executarplanos = ExecutarPlano.query();
         vm.projetos = Projeto.query();
+        vm.scripts = Script.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

@@ -26,7 +26,6 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('executarPlano');
-                    $translatePartialLoader.addPart('status');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -49,7 +48,6 @@
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('executarPlano');
-                    $translatePartialLoader.addPart('status');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'ExecutarPlano', function($stateParams, ExecutarPlano) {
@@ -108,9 +106,7 @@
                             return {
                                 descricao: null,
                                 detalhes: null,
-                                mensagem: null,
                                 pararNaFalha: null,
-                                status: null,
                                 id: null
                             };
                         }

@@ -5,9 +5,9 @@
         .module('autobotApp')
         .controller('ExecutarPlanoDetailController', ExecutarPlanoDetailController);
 
-    ExecutarPlanoDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'ExecutarPlano', 'Script', 'Plano'];
+    ExecutarPlanoDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'ExecutarPlano', 'LogExecutarPlano', 'Plano'];
 
-    function ExecutarPlanoDetailController($scope, $rootScope, $stateParams, previousState, entity, ExecutarPlano, Script, Plano) {
+    function ExecutarPlanoDetailController($scope, $rootScope, $stateParams, previousState, entity, ExecutarPlano, LogExecutarPlano, Plano) {
         var vm = this;
 
         vm.executarPlano = entity;

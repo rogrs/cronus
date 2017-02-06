@@ -4,6 +4,10 @@ enum Status {
     SUCESSO, FALHA, FALHA_TEMPORARIA
 }
 
+enum TipoPlano {
+    UNITARIO, SEGURANCA, SISTEMA, AMBIENTE,INTEGRACAO,DESEMPENHO
+}
+
 entity Atividade {
        nome String required maxlength(80),
        comando String required maxlength(100),
@@ -22,7 +26,8 @@ entity Projeto {
 
 entity Plano {
        descricao String required maxlength(80),
-       detalhes String  maxlength(80)
+       detalhes String  maxlength(80),
+       tipo TipoPlano
 }
 
 entity Script {
@@ -33,17 +38,24 @@ entity Script {
 entity ExecutarPlano {
        descricao String required maxlength(80),
        detalhes String  maxlength(80),
-       mensagem String  maxlength(200),
-       pararNaFalha Boolean,
-       status Status
+       pararNaFalha Boolean
 }
+
+entity LogExecutarPlano {
+      criado LocalDate required,
+      finalizado LocalDate,
+      mensagem String  maxlength(8000),
+      status Status
+}
+      
+
 
 relationship OneToMany {
     Projeto to Plano{projetos(descricao)},
     Plano to Atividade{plano(descricao)},
-    Script to Atividade{scripts(descricao)},
+    Script to Plano{scripts(descricao)},
     Plugin to Script{plugin(nome)},
-    Script to ExecutarPlano{scripts(descricao)},
-    Plano to ExecutarPlano{plano(descricao)}
+    Plano to ExecutarPlano{plano(descricao)},
+    ExecutarPlano to LogExecutarPlano{execucao(descricao)}
 }
 

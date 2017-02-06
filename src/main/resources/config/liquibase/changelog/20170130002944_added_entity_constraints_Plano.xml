@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="projeto"/>
 
+        <addForeignKeyConstraint baseColumnNames="scripts_id"
+                                 baseTableName="plano"
+                                 constraintName="fk_plano_scripts_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="script"/>
+
     </changeSet>
 </databaseChangeLog>

@@ -29,7 +29,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import br.com.rogrs.autobot.domain.enumeration.Status;
 /**
  * Test class for the ExecutarPlanoResource REST controller.
  *
@@ -45,14 +44,8 @@ public class ExecutarPlanoResourceIntTest {
     private static final String DEFAULT_DETALHES = "AAAAAAAAAA";
     private static final String UPDATED_DETALHES = "BBBBBBBBBB";
 
-    private static final String DEFAULT_MENSAGEM = "AAAAAAAAAA";
-    private static final String UPDATED_MENSAGEM = "BBBBBBBBBB";
-
     private static final Boolean DEFAULT_PARAR_NA_FALHA = false;
     private static final Boolean UPDATED_PARAR_NA_FALHA = true;
-
-    private static final Status DEFAULT_STATUS = Status.SUCESSO;
-    private static final Status UPDATED_STATUS = Status.FALHA;
 
     @Inject
     private ExecutarPlanoRepository executarPlanoRepository;
@@ -94,9 +87,7 @@ public class ExecutarPlanoResourceIntTest {
         ExecutarPlano executarPlano = new ExecutarPlano()
                 .descricao(DEFAULT_DESCRICAO)
                 .detalhes(DEFAULT_DETALHES)
-                .mensagem(DEFAULT_MENSAGEM)
-                .pararNaFalha(DEFAULT_PARAR_NA_FALHA)
-                .status(DEFAULT_STATUS);
+                .pararNaFalha(DEFAULT_PARAR_NA_FALHA);
         return executarPlano;
     }
 
@@ -124,9 +115,7 @@ public class ExecutarPlanoResourceIntTest {
         ExecutarPlano testExecutarPlano = executarPlanoList.get(executarPlanoList.size() - 1);
         assertThat(testExecutarPlano.getDescricao()).isEqualTo(DEFAULT_DESCRICAO);
         assertThat(testExecutarPlano.getDetalhes()).isEqualTo(DEFAULT_DETALHES);
-        assertThat(testExecutarPlano.getMensagem()).isEqualTo(DEFAULT_MENSAGEM);
         assertThat(testExecutarPlano.isPararNaFalha()).isEqualTo(DEFAULT_PARAR_NA_FALHA);
-        assertThat(testExecutarPlano.getStatus()).isEqualTo(DEFAULT_STATUS);
 
         // Validate the ExecutarPlano in ElasticSearch
         ExecutarPlano executarPlanoEs = executarPlanoSearchRepository.findOne(testExecutarPlano.getId());
@@ -184,9 +173,7 @@ public class ExecutarPlanoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(executarPlano.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
-            .andExpect(jsonPath("$.[*].mensagem").value(hasItem(DEFAULT_MENSAGEM.toString())))
-            .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())));
     }
 
     @Test
@@ -202,9 +189,7 @@ public class ExecutarPlanoResourceIntTest {
             .andExpect(jsonPath("$.id").value(executarPlano.getId().intValue()))
             .andExpect(jsonPath("$.descricao").value(DEFAULT_DESCRICAO.toString()))
             .andExpect(jsonPath("$.detalhes").value(DEFAULT_DETALHES.toString()))
-            .andExpect(jsonPath("$.mensagem").value(DEFAULT_MENSAGEM.toString()))
-            .andExpect(jsonPath("$.pararNaFalha").value(DEFAULT_PARAR_NA_FALHA.booleanValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.pararNaFalha").value(DEFAULT_PARAR_NA_FALHA.booleanValue()));
     }
 
     @Test
@@ -228,9 +213,7 @@ public class ExecutarPlanoResourceIntTest {
         updatedExecutarPlano
                 .descricao(UPDATED_DESCRICAO)
                 .detalhes(UPDATED_DETALHES)
-                .mensagem(UPDATED_MENSAGEM)
-                .pararNaFalha(UPDATED_PARAR_NA_FALHA)
-                .status(UPDATED_STATUS);
+                .pararNaFalha(UPDATED_PARAR_NA_FALHA);
 
         restExecutarPlanoMockMvc.perform(put("/api/executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -243,9 +226,7 @@ public class ExecutarPlanoResourceIntTest {
         ExecutarPlano testExecutarPlano = executarPlanoList.get(executarPlanoList.size() - 1);
         assertThat(testExecutarPlano.getDescricao()).isEqualTo(UPDATED_DESCRICAO);
         assertThat(testExecutarPlano.getDetalhes()).isEqualTo(UPDATED_DETALHES);
-        assertThat(testExecutarPlano.getMensagem()).isEqualTo(UPDATED_MENSAGEM);
         assertThat(testExecutarPlano.isPararNaFalha()).isEqualTo(UPDATED_PARAR_NA_FALHA);
-        assertThat(testExecutarPlano.getStatus()).isEqualTo(UPDATED_STATUS);
 
         // Validate the ExecutarPlano in ElasticSearch
         ExecutarPlano executarPlanoEs = executarPlanoSearchRepository.findOne(testExecutarPlano.getId());
@@ -306,8 +287,6 @@ public class ExecutarPlanoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(executarPlano.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
-            .andExpect(jsonPath("$.[*].mensagem").value(hasItem(DEFAULT_MENSAGEM.toString())))
-            .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())));
     }
 }

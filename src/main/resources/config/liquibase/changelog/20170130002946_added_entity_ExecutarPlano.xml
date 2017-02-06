@@ -32,22 +32,10 @@
                 <constraints nullable="true" />
             </column>
             
-            <column name="mensagem" type="varchar(200)">
-                <constraints nullable="true" />
-            </column>
-            
             <column name="parar_na_falha" type="bit">
                 <constraints nullable="true" />
             </column>
             
-            <column name="status" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
-            
-            <column name="scripts_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <column name="plano_id" type="bigint">
                 <constraints nullable="true" />
             </column>

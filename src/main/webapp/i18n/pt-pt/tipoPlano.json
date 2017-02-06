@@ -1,0 +1,13 @@
+{
+    "autobotApp": {
+        "TipoPlano" : {
+            "null": "",
+            "UNITARIO": "UNITARIO",
+            "SEGURANCA": "SEGURANCA",
+            "SISTEMA": "SISTEMA",
+            "AMBIENTE": "AMBIENTE",
+            "INTEGRACAO": "INTEGRACAO",
+            "DESEMPENHO": "DESEMPENHO"
+        }
+    }
+}

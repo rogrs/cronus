@@ -5,15 +5,15 @@
         .module('autobotApp')
         .controller('ExecutarPlanoDialogController', ExecutarPlanoDialogController);
 
-    ExecutarPlanoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ExecutarPlano', 'Script', 'Plano'];
+    ExecutarPlanoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ExecutarPlano', 'LogExecutarPlano', 'Plano'];
 
-    function ExecutarPlanoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ExecutarPlano, Script, Plano) {
+    function ExecutarPlanoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ExecutarPlano, LogExecutarPlano, Plano) {
         var vm = this;
 
         vm.executarPlano = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.scripts = Script.query();
+        vm.logexecutarplanos = LogExecutarPlano.query();
         vm.planos = Plano.query();
 
         $timeout(function (){

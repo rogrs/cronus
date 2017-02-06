@@ -40,9 +40,6 @@ public class Atividade implements Serializable {
     @ManyToOne
     private Plano plano;
 
-    @ManyToOne
-    private Script scripts;
-
     public Long getId() {
         return id;
     }
@@ -101,19 +98,6 @@ public class Atividade implements Serializable {
 
     public void setPlano(Plano plano) {
         this.plano = plano;
-    }
-
-    public Script getScripts() {
-        return scripts;
-    }
-
-    public Atividade scripts(Script script) {
-        this.scripts = script;
-        return this;
-    }
-
-    public void setScripts(Script script) {
-        this.scripts = script;
     }
 
     @Override

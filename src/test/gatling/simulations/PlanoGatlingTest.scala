@@ -67,7 +67,7 @@ class PlanoGatlingTest extends Simulation {
             .exec(http("Create new plano")
             .post("/api/planos")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "descricao":"SAMPLE_TEXT", "detalhes":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "descricao":"SAMPLE_TEXT", "detalhes":"SAMPLE_TEXT", "tipo":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_plano_url"))).exitHereIfFailed
             .pause(10)

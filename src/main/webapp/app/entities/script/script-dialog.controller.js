@@ -5,16 +5,15 @@
         .module('autobotApp')
         .controller('ScriptDialogController', ScriptDialogController);
 
-    ScriptDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Script', 'Atividade', 'ExecutarPlano', 'Plugin'];
+    ScriptDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Script', 'Plano', 'Plugin'];
 
-    function ScriptDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Script, Atividade, ExecutarPlano, Plugin) {
+    function ScriptDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Script, Plano, Plugin) {
         var vm = this;
 
         vm.script = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.atividades = Atividade.query();
-        vm.executarplanos = ExecutarPlano.query();
+        vm.planos = Plano.query();
         vm.plugins = Plugin.query();
 
         $timeout(function (){

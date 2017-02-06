@@ -1,5 +1,6 @@
 package br.com.rogrs.autobot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -7,9 +8,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
-
-import br.com.rogrs.autobot.domain.enumeration.Status;
 
 /**
  * A ExecutarPlano.
@@ -35,19 +36,13 @@ public class ExecutarPlano implements Serializable {
     @Column(name = "detalhes", length = 80)
     private String detalhes;
 
-    @Size(max = 200)
-    @Column(name = "mensagem", length = 200)
-    private String mensagem;
-
     @Column(name = "parar_na_falha")
     private Boolean pararNaFalha;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
-
-    @ManyToOne
-    private Script scripts;
+    @OneToMany(mappedBy = "execucao")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<LogExecutarPlano> logExecutarPlanos = new HashSet<>();
 
     @ManyToOne
     private Plano plano;
@@ -86,19 +81,6 @@ public class ExecutarPlano implements Serializable {
         this.detalhes = detalhes;
     }
 
-    public String getMensagem() {
-        return mensagem;
-    }
-
-    public ExecutarPlano mensagem(String mensagem) {
-        this.mensagem = mensagem;
-        return this;
-    }
-
-    public void setMensagem(String mensagem) {
-        this.mensagem = mensagem;
-    }
-
     public Boolean isPararNaFalha() {
         return pararNaFalha;
     }
@@ -112,30 +94,29 @@ public class ExecutarPlano implements Serializable {
         this.pararNaFalha = pararNaFalha;
     }
 
-    public Status getStatus() {
-        return status;
+    public Set<LogExecutarPlano> getLogExecutarPlanos() {
+        return logExecutarPlanos;
     }
 
-    public ExecutarPlano status(Status status) {
-        this.status = status;
+    public ExecutarPlano logExecutarPlanos(Set<LogExecutarPlano> logExecutarPlanos) {
+        this.logExecutarPlanos = logExecutarPlanos;
         return this;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-
-    public Script getScripts() {
-        return scripts;
-    }
-
-    public ExecutarPlano scripts(Script script) {
-        this.scripts = script;
+    public ExecutarPlano addLogExecutarPlano(LogExecutarPlano logExecutarPlano) {
+        logExecutarPlanos.add(logExecutarPlano);
+        logExecutarPlano.setExecucao(this);
         return this;
     }
 
-    public void setScripts(Script script) {
-        this.scripts = script;
+    public ExecutarPlano removeLogExecutarPlano(LogExecutarPlano logExecutarPlano) {
+        logExecutarPlanos.remove(logExecutarPlano);
+        logExecutarPlano.setExecucao(null);
+        return this;
+    }
+
+    public void setLogExecutarPlanos(Set<LogExecutarPlano> logExecutarPlanos) {
+        this.logExecutarPlanos = logExecutarPlanos;
     }
 
     public Plano getPlano() {
@@ -177,9 +158,7 @@ public class ExecutarPlano implements Serializable {
             "id=" + id +
             ", descricao='" + descricao + "'" +
             ", detalhes='" + detalhes + "'" +
-            ", mensagem='" + mensagem + "'" +
             ", pararNaFalha='" + pararNaFalha + "'" +
-            ", status='" + status + "'" +
             '}';
     }
 }

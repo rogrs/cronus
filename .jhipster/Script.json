@@ -3,14 +3,8 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "atividade",
-            "otherEntityName": "atividade",
-            "otherEntityRelationshipName": "scripts"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "executarPlano",
-            "otherEntityName": "executarPlano",
+            "relationshipName": "plano",
+            "otherEntityName": "plano",
             "otherEntityRelationshipName": "scripts"
         },
         {

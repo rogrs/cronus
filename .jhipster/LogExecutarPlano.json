@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "execucao",
+            "otherEntityName": "executarPlano",
+            "otherEntityField": "descricao"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "criado",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "finalizado",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "mensagem",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 8000
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Status",
+            "fieldValues": "SUCESSO,FALHA,FALHA_TEMPORARIA"
+        }
+    ],
+    "changelogDate": "20170205233313",
+    "entityTableName": "log_executar_plano",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

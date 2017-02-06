@@ -4,7 +4,7 @@ describe('Controller Tests', function() {
 
     describe('ExecutarPlano Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockExecutarPlano, MockScript, MockPlano;
+        var MockEntity, MockPreviousState, MockExecutarPlano, MockLogExecutarPlano, MockPlano;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -13,7 +13,7 @@ describe('Controller Tests', function() {
             MockEntity = jasmine.createSpy('MockEntity');
             MockPreviousState = jasmine.createSpy('MockPreviousState');
             MockExecutarPlano = jasmine.createSpy('MockExecutarPlano');
-            MockScript = jasmine.createSpy('MockScript');
+            MockLogExecutarPlano = jasmine.createSpy('MockLogExecutarPlano');
             MockPlano = jasmine.createSpy('MockPlano');
             
 
@@ -23,7 +23,7 @@ describe('Controller Tests', function() {
                 'entity': MockEntity,
                 'previousState': MockPreviousState,
                 'ExecutarPlano': MockExecutarPlano,
-                'Script': MockScript,
+                'LogExecutarPlano': MockLogExecutarPlano,
                 'Plano': MockPlano
             };
             createController = function() {

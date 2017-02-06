@@ -40,12 +40,7 @@ public class Script implements Serializable {
     @OneToMany(mappedBy = "scripts")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Atividade> atividades = new HashSet<>();
-
-    @OneToMany(mappedBy = "scripts")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ExecutarPlano> executarPlanos = new HashSet<>();
+    private Set<Plano> planos = new HashSet<>();
 
     @ManyToOne
     private Plugin plugin;
@@ -84,54 +79,29 @@ public class Script implements Serializable {
         this.path = path;
     }
 
-    public Set<Atividade> getAtividades() {
-        return atividades;
+    public Set<Plano> getPlanos() {
+        return planos;
     }
 
-    public Script atividades(Set<Atividade> atividades) {
-        this.atividades = atividades;
+    public Script planos(Set<Plano> planos) {
+        this.planos = planos;
         return this;
     }
 
-    public Script addAtividade(Atividade atividade) {
-        atividades.add(atividade);
-        atividade.setScripts(this);
+    public Script addPlano(Plano plano) {
+        planos.add(plano);
+        plano.setScripts(this);
         return this;
     }
 
-    public Script removeAtividade(Atividade atividade) {
-        atividades.remove(atividade);
-        atividade.setScripts(null);
+    public Script removePlano(Plano plano) {
+        planos.remove(plano);
+        plano.setScripts(null);
         return this;
     }
 
-    public void setAtividades(Set<Atividade> atividades) {
-        this.atividades = atividades;
-    }
-
-    public Set<ExecutarPlano> getExecutarPlanos() {
-        return executarPlanos;
-    }
-
-    public Script executarPlanos(Set<ExecutarPlano> executarPlanos) {
-        this.executarPlanos = executarPlanos;
-        return this;
-    }
-
-    public Script addExecutarPlano(ExecutarPlano executarPlano) {
-        executarPlanos.add(executarPlano);
-        executarPlano.setScripts(this);
-        return this;
-    }
-
-    public Script removeExecutarPlano(ExecutarPlano executarPlano) {
-        executarPlanos.remove(executarPlano);
-        executarPlano.setScripts(null);
-        return this;
-    }
-
-    public void setExecutarPlanos(Set<ExecutarPlano> executarPlanos) {
-        this.executarPlanos = executarPlanos;
+    public void setPlanos(Set<Plano> planos) {
+        this.planos = planos;
     }
 
     public Plugin getPlugin() {

@@ -18,8 +18,7 @@
             },
             "descricao": "Descricao",
             "path": "Path",
-            "atividade": "Atividade",
-            "executarPlano": "Executar Plano",
+            "plano": "Plano",
             "plugin": "Plugin"
         }
     }

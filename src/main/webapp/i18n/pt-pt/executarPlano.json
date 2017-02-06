@@ -18,10 +18,8 @@
             },
             "descricao": "Descricao",
             "detalhes": "Detalhes",
-            "mensagem": "Mensagem",
             "pararNaFalha": "Parar Na Falha",
-            "status": "Status",
-            "scripts": "Scripts",
+            "logExecutarPlano": "Log Executar Plano",
             "plano": "Plano"
         }
     }

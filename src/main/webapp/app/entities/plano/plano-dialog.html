@@ -41,10 +41,27 @@
                 </p>
             </div>
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="autobotApp.plano.tipo" for="field_tipo">Tipo</label>
+            <select class="form-control" name="tipo" ng-model="vm.plano.tipo" id="field_tipo">
+                <option value="UNITARIO" data-translate="autobotApp.TipoPlano.UNITARIO">UNITARIO</option>
+                <option value="SEGURANCA" data-translate="autobotApp.TipoPlano.SEGURANCA">SEGURANCA</option>
+                <option value="SISTEMA" data-translate="autobotApp.TipoPlano.SISTEMA">SISTEMA</option>
+                <option value="AMBIENTE" data-translate="autobotApp.TipoPlano.AMBIENTE">AMBIENTE</option>
+                <option value="INTEGRACAO" data-translate="autobotApp.TipoPlano.INTEGRACAO">INTEGRACAO</option>
+                <option value="DESEMPENHO" data-translate="autobotApp.TipoPlano.DESEMPENHO">DESEMPENHO</option>
+            </select>
+        </div>
 
         <div class="form-group">
             <label data-translate="autobotApp.plano.projetos" for="field_projetos">Projetos</label>
             <select class="form-control" id="field_projetos" name="projetos" ng-model="vm.plano.projetos" ng-options="projeto as projeto.descricao for projeto in vm.projetos track by projeto.id">
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="autobotApp.plano.scripts" for="field_scripts">Scripts</label>
+            <select class="form-control" id="field_scripts" name="scripts" ng-model="vm.plano.scripts" ng-options="script as script.descricao for script in vm.scripts track by script.id">
                 <option value=""></option>
             </select>
         </div>

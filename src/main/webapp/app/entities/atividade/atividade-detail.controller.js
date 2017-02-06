@@ -5,9 +5,9 @@
         .module('autobotApp')
         .controller('AtividadeDetailController', AtividadeDetailController);
 
-    AtividadeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Atividade', 'Plano', 'Script'];
+    AtividadeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Atividade', 'Plano'];
 
-    function AtividadeDetailController($scope, $rootScope, $stateParams, previousState, entity, Atividade, Plano, Script) {
+    function AtividadeDetailController($scope, $rootScope, $stateParams, previousState, entity, Atividade, Plano) {
         var vm = this;
 
         vm.atividade = entity;

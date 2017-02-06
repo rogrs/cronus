@@ -2,10 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "scripts",
-            "otherEntityName": "script",
-            "otherEntityField": "descricao"
+            "relationshipType": "one-to-many",
+            "relationshipName": "logExecutarPlano",
+            "otherEntityName": "logExecutarPlano",
+            "otherEntityRelationshipName": "execucao"
         },
         {
             "relationshipType": "many-to-one",
@@ -33,21 +33,8 @@
             "fieldValidateRulesMaxlength": 80
         },
         {
-            "fieldName": "mensagem",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "maxlength"
-            ],
-            "fieldValidateRulesMaxlength": 200
-        },
-        {
             "fieldName": "pararNaFalha",
             "fieldType": "Boolean"
-        },
-        {
-            "fieldName": "status",
-            "fieldType": "Status",
-            "fieldValues": "SUCESSO,FALHA,FALHA_TEMPORARIA"
         }
     ],
     "changelogDate": "20170130002946",

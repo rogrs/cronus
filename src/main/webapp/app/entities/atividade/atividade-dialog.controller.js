@@ -5,16 +5,15 @@
         .module('autobotApp')
         .controller('AtividadeDialogController', AtividadeDialogController);
 
-    AtividadeDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Atividade', 'Plano', 'Script'];
+    AtividadeDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Atividade', 'Plano'];
 
-    function AtividadeDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Atividade, Plano, Script) {
+    function AtividadeDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Atividade, Plano) {
         var vm = this;
 
         vm.atividade = entity;
         vm.clear = clear;
         vm.save = save;
         vm.planos = Plano.query();
-        vm.scripts = Script.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
