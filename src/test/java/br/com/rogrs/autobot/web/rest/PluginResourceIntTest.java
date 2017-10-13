@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.Plugin;
 import br.com.rogrs.autobot.repository.PluginRepository;
 import br.com.rogrs.autobot.repository.search.PluginSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -44,19 +44,22 @@ public class PluginResourceIntTest {
     private static final String DEFAULT_COMANDO = "AAAAAAAAAA";
     private static final String UPDATED_COMANDO = "BBBBBBBBBB";
 
-    @Inject
+    @Autowired
     private PluginRepository pluginRepository;
 
-    @Inject
+    @Autowired
     private PluginSearchRepository pluginSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restPluginMockMvc;
@@ -66,11 +69,10 @@ public class PluginResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PluginResource pluginResource = new PluginResource();
-        ReflectionTestUtils.setField(pluginResource, "pluginSearchRepository", pluginSearchRepository);
-        ReflectionTestUtils.setField(pluginResource, "pluginRepository", pluginRepository);
+        final PluginResource pluginResource = new PluginResource(pluginRepository, pluginSearchRepository);
         this.restPluginMockMvc = MockMvcBuilders.standaloneSetup(pluginResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -82,8 +84,8 @@ public class PluginResourceIntTest {
      */
     public static Plugin createEntity(EntityManager em) {
         Plugin plugin = new Plugin()
-                .nome(DEFAULT_NOME)
-                .comando(DEFAULT_COMANDO);
+            .nome(DEFAULT_NOME)
+            .comando(DEFAULT_COMANDO);
         return plugin;
     }
 
@@ -99,7 +101,6 @@ public class PluginResourceIntTest {
         int databaseSizeBeforeCreate = pluginRepository.findAll().size();
 
         // Create the Plugin
-
         restPluginMockMvc.perform(post("/api/plugins")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(plugin)))
@@ -112,7 +113,7 @@ public class PluginResourceIntTest {
         assertThat(testPlugin.getNome()).isEqualTo(DEFAULT_NOME);
         assertThat(testPlugin.getComando()).isEqualTo(DEFAULT_COMANDO);
 
-        // Validate the Plugin in ElasticSearch
+        // Validate the Plugin in Elasticsearch
         Plugin pluginEs = pluginSearchRepository.findOne(testPlugin.getId());
         assertThat(pluginEs).isEqualToComparingFieldByField(testPlugin);
     }
@@ -123,16 +124,15 @@ public class PluginResourceIntTest {
         int databaseSizeBeforeCreate = pluginRepository.findAll().size();
 
         // Create the Plugin with an existing ID
-        Plugin existingPlugin = new Plugin();
-        existingPlugin.setId(1L);
+        plugin.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPluginMockMvc.perform(post("/api/plugins")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingPlugin)))
+            .content(TestUtil.convertObjectToJsonBytes(plugin)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Plugin in the database
         List<Plugin> pluginList = pluginRepository.findAll();
         assertThat(pluginList).hasSize(databaseSizeBeforeCreate);
     }
@@ -222,8 +222,8 @@ public class PluginResourceIntTest {
         // Update the plugin
         Plugin updatedPlugin = pluginRepository.findOne(plugin.getId());
         updatedPlugin
-                .nome(UPDATED_NOME)
-                .comando(UPDATED_COMANDO);
+            .nome(UPDATED_NOME)
+            .comando(UPDATED_COMANDO);
 
         restPluginMockMvc.perform(put("/api/plugins")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -237,7 +237,7 @@ public class PluginResourceIntTest {
         assertThat(testPlugin.getNome()).isEqualTo(UPDATED_NOME);
         assertThat(testPlugin.getComando()).isEqualTo(UPDATED_COMANDO);
 
-        // Validate the Plugin in ElasticSearch
+        // Validate the Plugin in Elasticsearch
         Plugin pluginEs = pluginSearchRepository.findOne(testPlugin.getId());
         assertThat(pluginEs).isEqualToComparingFieldByField(testPlugin);
     }
@@ -273,7 +273,7 @@ public class PluginResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean pluginExistsInEs = pluginSearchRepository.exists(plugin.getId());
         assertThat(pluginExistsInEs).isFalse();
 
@@ -296,5 +296,20 @@ public class PluginResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(plugin.getId().intValue())))
             .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME.toString())))
             .andExpect(jsonPath("$.[*].comando").value(hasItem(DEFAULT_COMANDO.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Plugin.class);
+        Plugin plugin1 = new Plugin();
+        plugin1.setId(1L);
+        Plugin plugin2 = new Plugin();
+        plugin2.setId(plugin1.getId());
+        assertThat(plugin1).isEqualTo(plugin2);
+        plugin2.setId(2L);
+        assertThat(plugin1).isNotEqualTo(plugin2);
+        plugin1.setId(null);
+        assertThat(plugin1).isNotEqualTo(plugin2);
     }
 }

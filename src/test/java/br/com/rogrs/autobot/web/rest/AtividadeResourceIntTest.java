@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.Atividade;
 import br.com.rogrs.autobot.repository.AtividadeRepository;
 import br.com.rogrs.autobot.repository.search.AtividadeSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -47,19 +47,22 @@ public class AtividadeResourceIntTest {
     private static final Boolean DEFAULT_PARAR_NA_FALHA = false;
     private static final Boolean UPDATED_PARAR_NA_FALHA = true;
 
-    @Inject
+    @Autowired
     private AtividadeRepository atividadeRepository;
 
-    @Inject
+    @Autowired
     private AtividadeSearchRepository atividadeSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restAtividadeMockMvc;
@@ -69,11 +72,10 @@ public class AtividadeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AtividadeResource atividadeResource = new AtividadeResource();
-        ReflectionTestUtils.setField(atividadeResource, "atividadeSearchRepository", atividadeSearchRepository);
-        ReflectionTestUtils.setField(atividadeResource, "atividadeRepository", atividadeRepository);
+        final AtividadeResource atividadeResource = new AtividadeResource(atividadeRepository, atividadeSearchRepository);
         this.restAtividadeMockMvc = MockMvcBuilders.standaloneSetup(atividadeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -85,9 +87,9 @@ public class AtividadeResourceIntTest {
      */
     public static Atividade createEntity(EntityManager em) {
         Atividade atividade = new Atividade()
-                .nome(DEFAULT_NOME)
-                .comando(DEFAULT_COMANDO)
-                .pararNaFalha(DEFAULT_PARAR_NA_FALHA);
+            .nome(DEFAULT_NOME)
+            .comando(DEFAULT_COMANDO)
+            .pararNaFalha(DEFAULT_PARAR_NA_FALHA);
         return atividade;
     }
 
@@ -103,7 +105,6 @@ public class AtividadeResourceIntTest {
         int databaseSizeBeforeCreate = atividadeRepository.findAll().size();
 
         // Create the Atividade
-
         restAtividadeMockMvc.perform(post("/api/atividades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(atividade)))
@@ -117,7 +118,7 @@ public class AtividadeResourceIntTest {
         assertThat(testAtividade.getComando()).isEqualTo(DEFAULT_COMANDO);
         assertThat(testAtividade.isPararNaFalha()).isEqualTo(DEFAULT_PARAR_NA_FALHA);
 
-        // Validate the Atividade in ElasticSearch
+        // Validate the Atividade in Elasticsearch
         Atividade atividadeEs = atividadeSearchRepository.findOne(testAtividade.getId());
         assertThat(atividadeEs).isEqualToComparingFieldByField(testAtividade);
     }
@@ -128,16 +129,15 @@ public class AtividadeResourceIntTest {
         int databaseSizeBeforeCreate = atividadeRepository.findAll().size();
 
         // Create the Atividade with an existing ID
-        Atividade existingAtividade = new Atividade();
-        existingAtividade.setId(1L);
+        atividade.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAtividadeMockMvc.perform(post("/api/atividades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingAtividade)))
+            .content(TestUtil.convertObjectToJsonBytes(atividade)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Atividade in the database
         List<Atividade> atividadeList = atividadeRepository.findAll();
         assertThat(atividadeList).hasSize(databaseSizeBeforeCreate);
     }
@@ -229,9 +229,9 @@ public class AtividadeResourceIntTest {
         // Update the atividade
         Atividade updatedAtividade = atividadeRepository.findOne(atividade.getId());
         updatedAtividade
-                .nome(UPDATED_NOME)
-                .comando(UPDATED_COMANDO)
-                .pararNaFalha(UPDATED_PARAR_NA_FALHA);
+            .nome(UPDATED_NOME)
+            .comando(UPDATED_COMANDO)
+            .pararNaFalha(UPDATED_PARAR_NA_FALHA);
 
         restAtividadeMockMvc.perform(put("/api/atividades")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -246,7 +246,7 @@ public class AtividadeResourceIntTest {
         assertThat(testAtividade.getComando()).isEqualTo(UPDATED_COMANDO);
         assertThat(testAtividade.isPararNaFalha()).isEqualTo(UPDATED_PARAR_NA_FALHA);
 
-        // Validate the Atividade in ElasticSearch
+        // Validate the Atividade in Elasticsearch
         Atividade atividadeEs = atividadeSearchRepository.findOne(testAtividade.getId());
         assertThat(atividadeEs).isEqualToComparingFieldByField(testAtividade);
     }
@@ -282,7 +282,7 @@ public class AtividadeResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean atividadeExistsInEs = atividadeSearchRepository.exists(atividade.getId());
         assertThat(atividadeExistsInEs).isFalse();
 
@@ -306,5 +306,20 @@ public class AtividadeResourceIntTest {
             .andExpect(jsonPath("$.[*].nome").value(hasItem(DEFAULT_NOME.toString())))
             .andExpect(jsonPath("$.[*].comando").value(hasItem(DEFAULT_COMANDO.toString())))
             .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Atividade.class);
+        Atividade atividade1 = new Atividade();
+        atividade1.setId(1L);
+        Atividade atividade2 = new Atividade();
+        atividade2.setId(atividade1.getId());
+        assertThat(atividade1).isEqualTo(atividade2);
+        atividade2.setId(2L);
+        assertThat(atividade1).isNotEqualTo(atividade2);
+        atividade1.setId(null);
+        assertThat(atividade1).isNotEqualTo(atividade2);
     }
 }

@@ -50,7 +50,7 @@
             "fieldValues": "UNITARIO,SEGURANCA,SISTEMA,AMBIENTE,INTEGRACAO,DESEMPENHO"
         }
     ],
-    "changelogDate": "20170130002944",
+    "changelogDate": "20171012034018",
     "entityTableName": "plano",
     "dto": "no",
     "pagination": "no",

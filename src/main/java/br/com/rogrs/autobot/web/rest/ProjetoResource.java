@@ -6,18 +6,16 @@ import br.com.rogrs.autobot.domain.Projeto;
 import br.com.rogrs.autobot.repository.ProjetoRepository;
 import br.com.rogrs.autobot.repository.search.ProjetoSearchRepository;
 import br.com.rogrs.autobot.web.rest.util.HeaderUtil;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,12 +31,17 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ProjetoResource {
 
     private final Logger log = LoggerFactory.getLogger(ProjetoResource.class);
-        
-    @Inject
-    private ProjetoRepository projetoRepository;
 
-    @Inject
-    private ProjetoSearchRepository projetoSearchRepository;
+    private static final String ENTITY_NAME = "projeto";
+
+    private final ProjetoRepository projetoRepository;
+
+    private final ProjetoSearchRepository projetoSearchRepository;
+
+    public ProjetoResource(ProjetoRepository projetoRepository, ProjetoSearchRepository projetoSearchRepository) {
+        this.projetoRepository = projetoRepository;
+        this.projetoSearchRepository = projetoSearchRepository;
+    }
 
     /**
      * POST  /projetos : Create a new projeto.
@@ -52,12 +55,12 @@ public class ProjetoResource {
     public ResponseEntity<Projeto> createProjeto(@Valid @RequestBody Projeto projeto) throws URISyntaxException {
         log.debug("REST request to save Projeto : {}", projeto);
         if (projeto.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("projeto", "idexists", "A new projeto cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new projeto cannot already have an ID")).body(null);
         }
         Projeto result = projetoRepository.save(projeto);
         projetoSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/projetos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("projeto", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -67,7 +70,7 @@ public class ProjetoResource {
      * @param projeto the projeto to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated projeto,
      * or with status 400 (Bad Request) if the projeto is not valid,
-     * or with status 500 (Internal Server Error) if the projeto couldnt be updated
+     * or with status 500 (Internal Server Error) if the projeto couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/projetos")
@@ -80,7 +83,7 @@ public class ProjetoResource {
         Projeto result = projetoRepository.save(projeto);
         projetoSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("projeto", projeto.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, projeto.getId().toString()))
             .body(result);
     }
 
@@ -93,9 +96,8 @@ public class ProjetoResource {
     @Timed
     public List<Projeto> getAllProjetos() {
         log.debug("REST request to get all Projetos");
-        List<Projeto> projetos = projetoRepository.findAll();
-        return projetos;
-    }
+        return projetoRepository.findAll();
+        }
 
     /**
      * GET  /projetos/:id : get the "id" projeto.
@@ -108,11 +110,7 @@ public class ProjetoResource {
     public ResponseEntity<Projeto> getProjeto(@PathVariable Long id) {
         log.debug("REST request to get Projeto : {}", id);
         Projeto projeto = projetoRepository.findOne(id);
-        return Optional.ofNullable(projeto)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(projeto));
     }
 
     /**
@@ -127,14 +125,14 @@ public class ProjetoResource {
         log.debug("REST request to delete Projeto : {}", id);
         projetoRepository.delete(id);
         projetoSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("projeto", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**
      * SEARCH  /_search/projetos?query=:query : search for the projeto corresponding
      * to the query.
      *
-     * @param query the query of the projeto search 
+     * @param query the query of the projeto search
      * @return the result of the search
      */
     @GetMapping("/_search/projetos")
@@ -145,6 +143,5 @@ public class ProjetoResource {
             .stream(projetoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

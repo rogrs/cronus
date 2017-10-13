@@ -1,0 +1,26 @@
+{
+    "autobotApp": {
+        "logExecutarPlano" : {
+            "home": {
+                "title": "Log Executar Planos",
+                "createLabel": "Create a new Log Executar Plano",
+                "createOrEditLabel": "Create or edit a Log Executar Plano",
+                "search": "Search for Log Executar Plano"
+            },
+            "created": "A new Log Executar Plano is created with identifier {{ param }}",
+            "updated": "A Log Executar Plano is updated with identifier {{ param }}",
+            "deleted": "A Log Executar Plano is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Log Executar Plano {{ id }}?"
+            },
+            "detail": {
+                "title": "Log Executar Plano"
+            },
+            "criado": "Criado",
+            "finalizado": "Finalizado",
+            "mensagem": "Mensagem",
+            "status": "Status",
+            "execucao": "Execucao"
+        }
+    }
+}

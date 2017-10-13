@@ -28,7 +28,7 @@
             "fieldValidateRulesMaxlength": 100
         }
     ],
-    "changelogDate": "20170130002942",
+    "changelogDate": "20171012034016",
     "entityTableName": "plugin",
     "dto": "no",
     "pagination": "no",

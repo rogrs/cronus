@@ -1,0 +1,39 @@
+
+<div *ngIf="atividade">
+    <h2><span jhiTranslate="autobotApp.atividade.detail.title">Atividade</span> {{atividade.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="autobotApp.atividade.nome">Nome</span></dt>
+        <dd>
+            <span>{{atividade.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.atividade.comando">Comando</span></dt>
+        <dd>
+            <span>{{atividade.comando}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.atividade.pararNaFalha">Parar Na Falha</span></dt>
+        <dd>
+            <span>{{atividade.pararNaFalha}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.atividade.plano">Plano</span></dt>
+        <dd>
+            <div *ngIf="atividade.plano">
+                <a [routerLink]="['/plano', atividade.plano?.id]">{{atividade.plano?.descricao}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'atividade/'+ atividade.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

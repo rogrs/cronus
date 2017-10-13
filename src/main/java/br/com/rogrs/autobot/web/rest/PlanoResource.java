@@ -6,18 +6,16 @@ import br.com.rogrs.autobot.domain.Plano;
 import br.com.rogrs.autobot.repository.PlanoRepository;
 import br.com.rogrs.autobot.repository.search.PlanoSearchRepository;
 import br.com.rogrs.autobot.web.rest.util.HeaderUtil;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,12 +31,17 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class PlanoResource {
 
     private final Logger log = LoggerFactory.getLogger(PlanoResource.class);
-        
-    @Inject
-    private PlanoRepository planoRepository;
 
-    @Inject
-    private PlanoSearchRepository planoSearchRepository;
+    private static final String ENTITY_NAME = "plano";
+
+    private final PlanoRepository planoRepository;
+
+    private final PlanoSearchRepository planoSearchRepository;
+
+    public PlanoResource(PlanoRepository planoRepository, PlanoSearchRepository planoSearchRepository) {
+        this.planoRepository = planoRepository;
+        this.planoSearchRepository = planoSearchRepository;
+    }
 
     /**
      * POST  /planos : Create a new plano.
@@ -52,12 +55,12 @@ public class PlanoResource {
     public ResponseEntity<Plano> createPlano(@Valid @RequestBody Plano plano) throws URISyntaxException {
         log.debug("REST request to save Plano : {}", plano);
         if (plano.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("plano", "idexists", "A new plano cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new plano cannot already have an ID")).body(null);
         }
         Plano result = planoRepository.save(plano);
         planoSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/planos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("plano", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -67,7 +70,7 @@ public class PlanoResource {
      * @param plano the plano to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated plano,
      * or with status 400 (Bad Request) if the plano is not valid,
-     * or with status 500 (Internal Server Error) if the plano couldnt be updated
+     * or with status 500 (Internal Server Error) if the plano couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/planos")
@@ -80,7 +83,7 @@ public class PlanoResource {
         Plano result = planoRepository.save(plano);
         planoSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("plano", plano.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, plano.getId().toString()))
             .body(result);
     }
 
@@ -93,9 +96,8 @@ public class PlanoResource {
     @Timed
     public List<Plano> getAllPlanos() {
         log.debug("REST request to get all Planos");
-        List<Plano> planos = planoRepository.findAll();
-        return planos;
-    }
+        return planoRepository.findAll();
+        }
 
     /**
      * GET  /planos/:id : get the "id" plano.
@@ -108,11 +110,7 @@ public class PlanoResource {
     public ResponseEntity<Plano> getPlano(@PathVariable Long id) {
         log.debug("REST request to get Plano : {}", id);
         Plano plano = planoRepository.findOne(id);
-        return Optional.ofNullable(plano)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(plano));
     }
 
     /**
@@ -127,14 +125,14 @@ public class PlanoResource {
         log.debug("REST request to delete Plano : {}", id);
         planoRepository.delete(id);
         planoSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("plano", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**
      * SEARCH  /_search/planos?query=:query : search for the plano corresponding
      * to the query.
      *
-     * @param query the query of the plano search 
+     * @param query the query of the plano search
      * @return the result of the search
      */
     @GetMapping("/_search/planos")
@@ -145,6 +143,5 @@ public class PlanoResource {
             .stream(planoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

@@ -6,18 +6,16 @@ import br.com.rogrs.autobot.domain.Atividade;
 import br.com.rogrs.autobot.repository.AtividadeRepository;
 import br.com.rogrs.autobot.repository.search.AtividadeSearchRepository;
 import br.com.rogrs.autobot.web.rest.util.HeaderUtil;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,12 +31,17 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class AtividadeResource {
 
     private final Logger log = LoggerFactory.getLogger(AtividadeResource.class);
-        
-    @Inject
-    private AtividadeRepository atividadeRepository;
 
-    @Inject
-    private AtividadeSearchRepository atividadeSearchRepository;
+    private static final String ENTITY_NAME = "atividade";
+
+    private final AtividadeRepository atividadeRepository;
+
+    private final AtividadeSearchRepository atividadeSearchRepository;
+
+    public AtividadeResource(AtividadeRepository atividadeRepository, AtividadeSearchRepository atividadeSearchRepository) {
+        this.atividadeRepository = atividadeRepository;
+        this.atividadeSearchRepository = atividadeSearchRepository;
+    }
 
     /**
      * POST  /atividades : Create a new atividade.
@@ -52,12 +55,12 @@ public class AtividadeResource {
     public ResponseEntity<Atividade> createAtividade(@Valid @RequestBody Atividade atividade) throws URISyntaxException {
         log.debug("REST request to save Atividade : {}", atividade);
         if (atividade.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("atividade", "idexists", "A new atividade cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new atividade cannot already have an ID")).body(null);
         }
         Atividade result = atividadeRepository.save(atividade);
         atividadeSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/atividades/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("atividade", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -67,7 +70,7 @@ public class AtividadeResource {
      * @param atividade the atividade to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated atividade,
      * or with status 400 (Bad Request) if the atividade is not valid,
-     * or with status 500 (Internal Server Error) if the atividade couldnt be updated
+     * or with status 500 (Internal Server Error) if the atividade couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/atividades")
@@ -80,7 +83,7 @@ public class AtividadeResource {
         Atividade result = atividadeRepository.save(atividade);
         atividadeSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("atividade", atividade.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, atividade.getId().toString()))
             .body(result);
     }
 
@@ -93,9 +96,8 @@ public class AtividadeResource {
     @Timed
     public List<Atividade> getAllAtividades() {
         log.debug("REST request to get all Atividades");
-        List<Atividade> atividades = atividadeRepository.findAll();
-        return atividades;
-    }
+        return atividadeRepository.findAll();
+        }
 
     /**
      * GET  /atividades/:id : get the "id" atividade.
@@ -108,11 +110,7 @@ public class AtividadeResource {
     public ResponseEntity<Atividade> getAtividade(@PathVariable Long id) {
         log.debug("REST request to get Atividade : {}", id);
         Atividade atividade = atividadeRepository.findOne(id);
-        return Optional.ofNullable(atividade)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(atividade));
     }
 
     /**
@@ -127,14 +125,14 @@ public class AtividadeResource {
         log.debug("REST request to delete Atividade : {}", id);
         atividadeRepository.delete(id);
         atividadeSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("atividade", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**
      * SEARCH  /_search/atividades?query=:query : search for the atividade corresponding
      * to the query.
      *
-     * @param query the query of the atividade search 
+     * @param query the query of the atividade search
      * @return the result of the search
      */
     @GetMapping("/_search/atividades")
@@ -145,6 +143,5 @@ public class AtividadeResource {
             .stream(atividadeSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

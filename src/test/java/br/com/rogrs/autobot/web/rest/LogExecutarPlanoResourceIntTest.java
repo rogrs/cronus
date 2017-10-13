@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.LogExecutarPlano;
 import br.com.rogrs.autobot.repository.LogExecutarPlanoRepository;
 import br.com.rogrs.autobot.repository.search.LogExecutarPlanoSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -53,19 +53,22 @@ public class LogExecutarPlanoResourceIntTest {
     private static final Status DEFAULT_STATUS = Status.SUCESSO;
     private static final Status UPDATED_STATUS = Status.FALHA;
 
-    @Inject
+    @Autowired
     private LogExecutarPlanoRepository logExecutarPlanoRepository;
 
-    @Inject
+    @Autowired
     private LogExecutarPlanoSearchRepository logExecutarPlanoSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restLogExecutarPlanoMockMvc;
@@ -75,11 +78,10 @@ public class LogExecutarPlanoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        LogExecutarPlanoResource logExecutarPlanoResource = new LogExecutarPlanoResource();
-        ReflectionTestUtils.setField(logExecutarPlanoResource, "logExecutarPlanoSearchRepository", logExecutarPlanoSearchRepository);
-        ReflectionTestUtils.setField(logExecutarPlanoResource, "logExecutarPlanoRepository", logExecutarPlanoRepository);
+        final LogExecutarPlanoResource logExecutarPlanoResource = new LogExecutarPlanoResource(logExecutarPlanoRepository, logExecutarPlanoSearchRepository);
         this.restLogExecutarPlanoMockMvc = MockMvcBuilders.standaloneSetup(logExecutarPlanoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -91,10 +93,10 @@ public class LogExecutarPlanoResourceIntTest {
      */
     public static LogExecutarPlano createEntity(EntityManager em) {
         LogExecutarPlano logExecutarPlano = new LogExecutarPlano()
-                .criado(DEFAULT_CRIADO)
-                .finalizado(DEFAULT_FINALIZADO)
-                .mensagem(DEFAULT_MENSAGEM)
-                .status(DEFAULT_STATUS);
+            .criado(DEFAULT_CRIADO)
+            .finalizado(DEFAULT_FINALIZADO)
+            .mensagem(DEFAULT_MENSAGEM)
+            .status(DEFAULT_STATUS);
         return logExecutarPlano;
     }
 
@@ -110,7 +112,6 @@ public class LogExecutarPlanoResourceIntTest {
         int databaseSizeBeforeCreate = logExecutarPlanoRepository.findAll().size();
 
         // Create the LogExecutarPlano
-
         restLogExecutarPlanoMockMvc.perform(post("/api/log-executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(logExecutarPlano)))
@@ -125,7 +126,7 @@ public class LogExecutarPlanoResourceIntTest {
         assertThat(testLogExecutarPlano.getMensagem()).isEqualTo(DEFAULT_MENSAGEM);
         assertThat(testLogExecutarPlano.getStatus()).isEqualTo(DEFAULT_STATUS);
 
-        // Validate the LogExecutarPlano in ElasticSearch
+        // Validate the LogExecutarPlano in Elasticsearch
         LogExecutarPlano logExecutarPlanoEs = logExecutarPlanoSearchRepository.findOne(testLogExecutarPlano.getId());
         assertThat(logExecutarPlanoEs).isEqualToComparingFieldByField(testLogExecutarPlano);
     }
@@ -136,16 +137,15 @@ public class LogExecutarPlanoResourceIntTest {
         int databaseSizeBeforeCreate = logExecutarPlanoRepository.findAll().size();
 
         // Create the LogExecutarPlano with an existing ID
-        LogExecutarPlano existingLogExecutarPlano = new LogExecutarPlano();
-        existingLogExecutarPlano.setId(1L);
+        logExecutarPlano.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLogExecutarPlanoMockMvc.perform(post("/api/log-executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingLogExecutarPlano)))
+            .content(TestUtil.convertObjectToJsonBytes(logExecutarPlano)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the LogExecutarPlano in the database
         List<LogExecutarPlano> logExecutarPlanoList = logExecutarPlanoRepository.findAll();
         assertThat(logExecutarPlanoList).hasSize(databaseSizeBeforeCreate);
     }
@@ -221,10 +221,10 @@ public class LogExecutarPlanoResourceIntTest {
         // Update the logExecutarPlano
         LogExecutarPlano updatedLogExecutarPlano = logExecutarPlanoRepository.findOne(logExecutarPlano.getId());
         updatedLogExecutarPlano
-                .criado(UPDATED_CRIADO)
-                .finalizado(UPDATED_FINALIZADO)
-                .mensagem(UPDATED_MENSAGEM)
-                .status(UPDATED_STATUS);
+            .criado(UPDATED_CRIADO)
+            .finalizado(UPDATED_FINALIZADO)
+            .mensagem(UPDATED_MENSAGEM)
+            .status(UPDATED_STATUS);
 
         restLogExecutarPlanoMockMvc.perform(put("/api/log-executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -240,7 +240,7 @@ public class LogExecutarPlanoResourceIntTest {
         assertThat(testLogExecutarPlano.getMensagem()).isEqualTo(UPDATED_MENSAGEM);
         assertThat(testLogExecutarPlano.getStatus()).isEqualTo(UPDATED_STATUS);
 
-        // Validate the LogExecutarPlano in ElasticSearch
+        // Validate the LogExecutarPlano in Elasticsearch
         LogExecutarPlano logExecutarPlanoEs = logExecutarPlanoSearchRepository.findOne(testLogExecutarPlano.getId());
         assertThat(logExecutarPlanoEs).isEqualToComparingFieldByField(testLogExecutarPlano);
     }
@@ -276,7 +276,7 @@ public class LogExecutarPlanoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean logExecutarPlanoExistsInEs = logExecutarPlanoSearchRepository.exists(logExecutarPlano.getId());
         assertThat(logExecutarPlanoExistsInEs).isFalse();
 
@@ -301,5 +301,20 @@ public class LogExecutarPlanoResourceIntTest {
             .andExpect(jsonPath("$.[*].finalizado").value(hasItem(DEFAULT_FINALIZADO.toString())))
             .andExpect(jsonPath("$.[*].mensagem").value(hasItem(DEFAULT_MENSAGEM.toString())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(LogExecutarPlano.class);
+        LogExecutarPlano logExecutarPlano1 = new LogExecutarPlano();
+        logExecutarPlano1.setId(1L);
+        LogExecutarPlano logExecutarPlano2 = new LogExecutarPlano();
+        logExecutarPlano2.setId(logExecutarPlano1.getId());
+        assertThat(logExecutarPlano1).isEqualTo(logExecutarPlano2);
+        logExecutarPlano2.setId(2L);
+        assertThat(logExecutarPlano1).isNotEqualTo(logExecutarPlano2);
+        logExecutarPlano1.setId(null);
+        assertThat(logExecutarPlano1).isNotEqualTo(logExecutarPlano2);
     }
 }

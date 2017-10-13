@@ -6,18 +6,16 @@ import br.com.rogrs.autobot.domain.ExecutarPlano;
 import br.com.rogrs.autobot.repository.ExecutarPlanoRepository;
 import br.com.rogrs.autobot.repository.search.ExecutarPlanoSearchRepository;
 import br.com.rogrs.autobot.web.rest.util.HeaderUtil;
-
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -33,12 +31,17 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ExecutarPlanoResource {
 
     private final Logger log = LoggerFactory.getLogger(ExecutarPlanoResource.class);
-        
-    @Inject
-    private ExecutarPlanoRepository executarPlanoRepository;
 
-    @Inject
-    private ExecutarPlanoSearchRepository executarPlanoSearchRepository;
+    private static final String ENTITY_NAME = "executarPlano";
+
+    private final ExecutarPlanoRepository executarPlanoRepository;
+
+    private final ExecutarPlanoSearchRepository executarPlanoSearchRepository;
+
+    public ExecutarPlanoResource(ExecutarPlanoRepository executarPlanoRepository, ExecutarPlanoSearchRepository executarPlanoSearchRepository) {
+        this.executarPlanoRepository = executarPlanoRepository;
+        this.executarPlanoSearchRepository = executarPlanoSearchRepository;
+    }
 
     /**
      * POST  /executar-planos : Create a new executarPlano.
@@ -52,12 +55,12 @@ public class ExecutarPlanoResource {
     public ResponseEntity<ExecutarPlano> createExecutarPlano(@Valid @RequestBody ExecutarPlano executarPlano) throws URISyntaxException {
         log.debug("REST request to save ExecutarPlano : {}", executarPlano);
         if (executarPlano.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("executarPlano", "idexists", "A new executarPlano cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new executarPlano cannot already have an ID")).body(null);
         }
         ExecutarPlano result = executarPlanoRepository.save(executarPlano);
         executarPlanoSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/executar-planos/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("executarPlano", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
@@ -67,7 +70,7 @@ public class ExecutarPlanoResource {
      * @param executarPlano the executarPlano to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated executarPlano,
      * or with status 400 (Bad Request) if the executarPlano is not valid,
-     * or with status 500 (Internal Server Error) if the executarPlano couldnt be updated
+     * or with status 500 (Internal Server Error) if the executarPlano couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/executar-planos")
@@ -80,7 +83,7 @@ public class ExecutarPlanoResource {
         ExecutarPlano result = executarPlanoRepository.save(executarPlano);
         executarPlanoSearchRepository.save(result);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("executarPlano", executarPlano.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, executarPlano.getId().toString()))
             .body(result);
     }
 
@@ -93,9 +96,8 @@ public class ExecutarPlanoResource {
     @Timed
     public List<ExecutarPlano> getAllExecutarPlanos() {
         log.debug("REST request to get all ExecutarPlanos");
-        List<ExecutarPlano> executarPlanos = executarPlanoRepository.findAll();
-        return executarPlanos;
-    }
+        return executarPlanoRepository.findAll();
+        }
 
     /**
      * GET  /executar-planos/:id : get the "id" executarPlano.
@@ -108,11 +110,7 @@ public class ExecutarPlanoResource {
     public ResponseEntity<ExecutarPlano> getExecutarPlano(@PathVariable Long id) {
         log.debug("REST request to get ExecutarPlano : {}", id);
         ExecutarPlano executarPlano = executarPlanoRepository.findOne(id);
-        return Optional.ofNullable(executarPlano)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(executarPlano));
     }
 
     /**
@@ -127,14 +125,14 @@ public class ExecutarPlanoResource {
         log.debug("REST request to delete ExecutarPlano : {}", id);
         executarPlanoRepository.delete(id);
         executarPlanoSearchRepository.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("executarPlano", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**
      * SEARCH  /_search/executar-planos?query=:query : search for the executarPlano corresponding
      * to the query.
      *
-     * @param query the query of the executarPlano search 
+     * @param query the query of the executarPlano search
      * @return the result of the search
      */
     @GetMapping("/_search/executar-planos")
@@ -145,6 +143,5 @@ public class ExecutarPlanoResource {
             .stream(executarPlanoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
 
 }

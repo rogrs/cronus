@@ -32,7 +32,7 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170130002941",
+    "changelogDate": "20171012034015",
     "entityTableName": "atividade",
     "dto": "no",
     "pagination": "no",

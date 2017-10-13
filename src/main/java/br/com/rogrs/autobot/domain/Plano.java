@@ -26,7 +26,8 @@ public class Plano implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -58,6 +59,7 @@ public class Plano implements Serializable {
     @ManyToOne
     private Script scripts;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -115,13 +117,13 @@ public class Plano implements Serializable {
     }
 
     public Plano addAtividade(Atividade atividade) {
-        atividades.add(atividade);
+        this.atividades.add(atividade);
         atividade.setPlano(this);
         return this;
     }
 
     public Plano removeAtividade(Atividade atividade) {
-        atividades.remove(atividade);
+        this.atividades.remove(atividade);
         atividade.setPlano(null);
         return this;
     }
@@ -140,13 +142,13 @@ public class Plano implements Serializable {
     }
 
     public Plano addExecutarPlano(ExecutarPlano executarPlano) {
-        executarPlanos.add(executarPlano);
+        this.executarPlanos.add(executarPlano);
         executarPlano.setPlano(this);
         return this;
     }
 
     public Plano removeExecutarPlano(ExecutarPlano executarPlano) {
-        executarPlanos.remove(executarPlano);
+        this.executarPlanos.remove(executarPlano);
         executarPlano.setPlano(null);
         return this;
     }
@@ -180,6 +182,7 @@ public class Plano implements Serializable {
     public void setScripts(Script script) {
         this.scripts = script;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -190,24 +193,24 @@ public class Plano implements Serializable {
             return false;
         }
         Plano plano = (Plano) o;
-        if (plano.id == null || id == null) {
+        if (plano.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, plano.id);
+        return Objects.equals(getId(), plano.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Plano{" +
-            "id=" + id +
-            ", descricao='" + descricao + "'" +
-            ", detalhes='" + detalhes + "'" +
-            ", tipo='" + tipo + "'" +
-            '}';
+            "id=" + getId() +
+            ", descricao='" + getDescricao() + "'" +
+            ", detalhes='" + getDetalhes() + "'" +
+            ", tipo='" + getTipo() + "'" +
+            "}";
     }
 }

@@ -24,7 +24,8 @@ public class Plugin implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -42,6 +43,7 @@ public class Plugin implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Script> scripts = new HashSet<>();
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -86,13 +88,13 @@ public class Plugin implements Serializable {
     }
 
     public Plugin addScript(Script script) {
-        scripts.add(script);
+        this.scripts.add(script);
         script.setPlugin(this);
         return this;
     }
 
     public Plugin removeScript(Script script) {
-        scripts.remove(script);
+        this.scripts.remove(script);
         script.setPlugin(null);
         return this;
     }
@@ -100,6 +102,7 @@ public class Plugin implements Serializable {
     public void setScripts(Set<Script> scripts) {
         this.scripts = scripts;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -110,23 +113,23 @@ public class Plugin implements Serializable {
             return false;
         }
         Plugin plugin = (Plugin) o;
-        if (plugin.id == null || id == null) {
+        if (plugin.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, plugin.id);
+        return Objects.equals(getId(), plugin.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Plugin{" +
-            "id=" + id +
-            ", nome='" + nome + "'" +
-            ", comando='" + comando + "'" +
-            '}';
+            "id=" + getId() +
+            ", nome='" + getNome() + "'" +
+            ", comando='" + getComando() + "'" +
+            "}";
     }
 }

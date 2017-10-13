@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.Script;
 import br.com.rogrs.autobot.repository.ScriptRepository;
 import br.com.rogrs.autobot.repository.search.ScriptSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -44,19 +44,22 @@ public class ScriptResourceIntTest {
     private static final String DEFAULT_PATH = "AAAAAAAAAA";
     private static final String UPDATED_PATH = "BBBBBBBBBB";
 
-    @Inject
+    @Autowired
     private ScriptRepository scriptRepository;
 
-    @Inject
+    @Autowired
     private ScriptSearchRepository scriptSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restScriptMockMvc;
@@ -66,11 +69,10 @@ public class ScriptResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ScriptResource scriptResource = new ScriptResource();
-        ReflectionTestUtils.setField(scriptResource, "scriptSearchRepository", scriptSearchRepository);
-        ReflectionTestUtils.setField(scriptResource, "scriptRepository", scriptRepository);
+        final ScriptResource scriptResource = new ScriptResource(scriptRepository, scriptSearchRepository);
         this.restScriptMockMvc = MockMvcBuilders.standaloneSetup(scriptResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -82,8 +84,8 @@ public class ScriptResourceIntTest {
      */
     public static Script createEntity(EntityManager em) {
         Script script = new Script()
-                .descricao(DEFAULT_DESCRICAO)
-                .path(DEFAULT_PATH);
+            .descricao(DEFAULT_DESCRICAO)
+            .path(DEFAULT_PATH);
         return script;
     }
 
@@ -99,7 +101,6 @@ public class ScriptResourceIntTest {
         int databaseSizeBeforeCreate = scriptRepository.findAll().size();
 
         // Create the Script
-
         restScriptMockMvc.perform(post("/api/scripts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(script)))
@@ -112,7 +113,7 @@ public class ScriptResourceIntTest {
         assertThat(testScript.getDescricao()).isEqualTo(DEFAULT_DESCRICAO);
         assertThat(testScript.getPath()).isEqualTo(DEFAULT_PATH);
 
-        // Validate the Script in ElasticSearch
+        // Validate the Script in Elasticsearch
         Script scriptEs = scriptSearchRepository.findOne(testScript.getId());
         assertThat(scriptEs).isEqualToComparingFieldByField(testScript);
     }
@@ -123,16 +124,15 @@ public class ScriptResourceIntTest {
         int databaseSizeBeforeCreate = scriptRepository.findAll().size();
 
         // Create the Script with an existing ID
-        Script existingScript = new Script();
-        existingScript.setId(1L);
+        script.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restScriptMockMvc.perform(post("/api/scripts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingScript)))
+            .content(TestUtil.convertObjectToJsonBytes(script)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Script in the database
         List<Script> scriptList = scriptRepository.findAll();
         assertThat(scriptList).hasSize(databaseSizeBeforeCreate);
     }
@@ -222,8 +222,8 @@ public class ScriptResourceIntTest {
         // Update the script
         Script updatedScript = scriptRepository.findOne(script.getId());
         updatedScript
-                .descricao(UPDATED_DESCRICAO)
-                .path(UPDATED_PATH);
+            .descricao(UPDATED_DESCRICAO)
+            .path(UPDATED_PATH);
 
         restScriptMockMvc.perform(put("/api/scripts")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -237,7 +237,7 @@ public class ScriptResourceIntTest {
         assertThat(testScript.getDescricao()).isEqualTo(UPDATED_DESCRICAO);
         assertThat(testScript.getPath()).isEqualTo(UPDATED_PATH);
 
-        // Validate the Script in ElasticSearch
+        // Validate the Script in Elasticsearch
         Script scriptEs = scriptSearchRepository.findOne(testScript.getId());
         assertThat(scriptEs).isEqualToComparingFieldByField(testScript);
     }
@@ -273,7 +273,7 @@ public class ScriptResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean scriptExistsInEs = scriptSearchRepository.exists(script.getId());
         assertThat(scriptExistsInEs).isFalse();
 
@@ -296,5 +296,20 @@ public class ScriptResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(script.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].path").value(hasItem(DEFAULT_PATH.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Script.class);
+        Script script1 = new Script();
+        script1.setId(1L);
+        Script script2 = new Script();
+        script2.setId(script1.getId());
+        assertThat(script1).isEqualTo(script2);
+        script2.setId(2L);
+        assertThat(script1).isNotEqualTo(script2);
+        script1.setId(null);
+        assertThat(script1).isNotEqualTo(script2);
     }
 }

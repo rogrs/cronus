@@ -1,7 +1,6 @@
 version: '2'
 services:
     autobot-elasticsearch:
-        container_name: autobot-elasticsearch
         image: elasticsearch:2.4.1
         # volumes:
         #     - ~/volumes/jhipster/autobot/elasticsearch/:/usr/share/elasticsearch/data/

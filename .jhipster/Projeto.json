@@ -27,7 +27,7 @@
             "fieldValidateRulesMaxlength": 80
         }
     ],
-    "changelogDate": "20170130002943",
+    "changelogDate": "20171012034017",
     "entityTableName": "projeto",
     "dto": "no",
     "pagination": "no",

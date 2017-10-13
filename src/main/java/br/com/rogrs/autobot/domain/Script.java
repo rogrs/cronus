@@ -24,7 +24,8 @@ public class Script implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -45,6 +46,7 @@ public class Script implements Serializable {
     @ManyToOne
     private Plugin plugin;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -89,13 +91,13 @@ public class Script implements Serializable {
     }
 
     public Script addPlano(Plano plano) {
-        planos.add(plano);
+        this.planos.add(plano);
         plano.setScripts(this);
         return this;
     }
 
     public Script removePlano(Plano plano) {
-        planos.remove(plano);
+        this.planos.remove(plano);
         plano.setScripts(null);
         return this;
     }
@@ -116,6 +118,7 @@ public class Script implements Serializable {
     public void setPlugin(Plugin plugin) {
         this.plugin = plugin;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -126,23 +129,23 @@ public class Script implements Serializable {
             return false;
         }
         Script script = (Script) o;
-        if (script.id == null || id == null) {
+        if (script.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, script.id);
+        return Objects.equals(getId(), script.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Script{" +
-            "id=" + id +
-            ", descricao='" + descricao + "'" +
-            ", path='" + path + "'" +
-            '}';
+            "id=" + getId() +
+            ", descricao='" + getDescricao() + "'" +
+            ", path='" + getPath() + "'" +
+            "}";
     }
 }

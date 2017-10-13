@@ -47,13 +47,20 @@
             "newpassword.placeholder": "Nova senha",
             "confirmpassword": "Confirmação de nova senha",
             "confirmpassword.placeholder": "Confirme a nova senha",
-            "email": "E-mail",
-            "email.placeholder": "Seu e-mail"
+            "email": "Email",
+            "email.placeholder": "Seu email"
         },
         "messages": {
             "info": {
-                "authenticated": "Para <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">entrar</a>, utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\").",
-                "register": "Não possui uma conta ainda? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Crie uma nova conta</a>"
+                "authenticated": {
+                    "prefix": "Para ",
+                    "link": "entrar",
+                    "suffix": ", utilize as seguintes contas padrões:<br/>- Administrador (usuário=\"admin\" and senha=\"admin\") <br/>- Usuário (usuário=\"user\" and senha=\"user\")."
+                },
+                "register": {
+                    "noaccount": "Não possui uma conta ainda?",
+                    "link": "Crie uma nova conta"
+                }
             },
             "error": {
                 "dontmatch" : "A senha e sua confirmação devem ser iguais!"
@@ -71,10 +78,10 @@
                     "maxlength": "A confirmação da senha não pode ter mais de 50 caracteres"
                 },
                 "email": {
-                    "required": "O e-mail é obrigatório.",
-                    "invalid": "E-mail inválido.",
-                    "minlength": "O e-mail deve ter pelo menos 5 caracteres",
-                    "maxlength": "O e-mail não pode ter mais de 50 caracteres"
+                    "required": "O email é obrigatório.",
+                    "invalid": "Email inválido.",
+                    "minlength": "O email deve ter pelo menos 5 caracteres",
+                    "maxlength": "O email não pode ter mais de 50 caracteres"
                 }
             }
         },
@@ -83,7 +90,8 @@
         },
         "ribbon": {
             "dev":"Development"
-        }
+        },
+        "item-count": "Mostrando {{first}} - {{second}} de {{total}} resultados."
     },
     "entity": {
         "action": {
@@ -118,6 +126,7 @@
         }
     },
     "error": {
+        "internalServerError": "Internal server error",
         "server.not.reachable": "Servidor indisponível",
         "url.not.found": "Not found",
         "NotNull": "O Campo {{fieldName}} não pode ser vazio!",

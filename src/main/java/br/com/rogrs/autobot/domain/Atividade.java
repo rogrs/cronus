@@ -21,7 +21,8 @@ public class Atividade implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -40,6 +41,7 @@ public class Atividade implements Serializable {
     @ManyToOne
     private Plano plano;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -99,6 +101,7 @@ public class Atividade implements Serializable {
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -109,24 +112,24 @@ public class Atividade implements Serializable {
             return false;
         }
         Atividade atividade = (Atividade) o;
-        if (atividade.id == null || id == null) {
+        if (atividade.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, atividade.id);
+        return Objects.equals(getId(), atividade.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Atividade{" +
-            "id=" + id +
-            ", nome='" + nome + "'" +
-            ", comando='" + comando + "'" +
-            ", pararNaFalha='" + pararNaFalha + "'" +
-            '}';
+            "id=" + getId() +
+            ", nome='" + getNome() + "'" +
+            ", comando='" + getComando() + "'" +
+            ", pararNaFalha='" + isPararNaFalha() + "'" +
+            "}";
     }
 }

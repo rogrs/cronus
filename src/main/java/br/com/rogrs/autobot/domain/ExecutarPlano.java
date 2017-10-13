@@ -24,7 +24,8 @@ public class ExecutarPlano implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -47,6 +48,7 @@ public class ExecutarPlano implements Serializable {
     @ManyToOne
     private Plano plano;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -104,13 +106,13 @@ public class ExecutarPlano implements Serializable {
     }
 
     public ExecutarPlano addLogExecutarPlano(LogExecutarPlano logExecutarPlano) {
-        logExecutarPlanos.add(logExecutarPlano);
+        this.logExecutarPlanos.add(logExecutarPlano);
         logExecutarPlano.setExecucao(this);
         return this;
     }
 
     public ExecutarPlano removeLogExecutarPlano(LogExecutarPlano logExecutarPlano) {
-        logExecutarPlanos.remove(logExecutarPlano);
+        this.logExecutarPlanos.remove(logExecutarPlano);
         logExecutarPlano.setExecucao(null);
         return this;
     }
@@ -131,6 +133,7 @@ public class ExecutarPlano implements Serializable {
     public void setPlano(Plano plano) {
         this.plano = plano;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -141,24 +144,24 @@ public class ExecutarPlano implements Serializable {
             return false;
         }
         ExecutarPlano executarPlano = (ExecutarPlano) o;
-        if (executarPlano.id == null || id == null) {
+        if (executarPlano.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, executarPlano.id);
+        return Objects.equals(getId(), executarPlano.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "ExecutarPlano{" +
-            "id=" + id +
-            ", descricao='" + descricao + "'" +
-            ", detalhes='" + detalhes + "'" +
-            ", pararNaFalha='" + pararNaFalha + "'" +
-            '}';
+            "id=" + getId() +
+            ", descricao='" + getDescricao() + "'" +
+            ", detalhes='" + getDetalhes() + "'" +
+            ", pararNaFalha='" + isPararNaFalha() + "'" +
+            "}";
     }
 }

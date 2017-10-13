@@ -1,0 +1,39 @@
+
+<div *ngIf="executarPlano">
+    <h2><span jhiTranslate="autobotApp.executarPlano.detail.title">Executar Plano</span> {{executarPlano.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="autobotApp.executarPlano.descricao">Descricao</span></dt>
+        <dd>
+            <span>{{executarPlano.descricao}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.executarPlano.detalhes">Detalhes</span></dt>
+        <dd>
+            <span>{{executarPlano.detalhes}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.executarPlano.pararNaFalha">Parar Na Falha</span></dt>
+        <dd>
+            <span>{{executarPlano.pararNaFalha}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.executarPlano.plano">Plano</span></dt>
+        <dd>
+            <div *ngIf="executarPlano.plano">
+                <a [routerLink]="['/plano', executarPlano.plano?.id]">{{executarPlano.plano?.descricao}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'executar-plano/'+ executarPlano.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

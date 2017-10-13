@@ -1,0 +1,29 @@
+
+<div *ngIf="plugin">
+    <h2><span jhiTranslate="autobotApp.plugin.detail.title">Plugin</span> {{plugin.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="autobotApp.plugin.nome">Nome</span></dt>
+        <dd>
+            <span>{{plugin.nome}}</span>
+        </dd>
+        <dt><span jhiTranslate="autobotApp.plugin.comando">Comando</span></dt>
+        <dd>
+            <span>{{plugin.comando}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'plugin/'+ plugin.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

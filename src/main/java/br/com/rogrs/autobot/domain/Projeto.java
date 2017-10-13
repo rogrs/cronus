@@ -24,7 +24,8 @@ public class Projeto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
+    @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
     @NotNull
@@ -41,6 +42,7 @@ public class Projeto implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Plano> planos = new HashSet<>();
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -85,13 +87,13 @@ public class Projeto implements Serializable {
     }
 
     public Projeto addPlano(Plano plano) {
-        planos.add(plano);
+        this.planos.add(plano);
         plano.setProjetos(this);
         return this;
     }
 
     public Projeto removePlano(Plano plano) {
-        planos.remove(plano);
+        this.planos.remove(plano);
         plano.setProjetos(null);
         return this;
     }
@@ -99,6 +101,7 @@ public class Projeto implements Serializable {
     public void setPlanos(Set<Plano> planos) {
         this.planos = planos;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -109,23 +112,23 @@ public class Projeto implements Serializable {
             return false;
         }
         Projeto projeto = (Projeto) o;
-        if (projeto.id == null || id == null) {
+        if (projeto.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, projeto.id);
+        return Objects.equals(getId(), projeto.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Projeto{" +
-            "id=" + id +
-            ", descricao='" + descricao + "'" +
-            ", detalhes='" + detalhes + "'" +
-            '}';
+            "id=" + getId() +
+            ", descricao='" + getDescricao() + "'" +
+            ", detalhes='" + getDetalhes() + "'" +
+            "}";
     }
 }

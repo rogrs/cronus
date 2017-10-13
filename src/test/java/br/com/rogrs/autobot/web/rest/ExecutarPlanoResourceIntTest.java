@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.ExecutarPlano;
 import br.com.rogrs.autobot.repository.ExecutarPlanoRepository;
 import br.com.rogrs.autobot.repository.search.ExecutarPlanoSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -47,19 +47,22 @@ public class ExecutarPlanoResourceIntTest {
     private static final Boolean DEFAULT_PARAR_NA_FALHA = false;
     private static final Boolean UPDATED_PARAR_NA_FALHA = true;
 
-    @Inject
+    @Autowired
     private ExecutarPlanoRepository executarPlanoRepository;
 
-    @Inject
+    @Autowired
     private ExecutarPlanoSearchRepository executarPlanoSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restExecutarPlanoMockMvc;
@@ -69,11 +72,10 @@ public class ExecutarPlanoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ExecutarPlanoResource executarPlanoResource = new ExecutarPlanoResource();
-        ReflectionTestUtils.setField(executarPlanoResource, "executarPlanoSearchRepository", executarPlanoSearchRepository);
-        ReflectionTestUtils.setField(executarPlanoResource, "executarPlanoRepository", executarPlanoRepository);
+        final ExecutarPlanoResource executarPlanoResource = new ExecutarPlanoResource(executarPlanoRepository, executarPlanoSearchRepository);
         this.restExecutarPlanoMockMvc = MockMvcBuilders.standaloneSetup(executarPlanoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -85,9 +87,9 @@ public class ExecutarPlanoResourceIntTest {
      */
     public static ExecutarPlano createEntity(EntityManager em) {
         ExecutarPlano executarPlano = new ExecutarPlano()
-                .descricao(DEFAULT_DESCRICAO)
-                .detalhes(DEFAULT_DETALHES)
-                .pararNaFalha(DEFAULT_PARAR_NA_FALHA);
+            .descricao(DEFAULT_DESCRICAO)
+            .detalhes(DEFAULT_DETALHES)
+            .pararNaFalha(DEFAULT_PARAR_NA_FALHA);
         return executarPlano;
     }
 
@@ -103,7 +105,6 @@ public class ExecutarPlanoResourceIntTest {
         int databaseSizeBeforeCreate = executarPlanoRepository.findAll().size();
 
         // Create the ExecutarPlano
-
         restExecutarPlanoMockMvc.perform(post("/api/executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(executarPlano)))
@@ -117,7 +118,7 @@ public class ExecutarPlanoResourceIntTest {
         assertThat(testExecutarPlano.getDetalhes()).isEqualTo(DEFAULT_DETALHES);
         assertThat(testExecutarPlano.isPararNaFalha()).isEqualTo(DEFAULT_PARAR_NA_FALHA);
 
-        // Validate the ExecutarPlano in ElasticSearch
+        // Validate the ExecutarPlano in Elasticsearch
         ExecutarPlano executarPlanoEs = executarPlanoSearchRepository.findOne(testExecutarPlano.getId());
         assertThat(executarPlanoEs).isEqualToComparingFieldByField(testExecutarPlano);
     }
@@ -128,16 +129,15 @@ public class ExecutarPlanoResourceIntTest {
         int databaseSizeBeforeCreate = executarPlanoRepository.findAll().size();
 
         // Create the ExecutarPlano with an existing ID
-        ExecutarPlano existingExecutarPlano = new ExecutarPlano();
-        existingExecutarPlano.setId(1L);
+        executarPlano.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restExecutarPlanoMockMvc.perform(post("/api/executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingExecutarPlano)))
+            .content(TestUtil.convertObjectToJsonBytes(executarPlano)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the ExecutarPlano in the database
         List<ExecutarPlano> executarPlanoList = executarPlanoRepository.findAll();
         assertThat(executarPlanoList).hasSize(databaseSizeBeforeCreate);
     }
@@ -211,9 +211,9 @@ public class ExecutarPlanoResourceIntTest {
         // Update the executarPlano
         ExecutarPlano updatedExecutarPlano = executarPlanoRepository.findOne(executarPlano.getId());
         updatedExecutarPlano
-                .descricao(UPDATED_DESCRICAO)
-                .detalhes(UPDATED_DETALHES)
-                .pararNaFalha(UPDATED_PARAR_NA_FALHA);
+            .descricao(UPDATED_DESCRICAO)
+            .detalhes(UPDATED_DETALHES)
+            .pararNaFalha(UPDATED_PARAR_NA_FALHA);
 
         restExecutarPlanoMockMvc.perform(put("/api/executar-planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -228,7 +228,7 @@ public class ExecutarPlanoResourceIntTest {
         assertThat(testExecutarPlano.getDetalhes()).isEqualTo(UPDATED_DETALHES);
         assertThat(testExecutarPlano.isPararNaFalha()).isEqualTo(UPDATED_PARAR_NA_FALHA);
 
-        // Validate the ExecutarPlano in ElasticSearch
+        // Validate the ExecutarPlano in Elasticsearch
         ExecutarPlano executarPlanoEs = executarPlanoSearchRepository.findOne(testExecutarPlano.getId());
         assertThat(executarPlanoEs).isEqualToComparingFieldByField(testExecutarPlano);
     }
@@ -264,7 +264,7 @@ public class ExecutarPlanoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean executarPlanoExistsInEs = executarPlanoSearchRepository.exists(executarPlano.getId());
         assertThat(executarPlanoExistsInEs).isFalse();
 
@@ -288,5 +288,20 @@ public class ExecutarPlanoResourceIntTest {
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
             .andExpect(jsonPath("$.[*].pararNaFalha").value(hasItem(DEFAULT_PARAR_NA_FALHA.booleanValue())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ExecutarPlano.class);
+        ExecutarPlano executarPlano1 = new ExecutarPlano();
+        executarPlano1.setId(1L);
+        ExecutarPlano executarPlano2 = new ExecutarPlano();
+        executarPlano2.setId(executarPlano1.getId());
+        assertThat(executarPlano1).isEqualTo(executarPlano2);
+        executarPlano2.setId(2L);
+        assertThat(executarPlano1).isNotEqualTo(executarPlano2);
+        executarPlano1.setId(null);
+        assertThat(executarPlano1).isNotEqualTo(executarPlano2);
     }
 }

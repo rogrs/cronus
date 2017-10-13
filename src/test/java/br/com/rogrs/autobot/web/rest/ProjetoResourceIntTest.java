@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.Projeto;
 import br.com.rogrs.autobot.repository.ProjetoRepository;
 import br.com.rogrs.autobot.repository.search.ProjetoSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -44,19 +44,22 @@ public class ProjetoResourceIntTest {
     private static final String DEFAULT_DETALHES = "AAAAAAAAAA";
     private static final String UPDATED_DETALHES = "BBBBBBBBBB";
 
-    @Inject
+    @Autowired
     private ProjetoRepository projetoRepository;
 
-    @Inject
+    @Autowired
     private ProjetoSearchRepository projetoSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restProjetoMockMvc;
@@ -66,11 +69,10 @@ public class ProjetoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ProjetoResource projetoResource = new ProjetoResource();
-        ReflectionTestUtils.setField(projetoResource, "projetoSearchRepository", projetoSearchRepository);
-        ReflectionTestUtils.setField(projetoResource, "projetoRepository", projetoRepository);
+        final ProjetoResource projetoResource = new ProjetoResource(projetoRepository, projetoSearchRepository);
         this.restProjetoMockMvc = MockMvcBuilders.standaloneSetup(projetoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -82,8 +84,8 @@ public class ProjetoResourceIntTest {
      */
     public static Projeto createEntity(EntityManager em) {
         Projeto projeto = new Projeto()
-                .descricao(DEFAULT_DESCRICAO)
-                .detalhes(DEFAULT_DETALHES);
+            .descricao(DEFAULT_DESCRICAO)
+            .detalhes(DEFAULT_DETALHES);
         return projeto;
     }
 
@@ -99,7 +101,6 @@ public class ProjetoResourceIntTest {
         int databaseSizeBeforeCreate = projetoRepository.findAll().size();
 
         // Create the Projeto
-
         restProjetoMockMvc.perform(post("/api/projetos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(projeto)))
@@ -112,7 +113,7 @@ public class ProjetoResourceIntTest {
         assertThat(testProjeto.getDescricao()).isEqualTo(DEFAULT_DESCRICAO);
         assertThat(testProjeto.getDetalhes()).isEqualTo(DEFAULT_DETALHES);
 
-        // Validate the Projeto in ElasticSearch
+        // Validate the Projeto in Elasticsearch
         Projeto projetoEs = projetoSearchRepository.findOne(testProjeto.getId());
         assertThat(projetoEs).isEqualToComparingFieldByField(testProjeto);
     }
@@ -123,16 +124,15 @@ public class ProjetoResourceIntTest {
         int databaseSizeBeforeCreate = projetoRepository.findAll().size();
 
         // Create the Projeto with an existing ID
-        Projeto existingProjeto = new Projeto();
-        existingProjeto.setId(1L);
+        projeto.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restProjetoMockMvc.perform(post("/api/projetos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingProjeto)))
+            .content(TestUtil.convertObjectToJsonBytes(projeto)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Projeto in the database
         List<Projeto> projetoList = projetoRepository.findAll();
         assertThat(projetoList).hasSize(databaseSizeBeforeCreate);
     }
@@ -204,8 +204,8 @@ public class ProjetoResourceIntTest {
         // Update the projeto
         Projeto updatedProjeto = projetoRepository.findOne(projeto.getId());
         updatedProjeto
-                .descricao(UPDATED_DESCRICAO)
-                .detalhes(UPDATED_DETALHES);
+            .descricao(UPDATED_DESCRICAO)
+            .detalhes(UPDATED_DETALHES);
 
         restProjetoMockMvc.perform(put("/api/projetos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -219,7 +219,7 @@ public class ProjetoResourceIntTest {
         assertThat(testProjeto.getDescricao()).isEqualTo(UPDATED_DESCRICAO);
         assertThat(testProjeto.getDetalhes()).isEqualTo(UPDATED_DETALHES);
 
-        // Validate the Projeto in ElasticSearch
+        // Validate the Projeto in Elasticsearch
         Projeto projetoEs = projetoSearchRepository.findOne(testProjeto.getId());
         assertThat(projetoEs).isEqualToComparingFieldByField(testProjeto);
     }
@@ -255,7 +255,7 @@ public class ProjetoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean projetoExistsInEs = projetoSearchRepository.exists(projeto.getId());
         assertThat(projetoExistsInEs).isFalse();
 
@@ -278,5 +278,20 @@ public class ProjetoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(projeto.getId().intValue())))
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Projeto.class);
+        Projeto projeto1 = new Projeto();
+        projeto1.setId(1L);
+        Projeto projeto2 = new Projeto();
+        projeto2.setId(projeto1.getId());
+        assertThat(projeto1).isEqualTo(projeto2);
+        projeto2.setId(2L);
+        assertThat(projeto1).isNotEqualTo(projeto2);
+        projeto1.setId(null);
+        assertThat(projeto1).isNotEqualTo(projeto2);
     }
 }

@@ -7,9 +7,9 @@
                 "createOrEditLabel": "Criar ou editar Executar Plano",
                 "search": "Pesquisar por Executar Plano"
             },
-            "created": "Um novo Executar Plano é criado com o identificador {{ param }}",
-            "updated": "Um Executar Plano é atualizado com o identificador {{ param }}",
-            "deleted": "Um Executar Plano é deletado com o identificador {{ param }}",
+            "created": "Um novo Executar Plano foi criado com o identificador {{ param }}",
+            "updated": "Um Executar Plano foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Executar Plano foi deletado com o identificador {{ param }}",
             "delete": {
                 "question": "Tem certeza de que deseja excluir Executar Plano {{ id }}?"
             },

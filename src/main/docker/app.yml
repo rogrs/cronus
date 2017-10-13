@@ -2,20 +2,17 @@ version: '2'
 services:
     autobot-app:
         image: autobot
-        external_links:
-            - autobot-mysql:mysql
-            - autobot-elasticsearch:elasticsearch
         environment:
             - SPRING_PROFILES_ACTIVE=prod,swagger
-            - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/autobot?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://autobot-postgresql:5432/autobot
             - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
-            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=autobot-elasticsearch:9300
         ports:
             - 8080:8080
-    autobot-mysql:
+    autobot-postgresql:
         extends:
-            file: mysql.yml
-            service: autobot-mysql
+            file: postgresql.yml
+            service: autobot-postgresql
     autobot-elasticsearch:
         extends:
             file: elasticsearch.yml

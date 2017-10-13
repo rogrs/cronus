@@ -37,7 +37,7 @@
             "fieldType": "Boolean"
         }
     ],
-    "changelogDate": "20170130002946",
+    "changelogDate": "20171012034020",
     "entityTableName": "executar_plano",
     "dto": "no",
     "pagination": "no",

@@ -7,9 +7,9 @@
                 "createOrEditLabel": "Criar ou editar Plano",
                 "search": "Pesquisar por Plano"
             },
-            "created": "Um novo Plano é criado com o identificador {{ param }}",
-            "updated": "Um Plano é atualizado com o identificador {{ param }}",
-            "deleted": "Um Plano é deletado com o identificador {{ param }}",
+            "created": "Um novo Plano foi criado com o identificador {{ param }}",
+            "updated": "Um Plano foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Plano foi deletado com o identificador {{ param }}",
             "delete": {
                 "question": "Tem certeza de que deseja excluir Plano {{ id }}?"
             },

@@ -3,24 +3,28 @@ package br.com.rogrs.autobot.service;
 import br.com.rogrs.autobot.domain.Authority;
 import br.com.rogrs.autobot.domain.User;
 import br.com.rogrs.autobot.repository.AuthorityRepository;
-import br.com.rogrs.autobot.repository.PersistentTokenRepository;
+import br.com.rogrs.autobot.config.Constants;
 import br.com.rogrs.autobot.repository.UserRepository;
 import br.com.rogrs.autobot.repository.search.UserSearchRepository;
 import br.com.rogrs.autobot.security.AuthoritiesConstants;
 import br.com.rogrs.autobot.security.SecurityUtils;
 import br.com.rogrs.autobot.service.util.RandomUtil;
-import br.com.rogrs.autobot.web.rest.vm.ManagedUserVM;
+import br.com.rogrs.autobot.service.dto.UserDTO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.CacheManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import javax.inject.Inject;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -31,20 +35,23 @@ public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    @Inject
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Inject
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Inject
-    private UserSearchRepository userSearchRepository;
+    private final UserSearchRepository userSearchRepository;
 
-    @Inject
-    private PersistentTokenRepository persistentTokenRepository;
+    private final AuthorityRepository authorityRepository;
 
-    @Inject
-    private AuthorityRepository authorityRepository;
+    private final CacheManager cacheManager;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userSearchRepository = userSearchRepository;
+        this.authorityRepository = authorityRepository;
+        this.cacheManager = cacheManager;
+    }
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -54,6 +61,7 @@ public class UserService {
                 user.setActivated(true);
                 user.setActivationKey(null);
                 userSearchRepository.save(user);
+                cacheManager.getCache("users").evict(user.getLogin());
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -63,30 +71,29 @@ public class UserService {
        log.debug("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
-            .filter(user -> {
-                ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
-                return user.getResetDate().isAfter(oneDayAgo);
-           })
+           .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
+                cacheManager.getCache("users").evict(user.getLogin());
                 return user;
            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
-        return userRepository.findOneByEmail(mail)
+        return userRepository.findOneByEmailIgnoreCase(mail)
             .filter(User::getActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
-                user.setResetDate(ZonedDateTime.now());
+                user.setResetDate(Instant.now());
+                cacheManager.getCache("users").evict(user.getLogin());
                 return user;
             });
     }
 
     public User createUser(String login, String password, String firstName, String lastName, String email,
-        String langKey) {
+        String imageUrl, String langKey) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -98,6 +105,7 @@ public class UserService {
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setEmail(email);
+        newUser.setImageUrl(imageUrl);
         newUser.setLangKey(langKey);
         // new user is not active
         newUser.setActivated(false);
@@ -111,20 +119,21 @@ public class UserService {
         return newUser;
     }
 
-    public User createUser(ManagedUserVM managedUserVM) {
+    public User createUser(UserDTO userDTO) {
         User user = new User();
-        user.setLogin(managedUserVM.getLogin());
-        user.setFirstName(managedUserVM.getFirstName());
-        user.setLastName(managedUserVM.getLastName());
-        user.setEmail(managedUserVM.getEmail());
-        if (managedUserVM.getLangKey() == null) {
-            user.setLangKey("pt-br"); // default language
+        user.setLogin(userDTO.getLogin());
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setImageUrl(userDTO.getImageUrl());
+        if (userDTO.getLangKey() == null) {
+            user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
         } else {
-            user.setLangKey(managedUserVM.getLangKey());
+            user.setLangKey(userDTO.getLangKey());
         }
-        if (managedUserVM.getAuthorities() != null) {
+        if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
-            managedUserVM.getAuthorities().forEach(
+            userDTO.getAuthorities().forEach(
                 authority -> authorities.add(authorityRepository.findOne(authority))
             );
             user.setAuthorities(authorities);
@@ -132,7 +141,7 @@ public class UserService {
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
-        user.setResetDate(ZonedDateTime.now());
+        user.setResetDate(Instant.now());
         user.setActivated(true);
         userRepository.save(user);
         userSearchRepository.save(user);
@@ -140,42 +149,63 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(String firstName, String lastName, String email, String langKey) {
+    /**
+     * Update basic information (first name, last name, email, language) for the current user.
+     *
+     * @param firstName first name of user
+     * @param lastName last name of user
+     * @param email email id of user
+     * @param langKey language key
+     * @param imageUrl image URL of user
+     */
+    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setEmail(email);
             user.setLangKey(langKey);
+            user.setImageUrl(imageUrl);
             userSearchRepository.save(user);
+            cacheManager.getCache("users").evict(user.getLogin());
             log.debug("Changed Information for User: {}", user);
         });
     }
 
-    public void updateUser(Long id, String login, String firstName, String lastName, String email,
-        boolean activated, String langKey, Set<String> authorities) {
-
-        Optional.of(userRepository
-            .findOne(id))
-            .ifPresent(user -> {
-                user.setLogin(login);
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                user.setEmail(email);
-                user.setActivated(activated);
-                user.setLangKey(langKey);
+    /**
+     * Update all information for a specific user, and return the modified user.
+     *
+     * @param userDTO user to update
+     * @return updated user
+     */
+    public Optional<UserDTO> updateUser(UserDTO userDTO) {
+        return Optional.of(userRepository
+            .findOne(userDTO.getId()))
+            .map(user -> {
+                user.setLogin(userDTO.getLogin());
+                user.setFirstName(userDTO.getFirstName());
+                user.setLastName(userDTO.getLastName());
+                user.setEmail(userDTO.getEmail());
+                user.setImageUrl(userDTO.getImageUrl());
+                user.setActivated(userDTO.isActivated());
+                user.setLangKey(userDTO.getLangKey());
                 Set<Authority> managedAuthorities = user.getAuthorities();
                 managedAuthorities.clear();
-                authorities.forEach(
-                    authority -> managedAuthorities.add(authorityRepository.findOne(authority))
-                );
+                userDTO.getAuthorities().stream()
+                    .map(authorityRepository::findOne)
+                    .forEach(managedAuthorities::add);
+                userSearchRepository.save(user);
+                cacheManager.getCache("users").evict(user.getLogin());
                 log.debug("Changed Information for User: {}", user);
-            });
+                return user;
+            })
+            .map(UserDTO::new);
     }
 
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
             userSearchRepository.delete(user);
+            cacheManager.getCache("users").evict(login);
             log.debug("Deleted User: {}", user);
         });
     }
@@ -184,68 +214,51 @@ public class UserService {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(user -> {
             String encryptedPassword = passwordEncoder.encode(password);
             user.setPassword(encryptedPassword);
+            cacheManager.getCache("users").evict(user.getLogin());
             log.debug("Changed password for User: {}", user);
         });
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
-        return userRepository.findOneByLogin(login).map(user -> {
-            user.getAuthorities().size();
-            return user;
-        });
+        return userRepository.findOneWithAuthoritiesByLogin(login);
     }
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
-        User user = userRepository.findOne(id);
-        user.getAuthorities().size(); // eagerly load the association
-        return user;
+        return userRepository.findOneWithAuthoritiesById(id);
     }
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        Optional<User> optionalUser = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin());
-        User user = null;
-        if (optionalUser.isPresent()) {
-          user = optionalUser.get();
-            user.getAuthorities().size(); // eagerly load the association
-         }
-         return user;
-    }
-
-    /**
-     * Persistent Token are used for providing automatic authentication, they should be automatically deleted after
-     * 30 days.
-     * <p>
-     * This is scheduled to get fired everyday, at midnight.
-     * </p>
-     */
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void removeOldPersistentTokens() {
-        LocalDate now = LocalDate.now();
-        persistentTokenRepository.findByTokenDateBefore(now.minusMonths(1)).forEach(token -> {
-            log.debug("Deleting token {}", token.getSeries());
-            User user = token.getUser();
-            user.getPersistentTokens().remove(token);
-            persistentTokenRepository.delete(token);
-        });
+        return userRepository.findOneWithAuthoritiesByLogin(SecurityUtils.getCurrentUserLogin()).orElse(null);
     }
 
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>
      * This is scheduled to get fired everyday, at 01:00 (am).
-     * </p>
      */
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
-        ZonedDateTime now = ZonedDateTime.now();
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);
             userSearchRepository.delete(user);
+            cacheManager.getCache("users").evict(user.getLogin());
         }
+    }
+
+    /**
+     * @return a list of all the authorities
+     */
+    public List<String> getAuthorities() {
+        return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 }

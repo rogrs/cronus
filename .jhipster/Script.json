@@ -34,7 +34,7 @@
             "fieldValidateRulesMaxlength": 500
         }
     ],
-    "changelogDate": "20170130002945",
+    "changelogDate": "20171012034019",
     "entityTableName": "script",
     "dto": "no",
     "pagination": "no",

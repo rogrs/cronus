@@ -5,22 +5,22 @@ import br.com.rogrs.autobot.AutobotApp;
 import br.com.rogrs.autobot.domain.Plano;
 import br.com.rogrs.autobot.repository.PlanoRepository;
 import br.com.rogrs.autobot.repository.search.PlanoSearchRepository;
+import br.com.rogrs.autobot.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.List;
 
@@ -48,19 +48,22 @@ public class PlanoResourceIntTest {
     private static final TipoPlano DEFAULT_TIPO = TipoPlano.UNITARIO;
     private static final TipoPlano UPDATED_TIPO = TipoPlano.SEGURANCA;
 
-    @Inject
+    @Autowired
     private PlanoRepository planoRepository;
 
-    @Inject
+    @Autowired
     private PlanoSearchRepository planoSearchRepository;
 
-    @Inject
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-    @Inject
+    @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-    @Inject
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restPlanoMockMvc;
@@ -70,11 +73,10 @@ public class PlanoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        PlanoResource planoResource = new PlanoResource();
-        ReflectionTestUtils.setField(planoResource, "planoSearchRepository", planoSearchRepository);
-        ReflectionTestUtils.setField(planoResource, "planoRepository", planoRepository);
+        final PlanoResource planoResource = new PlanoResource(planoRepository, planoSearchRepository);
         this.restPlanoMockMvc = MockMvcBuilders.standaloneSetup(planoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -86,9 +88,9 @@ public class PlanoResourceIntTest {
      */
     public static Plano createEntity(EntityManager em) {
         Plano plano = new Plano()
-                .descricao(DEFAULT_DESCRICAO)
-                .detalhes(DEFAULT_DETALHES)
-                .tipo(DEFAULT_TIPO);
+            .descricao(DEFAULT_DESCRICAO)
+            .detalhes(DEFAULT_DETALHES)
+            .tipo(DEFAULT_TIPO);
         return plano;
     }
 
@@ -104,7 +106,6 @@ public class PlanoResourceIntTest {
         int databaseSizeBeforeCreate = planoRepository.findAll().size();
 
         // Create the Plano
-
         restPlanoMockMvc.perform(post("/api/planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(plano)))
@@ -118,7 +119,7 @@ public class PlanoResourceIntTest {
         assertThat(testPlano.getDetalhes()).isEqualTo(DEFAULT_DETALHES);
         assertThat(testPlano.getTipo()).isEqualTo(DEFAULT_TIPO);
 
-        // Validate the Plano in ElasticSearch
+        // Validate the Plano in Elasticsearch
         Plano planoEs = planoSearchRepository.findOne(testPlano.getId());
         assertThat(planoEs).isEqualToComparingFieldByField(testPlano);
     }
@@ -129,16 +130,15 @@ public class PlanoResourceIntTest {
         int databaseSizeBeforeCreate = planoRepository.findAll().size();
 
         // Create the Plano with an existing ID
-        Plano existingPlano = new Plano();
-        existingPlano.setId(1L);
+        plano.setId(1L);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPlanoMockMvc.perform(post("/api/planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingPlano)))
+            .content(TestUtil.convertObjectToJsonBytes(plano)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Plano in the database
         List<Plano> planoList = planoRepository.findAll();
         assertThat(planoList).hasSize(databaseSizeBeforeCreate);
     }
@@ -212,9 +212,9 @@ public class PlanoResourceIntTest {
         // Update the plano
         Plano updatedPlano = planoRepository.findOne(plano.getId());
         updatedPlano
-                .descricao(UPDATED_DESCRICAO)
-                .detalhes(UPDATED_DETALHES)
-                .tipo(UPDATED_TIPO);
+            .descricao(UPDATED_DESCRICAO)
+            .detalhes(UPDATED_DETALHES)
+            .tipo(UPDATED_TIPO);
 
         restPlanoMockMvc.perform(put("/api/planos")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -229,7 +229,7 @@ public class PlanoResourceIntTest {
         assertThat(testPlano.getDetalhes()).isEqualTo(UPDATED_DETALHES);
         assertThat(testPlano.getTipo()).isEqualTo(UPDATED_TIPO);
 
-        // Validate the Plano in ElasticSearch
+        // Validate the Plano in Elasticsearch
         Plano planoEs = planoSearchRepository.findOne(testPlano.getId());
         assertThat(planoEs).isEqualToComparingFieldByField(testPlano);
     }
@@ -265,7 +265,7 @@ public class PlanoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate ElasticSearch is empty
+        // Validate Elasticsearch is empty
         boolean planoExistsInEs = planoSearchRepository.exists(plano.getId());
         assertThat(planoExistsInEs).isFalse();
 
@@ -289,5 +289,20 @@ public class PlanoResourceIntTest {
             .andExpect(jsonPath("$.[*].descricao").value(hasItem(DEFAULT_DESCRICAO.toString())))
             .andExpect(jsonPath("$.[*].detalhes").value(hasItem(DEFAULT_DETALHES.toString())))
             .andExpect(jsonPath("$.[*].tipo").value(hasItem(DEFAULT_TIPO.toString())));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(Plano.class);
+        Plano plano1 = new Plano();
+        plano1.setId(1L);
+        Plano plano2 = new Plano();
+        plano2.setId(plano1.getId());
+        assertThat(plano1).isEqualTo(plano2);
+        plano2.setId(2L);
+        assertThat(plano1).isNotEqualTo(plano2);
+        plano1.setId(null);
+        assertThat(plano1).isNotEqualTo(plano2);
     }
 }
