@@ -6,12 +6,12 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <version>1.5.7.RELEASE</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
     <groupId>br.com.rogrs.autobot</groupId>
     <artifactId>autobot</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Autobot</name>
     <description>Project to demonstrate GitHub Maven plugins</description>
@@ -600,9 +600,9 @@
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>org.h2.Driver</driver>
                     <url>jdbc:h2:file:./target/h2db/db/autobot</url>
-                    <defaultSchemaName />
+                    <defaultSchemaName></defaultSchemaName>
                     <username>autobot</username>
-                    <password />
+                    <password></password>
                     <referenceUrl>hibernate:spring:br.com.rogrs.autobot.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
@@ -721,7 +721,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                                 <pluginExecution>
@@ -735,7 +735,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore />
+                                        <ignore/>
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
