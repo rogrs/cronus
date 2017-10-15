@@ -14,6 +14,34 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>Autobot</name>
+    <description>Project to demonstrate GitHub Maven plugins</description>
+    <url>https://github.com/rogrs/autobot</url>
+
+	<issueManagement>
+		<url>https://github.com/rogrs/autobot/issues</url>
+		<system>GitHub Issues</system>
+	</issueManagement>
+
+	<scm>
+		<url>https://github.com/rogrs/autobot</url>
+		<connection>scm:git:git://github.com/rogrs/autobot.git</connection>
+		<developerConnection>scm:git:git@github.com:rogrs/autobot.git</developerConnection>
+		<tag>HEAD</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<email>rogerio.rs@gmail.com</email>
+			<name>Rogerio Ribeiro</name>
+			<url>https://github.com/rogrs/autobot</url>
+			<id>rogrs</id>
+		</developer>
+	</developers>
+
+    <prerequisites>
+        <maven>3.0.0</maven>
+    </prerequisites>
+
 
     <properties>
         <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
