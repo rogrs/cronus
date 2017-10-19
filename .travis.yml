@@ -6,7 +6,6 @@ os:
 services:
   - docker
 sudo: false
-script:
-  - ./mvnw clean
-  - ./mvnw test
-  - ./mvnw package -Pprod -DskipTests
+script: mvn clean verify cobertura:cobertura
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
