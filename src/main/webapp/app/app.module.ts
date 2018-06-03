@@ -1,22 +1,25 @@
 import './vendor.ts';
-import { NgModule } from '@angular/core';
+
+import { NgModule, Injector } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { Ng2Webstorage } from 'ng2-webstorage';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Ng2Webstorage, LocalStorageService, SessionStorageService  } from 'ngx-webstorage';
+import { JhiEventManager } from 'ng-jhipster';
 
-import { AutobotSharedModule, UserRouteAccessService } from './shared';
-import { AutobotHomeModule } from './home/home.module';
-import { AutobotAdminModule } from './admin/admin.module';
-import { AutobotAccountModule } from './account/account.module';
-import { AutobotEntityModule } from './entities/entity.module';
-
-import { customHttpProvider } from './blocks/interceptor/http.provider';
+import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
+import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
+import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
+import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
+import { CronusSharedModule, UserRouteAccessService } from './shared';
+import { CronusAppRoutingModule} from './app-routing.module';
+import { CronusHomeModule } from './home/home.module';
+import { CronusAdminModule } from './admin/admin.module';
+import { CronusAccountModule } from './account/account.module';
+import { CronusEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
-
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-
 import {
     JhiMainComponent,
-    LayoutRoutingModule,
     NavbarComponent,
     FooterComponent,
     ProfileService,
@@ -28,13 +31,13 @@ import {
 @NgModule({
     imports: [
         BrowserModule,
-        LayoutRoutingModule,
+        CronusAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
-        AutobotSharedModule,
-        AutobotHomeModule,
-        AutobotAdminModule,
-        AutobotAccountModule,
-        AutobotEntityModule,
+        CronusSharedModule,
+        CronusHomeModule,
+        CronusAdminModule,
+        CronusAccountModule,
+        CronusEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -47,10 +50,42 @@ import {
     ],
     providers: [
         ProfileService,
-        customHttpProvider(),
         PaginationConfig,
-        UserRouteAccessService
+        UserRouteAccessService,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true,
+            deps: [
+                LocalStorageService,
+                SessionStorageService
+            ]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthExpiredInterceptor,
+            multi: true,
+            deps: [
+                Injector
+            ]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ErrorHandlerInterceptor,
+            multi: true,
+            deps: [
+                JhiEventManager
+            ]
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: NotificationInterceptor,
+            multi: true,
+            deps: [
+                Injector
+            ]
+        }
     ],
     bootstrap: [ JhiMainComponent ]
 })
-export class AutobotAppModule {}
+export class CronusAppModule {}

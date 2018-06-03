@@ -13,6 +13,12 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+logging:
+    level:
+        ROOT: DEBUG
+        br.com.rogrs: DEBUG
+        io.github.jhipster: DEBUG
+
 spring:
     profiles:
         active: dev
@@ -26,8 +32,8 @@ spring:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/autobot;DB_CLOSE_DELAY=-1
-        username: autobot
+        url: jdbc:h2:file:./target/h2db/db/cronus;DB_CLOSE_DELAY=-1
+        username: cronus
         password:
     h2:
         console:
@@ -65,7 +71,7 @@ liquibase:
 
 # ===================================================================
 # To enable SSL, generate a certificate using:
-# keytool -genkey -alias autobot -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# keytool -genkey -alias cronus -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
 #
 # You can also use Let's Encrypt:
 # https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
@@ -77,11 +83,11 @@ liquibase:
 #    ssl:
 #        key-store: keystore.p12
 #        key-store-password: <your-password>
-#        keyStoreType: PKCS12
-#        keyAlias: autobot
+#        key-store-type: PKCS12
+#        key-alias: cronus
 # ===================================================================
 server:
-    port: 8080
+    port: 8700
 
 # ===================================================================
 # JHipster specific properties
@@ -101,7 +107,7 @@ jhipster:
         allowed-origins: "*"
         allowed-methods: "*"
         allowed-headers: "*"
-        exposed-headers: "Authorization"
+        exposed-headers: "Authorization,Link,X-Total-Count"
         allow-credentials: true
         max-age: 1800
     security:
@@ -112,15 +118,15 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: autobot@localhost
-        base-url: http://127.0.0.1:8080
+        from: cronus@localhost
+        base-url: http://127.0.0.1:8700
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
             enabled: false
             host: localhost
             port: 2003
-            prefix: autobot
+            prefix: cronus
         prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
             enabled: false
             endpoint: /prometheusMetrics

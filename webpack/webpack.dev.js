@@ -24,9 +24,12 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 '/h2-console',
                 '/auth'
             ],
-            target: 'http://127.0.0.1:8080',
+            target: 'http://127.0.0.1:8700',
             secure: false
-        }]
+        }],
+        watchOptions: {
+            ignored: /node_modules/
+        }
     },
     entry: {
         polyfills: './src/main/webapp/app/polyfills',

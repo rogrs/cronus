@@ -1,0 +1,19 @@
+entity Project {
+	name String required,
+	description String 
+	
+}
+
+entity Step {
+	name String required,
+	command String
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+	Project{step(name)} to Step{project(name)}
+}
+
+// Set pagination options
+paginate Project, Step with infinite-scroll
+

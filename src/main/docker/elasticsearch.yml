@@ -1,9 +1,9 @@
 version: '2'
 services:
-    autobot-elasticsearch:
-        image: elasticsearch:2.4.1
+    cronus-elasticsearch:
+        image: elasticsearch:2.4.6
         # volumes:
-        #     - ~/volumes/jhipster/autobot/elasticsearch/:/usr/share/elasticsearch/data/
+        #     - ~/volumes/jhipster/cronus/elasticsearch/:/usr/share/elasticsearch/data/
         ports:
             - 9200:9200
             - 9300:9300

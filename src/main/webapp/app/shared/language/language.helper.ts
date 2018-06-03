@@ -11,6 +11,7 @@ export class JhiLanguageHelper {
 
     constructor(
         private translateService: TranslateService,
+        // tslint:disable-next-line: no-unused-variable
         private rootRenderer: RendererFactory2,
         private titleService: Title,
         private router: Router
@@ -48,7 +49,7 @@ export class JhiLanguageHelper {
     }
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
-        let title: string = (routeSnapshot.data && routeSnapshot.data['pageTitle']) ? routeSnapshot.data['pageTitle'] : 'autobotApp';
+        let title: string = (routeSnapshot.data && routeSnapshot.data['pageTitle']) ? routeSnapshot.data['pageTitle'] : 'cronusApp';
         if (routeSnapshot.firstChild) {
             title = this.getPageTitle(routeSnapshot.firstChild) || title;
         }

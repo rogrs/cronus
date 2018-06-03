@@ -1,19 +1,14 @@
 {
     "global": {
-        "title": "Autobot",
+        "title": "Cronus",
         "browsehappy": "Você está usando um navegador <strong>desatualizado</strong>. Favor <a href=\"http://browsehappy.com/?locale=pt_BR\">atualizar o seu navegador</a> para ter uma experiência melhor.",
         "menu": {
             "home": "Início",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
-                "atividade": "Atividade",
-                "plugin": "Plugin",
-                "projeto": "Projeto",
-                "plano": "Plano",
-                "script": "Script",
-                "executarPlano": "Executar Plano",
-                "logExecutarPlano": "Log Executar Plano",
+                "project": "Project",
+                "step": "Step",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -135,5 +130,5 @@
         "emailexists": "Este email já está cadastrado!",
         "idexists": "Novo(a) {{entityName}} não pode ter uma ID"
     },
-    "footer": "Este é o seu rodapé"
+    "footer": "Project Cronus"
 }

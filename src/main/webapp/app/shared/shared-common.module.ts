@@ -1,8 +1,10 @@
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { registerLocaleData } from '@angular/common';
+import locale from '@angular/common/locales/en';
 
 import {
-    AutobotSharedLibsModule,
+    CronusSharedLibsModule,
     JhiLanguageHelper,
     FindLanguageFromKeyPipe,
     JhiAlertComponent,
@@ -11,7 +13,7 @@ import {
 
 @NgModule({
     imports: [
-        AutobotSharedLibsModule
+        CronusSharedLibsModule
     ],
     declarations: [
         FindLanguageFromKeyPipe,
@@ -27,10 +29,14 @@ import {
         },
     ],
     exports: [
-        AutobotSharedLibsModule,
+        CronusSharedLibsModule,
         FindLanguageFromKeyPipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]
 })
-export class AutobotSharedCommonModule {}
+export class CronusSharedCommonModule {
+    constructor() {
+        registerLocaleData(locale);
+    }
+}

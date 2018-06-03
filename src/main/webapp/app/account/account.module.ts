@@ -1,7 +1,7 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { AutobotSharedModule } from '../shared';
+import { CronusSharedModule } from '../shared';
 
 import {
     Register,
@@ -21,8 +21,8 @@ import {
 
 @NgModule({
     imports: [
-        AutobotSharedModule,
-        RouterModule.forRoot(accountState, { useHash: true })
+        CronusSharedModule,
+        RouterModule.forChild(accountState)
     ],
     declarations: [
         ActivateComponent,
@@ -42,4 +42,4 @@ import {
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AutobotAccountModule {}
+export class CronusAccountModule {}

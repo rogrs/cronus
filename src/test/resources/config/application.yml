@@ -16,14 +16,14 @@
 
 spring:
     application:
-        name: autobot
+        name: cronus
     jackson:
         serialization.write_dates_as_timestamps: false
     cache:
-        type: none
+        type: simple
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:mem:autobot;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:cronus;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
@@ -64,10 +64,6 @@ spring:
 liquibase:
     contexts: test
 
-security:
-    basic:
-        enabled: false
-
 server:
     port: 10344
     address: localhost
@@ -100,7 +96,7 @@ jhipster:
     security:
         authentication:
             jwt:
-                secret: 2ee3ad05e923e6f02c41d01f4c15d2a9baee4143
+                secret: 4a472dc164a6d34ede0f0ee4909a21f8651c0d4c
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration

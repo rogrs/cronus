@@ -2,8 +2,8 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
 import {
-    AutobotSharedLibsModule,
-    AutobotSharedCommonModule,
+    CronusSharedLibsModule,
+    CronusSharedCommonModule,
     CSRFService,
     AuthServerProvider,
     AccountService,
@@ -11,15 +11,15 @@ import {
     StateStorageService,
     LoginService,
     LoginModalService,
+    JhiLoginModalComponent,
     Principal,
     HasAnyAuthorityDirective,
-    JhiLoginModalComponent
 } from './';
 
 @NgModule({
     imports: [
-        AutobotSharedLibsModule,
-        AutobotSharedCommonModule
+        CronusSharedLibsModule,
+        CronusSharedCommonModule
     ],
     declarations: [
         JhiLoginModalComponent,
@@ -38,7 +38,7 @@ import {
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [
-        AutobotSharedCommonModule,
+        CronusSharedCommonModule,
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
         DatePipe
@@ -46,4 +46,4 @@ import {
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class AutobotSharedModule {}
+export class CronusSharedModule {}

@@ -1,0 +1,25 @@
+
+{
+    "cronusApp": {
+        "project" : {
+            "home": {
+                "title": "Projects",
+                "createLabel": "Criar novo Project",
+                "createOrEditLabel": "Criar ou editar Project",
+                "search": "Pesquisar por Project"
+            },
+            "created": "Um novo Project foi criado com o identificador {{ param }}",
+            "updated": "Um Project foi atualizado com o identificador {{ param }}",
+            "deleted": "Um Project foi deletado com o identificador {{ param }}",
+            "delete": {
+                "question": "Tem certeza de que deseja excluir Project {{ id }}?"
+            },
+            "detail": {
+                "title": "Project"
+            },
+            "name": "Name",
+            "description": "Description",
+            "step": "Step"
+        }
+    }
+}

@@ -1,0 +1,25 @@
+
+{
+    "cronusApp": {
+        "step" : {
+            "home": {
+                "title": "Steps",
+                "createLabel": "Create a new Step",
+                "createOrEditLabel": "Create or edit a Step",
+                "search": "Search for Step"
+            },
+            "created": "A new Step is created with identifier {{ param }}",
+            "updated": "A Step is updated with identifier {{ param }}",
+            "deleted": "A Step is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Step {{ id }}?"
+            },
+            "detail": {
+                "title": "Step"
+            },
+            "name": "Name",
+            "command": "Command",
+            "project": "Project"
+        }
+    }
+}
