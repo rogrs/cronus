@@ -13,28 +13,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.rogrs.cronus.domain.Review;
 import br.com.rogrs.cronus.domain.Teacher;
-import br.com.rogrs.cronus.postgres.dao.TeacherDAO;
-import br.com.rogrs.cronus.service.TeacherService;
+import br.com.rogrs.cronus.postgres.dao.TeacherRepository;
 
 @RestController
 public class TeacherController {
 
     @Autowired
-    private final TeacherService teacherService;
-    
-    @Autowired
-    private TeacherDAO teacherDAO;
+    private TeacherRepository teacherDAO;
 
-    @Autowired
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
-    }
-
+   
     @PostMapping("/teachers/{id}/review")
     public ResponseEntity addReview(@RequestBody Review review, @PathVariable("id") String teacherID){
 
         try {
-            teacherService.addReview(teacherID, review);
+            //teacherService.addReview(teacherID, review);
             return ResponseEntity.ok().build();
         }
         catch (EntityNotFoundException e){
