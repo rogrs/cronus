@@ -1,6 +1,5 @@
 package br.com.rogrs.cronus;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
@@ -12,20 +11,20 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class CronusApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(CronusApplication.class, args);
-    }
-
+	public static void main(String[] args) {
+		SpringApplication.run(CronusApplication.class, args);
+	}
 	
-	@Configuration
-	public class OktaOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+
+    @Configuration
+    static class OktaOAuth2WebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http
-                .authorizeRequests().anyRequest().authenticated()
-                .and()
-                .oauth2ResourceServer().jwt();
+                    .authorizeRequests().anyRequest().authenticated()
+                    .and()
+                    .oauth2ResourceServer().jwt();
         }
     }
 
