@@ -11,7 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Review implements Serializable {
-    private String author;
+
+	private static final long serialVersionUID = 1L;
+	
+	private String author;
     private String review;
     private LocalDate date;
 }

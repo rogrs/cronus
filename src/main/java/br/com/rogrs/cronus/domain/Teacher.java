@@ -1,4 +1,5 @@
 package br.com.rogrs.cronus.domain;
+
 import java.util.List;
 
 import javax.persistence.Basic;

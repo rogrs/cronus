@@ -16,10 +16,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Course extends EntityWithUUID {
 
-    private String name;
-    private int workload;
-    private short rate;
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(name = "fk_course_teacher"))
-    private Teacher teacher;
+	private String name;
+	private int workload;
+	private short rate;
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_course_teacher"))
+	private Teacher teacher;
 }
