@@ -1,20 +1,20 @@
 package br.com.rogrs.cronus.web.rest;
 
-import br.com.rogrs.cronus.clients.SwapiClient;
-import br.com.rogrs.cronus.dto.PlanetDTO;
+import br.com.rogrs.cronus.dto.FilmDTO;
+import br.com.rogrs.cronus.service.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class PlanetController {
+public class FilmsController {
     @Autowired
-    private SwapiClient swapiClient;
+    private FilmService filmService;
 
-    @GetMapping("/api/planets/{id}")
-    public PlanetDTO getPlanetByID(@PathVariable("id") long id) {
-        return swapiClient.getPlanet(id);
+    @GetMapping("/api/films/{id}")
+    public FilmDTO getFilmsByID(@PathVariable("id") long id) {
+        return filmService.getFilms(id);
     }
 
 

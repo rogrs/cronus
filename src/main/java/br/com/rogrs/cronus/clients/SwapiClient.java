@@ -1,7 +1,8 @@
 package br.com.rogrs.cronus.clients;
 
-import br.com.rogrs.cronus.dto.Film;
-import br.com.rogrs.cronus.dto.Planet;
+import br.com.rogrs.cronus.dto.FilmDTO;
+import br.com.rogrs.cronus.dto.PeopleDTO;
+import br.com.rogrs.cronus.dto.PlanetDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,13 @@ public interface SwapiClient {
 
 
     @RequestMapping(method = RequestMethod.GET, value ="/planets/{id}")
-    Planet getPlanet(@PathVariable("id") long id);
+    PlanetDTO getPlanet(@PathVariable("id") long id);
 
     @RequestMapping(method = RequestMethod.GET, value ="/films/{id}")
-    Film getFilms(@PathVariable("id") long id);
+    FilmDTO getFilms(@PathVariable("id") long id);
+
+    @RequestMapping(method = RequestMethod.GET, value ="/people/{id}")
+    PeopleDTO getPeople(@PathVariable("id") long id);
 
 
 }
