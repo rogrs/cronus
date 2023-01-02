@@ -20,9 +20,9 @@ public class FilmService {
     private final FilmRepository filmRepository;
 
     @Autowired
-    public FilmService(SwapiClient swapiClient,FilmRepository filmRepository){
-     this.filmRepository=filmRepository;
-     this.swapiClient=swapiClient;
+    public FilmService(SwapiClient swapiClient, FilmRepository filmRepository) {
+        this.filmRepository = filmRepository;
+        this.swapiClient = swapiClient;
     }
 
     public Film getFilms(Long id) {
@@ -33,22 +33,19 @@ public class FilmService {
         FilmDTO dto = null;
 
         try {
-        dto = swapiClient.getFilms(id);
-         } catch (FeignException.FeignClientException e ) {
+            dto = swapiClient.getFilms(id);
+        } catch (FeignException.FeignClientException e) {
             throw new EntityNotFoundException(e.getMessage());
         }
 
+        Optional<Film> optionalFilm = filmRepository.findByTitle(dto.getTitle());
 
-            Optional<Film> optionalFilm = filmRepository.findByTitle(dto.getTitle());
-            Film film = null;
-            if (optionalFilm.isEmpty()) {
-                ModelMapper modelMapper = new ModelMapper();
-                film = modelMapper.map(dto, Film.class);
-                return filmRepository.saveAndFlush(film);
-            } else {
-                return optionalFilm.get();
-            }
-
-
+        if (optionalFilm.isEmpty()) {
+            ModelMapper modelMapper = new ModelMapper();
+            Film film = modelMapper.map(dto, Film.class);
+            return filmRepository.saveAndFlush(film);
+        } else {
+            return optionalFilm.get();
+        }
     }
 }
