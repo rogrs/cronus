@@ -1,9 +1,0 @@
-language: java
-jdk: openjdk17
-os:
-  - linux
-services:
-  - docker
-sudo: false
-script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-
